@@ -1,5 +1,5 @@
 {
-  "name": "bubble-engine",
+  "name": "@fogrexon/bubble-engine",
   "version": "0.1.0",
   "description": "",
   "main": "build/commonjs/src/index.js",
