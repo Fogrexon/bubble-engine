@@ -1,0 +1,47 @@
+{
+  "name": "librarytemplate",
+  "version": "0.1.0",
+  "description": "",
+  "main": "build/commonjs/src/index.js",
+  "module": "build/es/src/index.js",
+  "scripts": {
+    "build": "rollup --config",
+    "start": "rollup --config --watch",
+    "start:example": "http-server",
+    "lint:prettier": "prettier \"./src/**/*.ts\"",
+    "lint:eslint": "eslint \"./src/**/*.ts\"",
+    "lint:fix": "prettier \"./src/**/*.ts\" --write & eslint \"./src/**/*.ts\" --fix",
+    "docs": "typedoc --out ./docs/ ./src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fogrexon/LibraryTemplate.git"
+  },
+  "author": "Fogrexon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fogrexon/LibraryTemplate/issues"
+  },
+  "homepage": "https://github.com/Fogrexon/LibraryTemplate#readme",
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "eslint": "^8.43.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "postcss": "^8.4.24",
+    "prettier": "^2.8.8",
+    "rollup": "^3.25.3",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tslib": "^2.6.0",
+    "typedoc": "^0.24.8",
+    "typescript": "^5.1.5"
+  }
+}
