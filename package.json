@@ -1,5 +1,5 @@
 {
-  "name": "librarytemplate",
+  "name": "bubble-engine",
   "version": "0.1.0",
   "description": "",
   "main": "build/commonjs/src/index.js",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fogrexon/LibraryTemplate.git"
+    "url": "git+https://github.com/Fogrexon/bubble-engine.git"
   },
   "author": "Fogrexon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Fogrexon/LibraryTemplate/issues"
+    "url": "https://github.com/Fogrexon/bubble-engine/issues"
   },
-  "homepage": "https://github.com/Fogrexon/LibraryTemplate#readme",
+  "homepage": "https://github.com/Fogrexon/bubble-engine#readme",
   "devDependencies": {
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
@@ -34,7 +34,6 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
-    "postcss": "^8.4.24",
     "prettier": "^2.8.8",
     "rollup": "^3.25.3",
     "rollup-plugin-node-polyfills": "^0.2.1",

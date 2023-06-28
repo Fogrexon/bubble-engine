@@ -1,12 +1,11 @@
 import babel from '@rollup/plugin-babel';
-import postcss from 'rollup-plugin-postcss';
 import typescript from '@rollup/plugin-typescript';
 import nodeResolve from 'rollup-plugin-node-resolve';
 
 const extensions = ['.ts', '.js'];
 
-const LIBRARY_NAME = 'name';
-const LIBRARY_NAME_LOWER = LIBRARY_NAME.toLowerCase();
+const LIBRARY_NAME = 'BubbleEngine';
+const LIBRARY_NAME_LOWER = LIBRARY_NAME.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);;
 
 export default [
 
@@ -24,9 +23,6 @@ export default [
 
     plugins: [
       nodeResolve({browser: true}),
-      postcss({
-        extract: true,
-      }),
       babel({
         extensions,
       }),
@@ -50,9 +46,6 @@ export default [
 
     plugins: [
       nodeResolve({browser: true}),
-      postcss({
-        extract: true,
-      }),
       babel({
         extensions,
       }),
@@ -75,9 +68,6 @@ export default [
     },
     plugins: [
       nodeResolve({browser: true}),
-      postcss({
-        extract: true,
-      }),
       babel({
         extensions,
       }),
