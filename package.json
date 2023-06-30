@@ -5,13 +5,14 @@
   "main": "build/commonjs/index.js",
   "module": "build/es/index.js",
   "scripts": {
-    "build": "rollup --config",
+    "build": "rm -r -f build && rollup --config",
     "start": "rollup --config --watch",
     "start:example": "http-server",
     "lint:prettier": "prettier \"./src/**/*.ts\"",
     "lint:eslint": "eslint \"./src/**/*.ts\"",
     "lint:fix": "prettier \"./src/**/*.ts\" --write & eslint \"./src/**/*.ts\" --fix",
-    "docs": "typedoc --out ./docs/ ./src/"
+    "docs": "typedoc --out ./docs/ ./src/",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
     "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-image": "^3.0.2",
     "@rollup/plugin-typescript": "^11.1.2",
     "@types/jest": "^29.5.2",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
@@ -35,6 +37,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.2",
     "jest": "^29.5.0",
     "prettier": "^2.8.8",
     "rollup": "^3.25.3",

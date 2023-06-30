@@ -394,7 +394,7 @@
     _classCallCheck(this, LevelManager);
   });
 
-  var ImageLoader = function ImageLoader(path, progress) {
+  var LoadImage = function LoadImage(path, progress) {
     var target = new Image();
     target.src = path;
     progress.bind(target)(0);
@@ -408,95 +408,51 @@
       });
     });
   };
-  var fileLoaderTable = {
-    image: ImageLoader
-  };
-
-  var DynamicLoader = /*#__PURE__*/function () {
-    function DynamicLoader() {
-      _classCallCheck(this, DynamicLoader);
-      _defineProperty(this, "loadedFiles", {});
-    }
-    _createClass(DynamicLoader, [{
-      key: "load",
-      value: function () {
-        var _load = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(loadFile, progress) {
-          var loaders, loaderType, data;
-          return _regeneratorRuntime().wrap(function _callee$(_context) {
-            while (1) switch (_context.prev = _context.next) {
-              case 0:
-                if (!this.loadedFiles[loadFile.id]) {
-                  _context.next = 2;
-                  break;
-                }
-                return _context.abrupt("return");
-              case 2:
-                loaders = Object.keys(fileLoaderTable);
-                if (!(loaders.indexOf(loadFile.type) === -1)) {
-                  _context.next = 5;
-                  break;
-                }
-                throw new Error("File type ".concat(loadFile.type, " is not supported"));
-              case 5:
-                loaderType = loadFile.type;
-                _context.next = 8;
-                return fileLoaderTable[loaderType](loadFile.path, progress);
-              case 8:
-                data = _context.sent;
-                this.loadedFiles[loadFile.id] = {
-                  fileInfo: loadFile,
-                  data: data
-                };
-              case 10:
-              case "end":
-                return _context.stop();
-            }
-          }, _callee, this);
-        }));
-        function load(_x, _x2) {
-          return _load.apply(this, arguments);
-        }
-        return load;
-      }()
-    }, {
-      key: "get",
-      value: function get(id) {
-        return this.loadedFiles[id].data;
-      }
-    }, {
-      key: "unload",
-      value: function unload(id) {
-        delete this.loadedFiles[id];
-      }
-    }]);
-    return DynamicLoader;
-  }();
 
   /**
-   * ゲーム開始時に読み込まれるデータ
+   * データローダー
    */
-  var StaticLoader = /*#__PURE__*/function () {
-    function StaticLoader() {
-      _classCallCheck(this, StaticLoader);
+  var ResourceLoader = /*#__PURE__*/function () {
+    function ResourceLoader() {
+      _classCallCheck(this, ResourceLoader);
       _defineProperty(this, "files", {});
+      /**
+       * ファイルタイプとロード関数の対応表
+       */
+      _defineProperty(this, "resourceLoaders", {
+        image: LoadImage
+      });
     }
-    _createClass(StaticLoader, [{
-      key: "loadAll",
+    _createClass(ResourceLoader, [{
+      key: "registerLoader",
       value:
+      /**
+       * 新規のローダーを登録する
+       * @param type ローダーを登録するファイルタイプ
+       * @param loader ローダー本体
+       * @throws ファイルタイプが既に登録されている場合
+       */
+      function registerLoader(type, loader) {
+        if (this.resourceLoaders[type]) throw new Error("ResourceLoader: Loader for type ".concat(type, " already exists"));
+        this.resourceLoaders[type] = loader;
+      }
       /**
        * ファイル定義リストからファイルをロードする
        * @param loadfiles ロードするファイルの定義
        * @param progress 進捗状況を受け取るコールバック
        */
-      function () {
+    }, {
+      key: "loadAll",
+      value: function () {
         var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(loadfiles, progress) {
           var _this = this;
-          var fileProgresses, recalculateProgress, fileLoaderTableId, promises, data;
+          var loadFileKeys, fileProgresses, recalculateProgress, promises, data;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 progress.bind(this)(0);
-                fileProgresses = loadfiles.map(function () {
+                loadFileKeys = Object.keys(loadfiles);
+                fileProgresses = loadFileKeys.map(function () {
                   return 0;
                 });
                 recalculateProgress = function recalculateProgress() {
@@ -504,11 +460,9 @@
                     return a + b;
                   }) / fileProgresses.length);
                 };
-                fileLoaderTableId = Object.keys(fileLoaderTable);
-                promises = loadfiles.map(function (file, index) {
-                  if (fileLoaderTableId.indexOf(file.type) === -1) throw new Error("File type ".concat(file.type, " is not supported"));
-                  var fileType = file.type;
-                  return fileLoaderTable[fileType](file.path, function (rate) {
+                promises = Object.values(loadfiles).map(function (file, index) {
+                  if (!_this.resourceLoaders[file.type]) throw new Error("ResourceLoader: File type ".concat(file.type, " is not supported"));
+                  return _this.resourceLoaders[file.type](file.path, function (rate) {
                     fileProgresses[index] = rate;
                     recalculateProgress();
                   });
@@ -517,9 +471,9 @@
                 return Promise.all(promises);
               case 7:
                 data = _context.sent;
-                loadfiles.forEach(function (file, index) {
-                  _this.files[file.id] = {
-                    fileInfo: file,
+                loadFileKeys.forEach(function (key, index) {
+                  _this.files[key] = {
+                    fileInfo: loadfiles[key],
                     data: data[index]
                   };
                 });
@@ -539,14 +493,18 @@
       value: function get(id) {
         return this.files[id].data;
       }
+    }, {
+      key: "unload",
+      value: function unload(id) {
+        delete this.files[id];
+      }
     }]);
-    return StaticLoader;
+    return ResourceLoader;
   }();
 
-  exports.DynamicLoader = DynamicLoader;
   exports.GameManager = GameManager;
   exports.LevelManager = LevelManager;
-  exports.StaticLoader = StaticLoader;
+  exports.ResourceLoader = ResourceLoader;
 
 }));
 //# sourceMappingURL=bubble-engine.js.map
