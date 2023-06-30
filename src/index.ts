@@ -1,7 +1,6 @@
-export class Template {
-  constructor() {
-    console.log("log");
-  }
-}
-
-export * from './Math';
+export * from './core';
+export * from './utils';
+export * from './component';
+export * from './input'
+export * from './loader'
+export * from './plugin'
