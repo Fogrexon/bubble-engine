@@ -2,8 +2,8 @@
   "name": "@fogrexon/bubble-engine",
   "version": "0.1.0",
   "description": "",
-  "main": "build/commonjs/src/index.js",
-  "module": "build/es/src/index.js",
+  "main": "build/commonjs/index.js",
+  "module": "build/es/index.js",
   "scripts": {
     "build": "rollup --config",
     "start": "rollup --config --watch",

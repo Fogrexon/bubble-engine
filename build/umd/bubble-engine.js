@@ -41,12 +41,17 @@
     return typeof key === "symbol" ? key : String(key);
   }
 
+  var add = function add(a, b) {
+    return a + b;
+  };
+
   var Template = /*#__PURE__*/_createClass(function Template() {
     _classCallCheck(this, Template);
     console.log("log");
   });
 
   exports.Template = Template;
+  exports.add = add;
 
 }));
 //# sourceMappingURL=bubble-engine.js.map

@@ -29,7 +29,7 @@ export default [
       typescript({
         declaration: true,
         rootDir: 'src',
-        declarationDir: 'build/commonjs/src',
+        declarationDir: 'build/commonjs',
       }),
     ],
   },
@@ -52,7 +52,7 @@ export default [
       typescript({
         declaration: true,
         rootDir: 'src',
-        declarationDir: 'build/es/src',
+        declarationDir: 'build/es',
       }),
     ],
   },

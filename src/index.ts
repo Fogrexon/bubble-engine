@@ -3,3 +3,5 @@ export class Template {
     console.log("log");
   }
 }
+
+export * from './Math';
