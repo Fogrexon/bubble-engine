@@ -1,5 +1,5 @@
-import { FileInfo, FileStoreEntry } from "./FileInfo";
-import { fileLoaderTable } from './fileLoader'
+import { FileInfo, FileStoreEntry } from './FileInfo';
+import { fileLoaderTable } from './fileLoader';
 
 /**
  * ゲーム開始時に読み込まれるデータ
@@ -17,23 +17,24 @@ export class StaticLoader {
     const fileProgresses = loadfiles.map(() => 0);
     const recalculateProgress = () => {
       progress.bind(this)(fileProgresses.reduce((a, b) => a + b) / fileProgresses.length);
-    }
+    };
     const fileLoaderTableId = Object.keys(fileLoaderTable);
     const promises = loadfiles.map((file: FileInfo, index: number) => {
-      if (fileLoaderTableId.indexOf(file.type) === -1) throw new Error(`File type ${file.type} is not supported`);
+      if (fileLoaderTableId.indexOf(file.type) === -1)
+        throw new Error(`File type ${file.type} is not supported`);
       const fileType: keyof typeof fileLoaderTable = file.type as keyof typeof fileLoaderTable;
       return fileLoaderTable[fileType](file.path, (rate) => {
         fileProgresses[index] = rate;
         recalculateProgress();
       });
-    })
-    
+    });
+
     const data = await Promise.all(promises);
     loadfiles.forEach((file, index) => {
       this.files[file.id] = {
         fileInfo: file,
-        data: data[index]
-      }
+        data: data[index],
+      };
     });
   }
 

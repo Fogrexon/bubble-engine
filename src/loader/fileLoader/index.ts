@@ -1,5 +1,5 @@
 type ProgressFunc = (rate: number) => void;
-type FileLoaderFunc<T> = (path: string, progress: ProgressFunc) => Promise<T>
+type FileLoaderFunc<T> = (path: string, progress: ProgressFunc) => Promise<T>;
 
 const ImageLoader: FileLoaderFunc<HTMLImageElement> = (path: string, progress: ProgressFunc) => {
   const target = new Image();
@@ -14,8 +14,8 @@ const ImageLoader: FileLoaderFunc<HTMLImageElement> = (path: string, progress: P
       reject();
     });
   });
-}
+};
 
 export const fileLoaderTable = {
-  image: ImageLoader
+  image: ImageLoader,
 };

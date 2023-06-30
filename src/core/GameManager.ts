@@ -1,5 +1,3 @@
 export class GameManager {
-  constructor() {
-
-  }
+  constructor() {}
 }
