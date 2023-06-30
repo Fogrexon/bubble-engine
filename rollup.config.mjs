@@ -5,7 +5,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 const extensions = ['.ts', '.js'];
 
 const LIBRARY_NAME = 'BubbleEngine';
-const LIBRARY_NAME_LOWER = LIBRARY_NAME.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);;
+const LIBRARY_NAME_LOWER = LIBRARY_NAME.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`).slice(1);
 
 export default [
 
