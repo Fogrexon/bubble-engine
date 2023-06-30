@@ -1,2 +1,2 @@
-export * from 'DynamicLoader';
-export * from 'StaticLoader';
+export * from './DynamicLoader';
+export * from './StaticLoader';
