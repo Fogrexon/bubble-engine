@@ -31,7 +31,10 @@ export class ResourceLoader {
    * @param loadfiles ロードするファイルの定義
    * @param progress 進捗状況を受け取るコールバック
    */
-  public async loadAll<T extends Record<string, FileInfo>>(loadfiles: T, progress: (rate: number) => void) {
+  public async loadAll<T extends Record<string, FileInfo>>(
+    loadfiles: T,
+    progress: (rate: number) => void
+  ) {
     progress.bind(this)(0);
     const loadFileKeys = Object.keys(loadfiles);
     const fileProgresses = loadFileKeys.map(() => 0);
@@ -49,7 +52,7 @@ export class ResourceLoader {
     });
 
     const data = await Promise.all(promises);
-    
+
     loadFileKeys.forEach((key, index) => {
       this.files[key] = {
         fileInfo: loadfiles[key],
