@@ -1,2 +1,2 @@
 export * from './GameManager';
-export * from './LevelManager';
+export * from '../levelControl/LevelManager';
