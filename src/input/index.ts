@@ -25,6 +25,7 @@ export class InputManager<T extends Record<string, InputKeybind>> {
     window.addEventListener('keyup', (e) => {
       this.rawKeyValues[e.key as InputableKey] = 0;
     });
+
   }
 
   public getKeybinder<Key extends keyof typeof this.keybinders>(key: Key): typeof this.keybinders[Key] {
@@ -35,5 +36,10 @@ export class InputManager<T extends Record<string, InputKeybind>> {
     Object.keys(this.keybinds).forEach((key) => {
       this.keybinders[key].update(this.rawKeyValues);
     });
+  }
+
+  // イベントハンドラ系
+  private keydownHandler(e: KeyboardEvent) {
+    this.rawKeyValues[e.key as InputableKey] = 1;
   }
 }

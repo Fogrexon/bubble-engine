@@ -23,7 +23,8 @@ export class KeyBinder<T extends InputKeybind = {}> {
     // create key containers
     const keyContainer: Record<string, Vector2Provider | ScalarProvider> = {};
     Object.keys(keybind).forEach((key) => {
-      const value = keybind[key];
+      if (!keybind[key]) throw new Error(`KeyBinder: Invalid keybind(${key})`);
+      const value = keybind[key][0];
       switch (value.type) {
       case 'scalarkey1':
       case 'scalarkey2':
@@ -58,36 +59,38 @@ export class KeyBinder<T extends InputKeybind = {}> {
   
   public update(keyValues: RawKeyValue) {
     Object.keys(this.keybind).forEach((key: keyof T) => {
-      const keyBind = this.keybind[key];
-      switch (keyBind.type) {
-      case 'scalarkey1': {
-        (this.keyContainer[key] as ScalarProvider).update(keyValues[keyBind.value]);
-        break;
-      }
-      case 'scalarkey2': {
-        const positiveValue = keyValues[keyBind.positiveValue];
-        const negativeValue = keyValues[keyBind.negativeValue];
-        (this.keyContainer[key] as ScalarProvider).update(positiveValue - negativeValue);
-        break;
-      }
-      case 'vector2key2': {
-        const xValue = keyValues[keyBind.xValue];
-        const yValue = keyValues[keyBind.yValue];
-        (this.keyContainer[key] as Vector2Provider).update(xValue, yValue);
-        break;
-      }
-      case 'vector2key4': {
-        const xPositiveValue = keyValues[keyBind.xPositiveValue];
-        const xNegativeValue = keyValues[keyBind.xNegativeValue];
-        const yPositiveValue = keyValues[keyBind.yPositiveValue];
-        const yNegativeValue = keyValues[keyBind.yNegativeValue];
-        (this.keyContainer[key] as Vector2Provider).update(xPositiveValue - xNegativeValue, yPositiveValue - yNegativeValue);
-        break;
-      }
-      default: {
-        throw new Error(`KeyBinder: Invalid type of keybind(${keyBind})`);
-      }
-      }
+      const keyBinds = this.keybind[key];
+      keyBinds.forEach((keyBind) => {
+        switch (keyBind.type) {
+        case 'scalarkey1': {
+          (this.keyContainer[key] as ScalarProvider).update(keyValues[keyBind.value]);
+          break;
+        }
+        case 'scalarkey2': {
+          const positiveValue = keyValues[keyBind.positiveValue];
+          const negativeValue = keyValues[keyBind.negativeValue];
+          (this.keyContainer[key] as ScalarProvider).update(positiveValue - negativeValue);
+          break;
+        }
+        case 'vector2key2': {
+          const xValue = keyValues[keyBind.xValue];
+          const yValue = keyValues[keyBind.yValue];
+          (this.keyContainer[key] as Vector2Provider).update(xValue, yValue);
+          break;
+        }
+        case 'vector2key4': {
+          const xPositiveValue = keyValues[keyBind.xPositiveValue];
+          const xNegativeValue = keyValues[keyBind.xNegativeValue];
+          const yPositiveValue = keyValues[keyBind.yPositiveValue];
+          const yNegativeValue = keyValues[keyBind.yNegativeValue];
+          (this.keyContainer[key] as Vector2Provider).update(xPositiveValue - xNegativeValue, yPositiveValue - yNegativeValue);
+          break;
+        }
+        default: {
+          throw new Error(`KeyBinder: Invalid type of keybind(${keyBinds})`);
+        }
+        }
+      });
     });
   }
 }
