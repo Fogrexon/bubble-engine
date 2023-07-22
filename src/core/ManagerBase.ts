@@ -1,3 +1,1 @@
-export class ManagerBase {
-
-}
+export class ManagerBase {}

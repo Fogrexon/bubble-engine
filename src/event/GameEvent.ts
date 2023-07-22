@@ -3,7 +3,7 @@ export type GameEvent<T = undefined> = {
   listen: (listener: (data: T) => void) => void;
   unlisten: (listener: (data: T) => void) => void;
   call: (data: T) => void;
-}
+};
 
 export const createGameEvent = <T = undefined>() => {
   const event: GameEvent<T> = {
@@ -12,11 +12,11 @@ export const createGameEvent = <T = undefined>() => {
       this.listeners.push(listener);
     },
     unlisten(listener) {
-      this.listeners = this.listeners.filter(l => l !== listener);
+      this.listeners = this.listeners.filter((l) => l !== listener);
     },
     call(data) {
-      this.listeners.forEach(l => l(data));
-    }
+      this.listeners.forEach((l) => l(data));
+    },
   };
   return event;
 };

@@ -1,7 +1,10 @@
 export type ProgressFunc = ((rate: number) => void) | null;
 export type LoadFileFunc<T> = (path: string, progress: ProgressFunc) => Promise<T>;
 
-export const ImageLoader: LoadFileFunc<HTMLImageElement> = (path: string, progress: ProgressFunc) => {
+export const ImageLoader: LoadFileFunc<HTMLImageElement> = (
+  path: string,
+  progress: ProgressFunc
+) => {
   const target = new Image();
   target.src = path;
   progress?.bind(target)(0);
@@ -16,7 +19,10 @@ export const ImageLoader: LoadFileFunc<HTMLImageElement> = (path: string, progre
   });
 };
 
-export const AudioLoader: LoadFileFunc<HTMLAudioElement> = (path: string, progress: ProgressFunc) => {
+export const AudioLoader: LoadFileFunc<HTMLAudioElement> = (
+  path: string,
+  progress: ProgressFunc
+) => {
   const target = new Audio();
   target.src = path;
   progress?.bind(target)(0);

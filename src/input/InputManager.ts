@@ -1,5 +1,5 @@
-import {InputableKey, inputableKeyList, InputKeybind, RawKeyValue} from './InputDefinition';
-import {KeyBinder} from './KeyBinder';
+import { InputableKey, inputableKeyList, InputKeybind, RawKeyValue } from './InputDefinition';
+import { KeyBinder } from './KeyBinder';
 
 export class InputManager<T extends Record<string, InputKeybind>> {
   private keybinds: T;
@@ -25,10 +25,11 @@ export class InputManager<T extends Record<string, InputKeybind>> {
     window.addEventListener('keyup', (e) => {
       this.rawKeyValues[e.key as InputableKey] = 0;
     });
-
   }
 
-  public getKeybinder<Key extends keyof typeof this.keybinders>(key: Key): typeof this.keybinders[Key] {
+  public getKeybinder<Key extends keyof typeof this.keybinders>(
+    key: Key
+  ): (typeof this.keybinders)[Key] {
     return this.keybinders[key];
   }
 

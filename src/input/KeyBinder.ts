@@ -3,14 +3,20 @@ import {
   RawKeyValue,
   ScalarInputType,
   Vector2Key2InputType,
-  Vector2Key4InputType
+  Vector2Key4InputType,
 } from './InputDefinition';
-import {Vector2Provider} from './Vector2Provider';
-import {ScalarProvider} from './ScalarProvider';
+import { Vector2Provider } from './Vector2Provider';
+import { ScalarProvider } from './ScalarProvider';
 
 type KeyContainerFromKeybind<T extends InputKeybind> = {
-  [K in keyof T]: T[K] extends Vector2Key2InputType ? Vector2Provider : T[K] extends Vector2Key4InputType ? Vector2Provider : T[K] extends ScalarInputType ? ScalarProvider : never;
-}
+  [K in keyof T]: T[K] extends Vector2Key2InputType
+    ? Vector2Provider
+    : T[K] extends Vector2Key4InputType
+    ? Vector2Provider
+    : T[K] extends ScalarInputType
+    ? ScalarProvider
+    : never;
+};
 
 export class KeyBinder<T extends InputKeybind = {}> {
   private keybind: T;
@@ -45,18 +51,22 @@ export class KeyBinder<T extends InputKeybind = {}> {
     return this.keyContainer[id].value;
   }
 
-  public getStartPressed<Key extends keyof T>(id: Key): KeyContainerFromKeybind<T>[Key]['startPressed'] {
+  public getStartPressed<Key extends keyof T>(
+    id: Key
+  ): KeyContainerFromKeybind<T>[Key]['startPressed'] {
     return this.keyContainer[id].startPressed;
   }
 
-  public getEndPressed<Key extends keyof T>(id: Key): KeyContainerFromKeybind<T>[Key]['endPressed'] {
+  public getEndPressed<Key extends keyof T>(
+    id: Key
+  ): KeyContainerFromKeybind<T>[Key]['endPressed'] {
     return this.keyContainer[id].endPressed;
   }
 
   public getPressed<Key extends keyof T>(id: Key): KeyContainerFromKeybind<T>[Key]['pressed'] {
     return this.keyContainer[id].pressed;
   }
-  
+
   public update(keyValues: RawKeyValue) {
     Object.keys(this.keybind).forEach((key: keyof T) => {
       const keyBinds = this.keybind[key];
@@ -83,7 +93,10 @@ export class KeyBinder<T extends InputKeybind = {}> {
           const xNegativeValue = keyValues[keyBind.xNegativeValue];
           const yPositiveValue = keyValues[keyBind.yPositiveValue];
           const yNegativeValue = keyValues[keyBind.yNegativeValue];
-          (this.keyContainer[key] as Vector2Provider).update(xPositiveValue - xNegativeValue, yPositiveValue - yNegativeValue);
+          (this.keyContainer[key] as Vector2Provider).update(
+            xPositiveValue - xNegativeValue,
+            yPositiveValue - yNegativeValue
+          );
           break;
         }
         default: {

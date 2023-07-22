@@ -1,12 +1,16 @@
-import {LoaderListType, FileType, defaultLoaderList} from './defaultLoadType';
+import { LoaderListType, FileType, defaultLoaderList } from './defaultLoadType';
 
-export class StaticFileLoader<T extends LoaderListType = typeof defaultLoaderList,
-  U extends Record<string, FileType<keyof T>> = {}> {
+export class StaticFileLoader<
+  T extends LoaderListType = typeof defaultLoaderList,
+  U extends Record<string, FileType<keyof T>> = {}
+> {
   private loaderList: T;
 
   private fileList: U;
 
-  private loadedFiles: {[K in keyof U]: Awaited<ReturnType<T[U[K]['type']]>>} = {} as {[K in keyof U]: Awaited<ReturnType<T[U[K]['type']]>>};
+  private loadedFiles: { [K in keyof U]: Awaited<ReturnType<T[U[K]['type']]>> } = {} as {
+    [K in keyof U]: Awaited<ReturnType<T[U[K]['type']]>>;
+  };
 
   constructor(loaderList: T, fileList: U) {
     this.loaderList = loaderList;
@@ -24,11 +28,14 @@ export class StaticFileLoader<T extends LoaderListType = typeof defaultLoaderLis
       });
     });
     const loadedFile = await Promise.all(loadFilePromises);
-    this.loadedFiles = Object.fromEntries(loadedFile) as {[K in keyof U]: Awaited<ReturnType<T[U[K]['type']]>>};
+    this.loadedFiles = Object.fromEntries(loadedFile) as {
+      [K in keyof U]: Awaited<ReturnType<T[U[K]['type']]>>;
+    };
   }
 
   public get<K extends keyof U>(id: K): Awaited<ReturnType<T[U[K]['type']]>> {
-    if (!this.loadedFiles[id]) throw new Error(`StaticFileLoader: File(${String(id)}) is not loaded`);
+    if (!this.loadedFiles[id])
+      throw new Error(`StaticFileLoader: File(${String(id)}) is not loaded`);
     return this.loadedFiles[id];
   }
 }

@@ -1,14 +1,16 @@
-import {GameEntry} from '../entry/GameEntry';
-import {LevelEvent, LevelEventType} from '../event/LevelEvent';
+import { GameEntry } from '../entry/GameEntry';
+import { LevelEvent, LevelEventType } from '../event/LevelEvent';
 
+// このLevelStateが二重定義されているというエラーが出るが、どこで定義されているのかわからないので暫定的に無視
+// eslint-disable-next-line no-shadow
 export enum LevelState {
   Playing,
   Paused,
   GameOver,
-  GameClear
+  GameClear,
 }
 
-export abstract class LevelManager {
+export class LevelManager {
   private dependedEntries: GameEntry[];
 
   private state: LevelState;
@@ -19,7 +21,7 @@ export abstract class LevelManager {
   }
 
   private levelEventListener(levelEventType: LevelEventType) {
-    switch(levelEventType) {
+    switch (levelEventType) {
     case 'level-start':
       // do nothing
       break;

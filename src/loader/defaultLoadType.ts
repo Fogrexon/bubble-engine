@@ -1,4 +1,4 @@
-import {AudioLoader, ImageLoader, LoadFileFunc} from './defaultLoader';
+import { AudioLoader, ImageLoader, LoadFileFunc } from './defaultLoader';
 
 export type LoaderListType = Record<string, LoadFileFunc<unknown>>;
 export interface FileType<T extends string | number | symbol> {
@@ -7,5 +7,5 @@ export interface FileType<T extends string | number | symbol> {
 }
 export const defaultLoaderList = {
   image: ImageLoader,
-  audio: AudioLoader
+  audio: AudioLoader,
 } as const;

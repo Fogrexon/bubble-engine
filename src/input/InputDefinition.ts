@@ -78,7 +78,7 @@ export const inputableKeyList = [
   'GamepadAxisL2',
   'GamepadAxisR2',
   'GamepadAxisL3',
-  'GamepadAxisR3'
+  'GamepadAxisR3',
 ] as const;
 
 export type InputableKey = (typeof inputableKeyList)[number];
@@ -113,4 +113,4 @@ export type ScalarInputType = ScalarKey1InputType | ScalarKey2InputType;
 
 export type InputKeybind = Record<string, ScalarInputType[] | Vector2InputType[]>;
 
-export type RawKeyValue = Record<InputableKey, number>
+export type RawKeyValue = Record<InputableKey, number>;

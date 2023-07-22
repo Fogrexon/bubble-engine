@@ -1,4 +1,4 @@
-import {IInputStateProvidable} from './IInputStateProvidable';
+import { IInputStateProvidable } from './IInputStateProvidable';
 
 export class ScalarProvider implements IInputStateProvidable {
   private rawValue: number = 0;
