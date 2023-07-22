@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { GameEntry } from '../entry/GameEntry';
 import { LevelEvent, LevelEventType } from '../event/LevelEvent';
 
@@ -10,35 +11,43 @@ export enum LevelState {
   GameClear,
 }
 
+export interface LevelManagerSettings {
+  dependedEntries: GameEntry[];
+}
+
 export class LevelManager {
   private dependedEntries: GameEntry[];
 
-  private state: LevelState;
+  protected state: LevelState;
 
-  protected constructor(dependedEntries: GameEntry[]) {
-    this.dependedEntries = dependedEntries;
+  protected constructor(levelManagerSettings: LevelManagerSettings) {
+    this.dependedEntries = levelManagerSettings.dependedEntries;
     this.state = LevelState.Playing;
   }
 
-  private levelEventListener(levelEventType: LevelEventType) {
+  protected levelEventListener(levelEventType: LevelEventType) {
     switch (levelEventType) {
-    case 'level-start':
+    case LevelEventType.LevelStart:
       // do nothing
       break;
-    case 'level-paused':
+    case LevelEventType.Pause:
       this.state = LevelState.Paused;
+      this.pause();
       break;
-    case 'level-resume':
+    case LevelEventType.Resume:
       this.state = LevelState.Playing;
+      this.resume();
       break;
-    case 'player-death':
-      // do nothing
+    case LevelEventType.PlayerDeath:
+      this.playerDeath();
       break;
-    case 'level-clear':
+    case LevelEventType.GameClear:
       this.state = LevelState.GameClear;
+      this.gameClear();
       break;
-    case 'level-fail':
+    case LevelEventType.GameOver:
       this.state = LevelState.GameOver;
+      this.gameOver();
       break;
     default:
       throw new Error(`LevelManager: Invalid LevelEventType (${levelEventType})`);
@@ -64,5 +73,25 @@ export class LevelManager {
       entry.exit();
     });
     LevelEvent.unlisten(this.levelEventListener.bind(this));
+  }
+
+  protected gameOver() {
+    // no impl
+  }
+
+  protected gameClear() {
+    // no impl
+  }
+
+  protected pause() {
+    // no impl
+  }
+
+  protected resume() {
+    // no impl
+  }
+
+  protected playerDeath() {
+    // no impl
   }
 }
