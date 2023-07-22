@@ -7,7 +7,7 @@ export enum LevelEventType {
   Resume,
   PlayerDeath,
   GameOver,
-  GameClear
+  GameClear,
 }
 
 export const LevelEvent = createGameEvent<LevelEventType>();

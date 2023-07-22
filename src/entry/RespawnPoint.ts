@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import {GameEntry} from './GameEntry';
+import { GameEntry } from './GameEntry';
 
 // eslint-disable-next-line no-shadow
 export enum RespawnTarget {
