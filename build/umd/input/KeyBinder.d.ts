@@ -1,9 +1,17 @@
-import { InputKeybind } from './InputDefinition';
-export declare class KeyBinder<T extends InputKeybind> {
+import { InputKeybind, RawKeyValue, ScalarInputType, Vector2Key2InputType, Vector2Key4InputType } from './InputDefinition';
+import { Vector2Provider } from './Vector2Provider';
+import { ScalarProvider } from './ScalarProvider';
+type KeyContainerFromKeybind<T extends InputKeybind> = {
+    [K in keyof T]: T[K] extends Vector2Key2InputType ? Vector2Provider : T[K] extends Vector2Key4InputType ? Vector2Provider : T[K] extends ScalarInputType ? ScalarProvider : never;
+};
+export declare class KeyBinder<T extends InputKeybind = {}> {
     private keybind;
     private keyContainer;
     constructor(keybind: T);
-    getScalarValue(id: keyof T): any;
-    getVector2Value(id: keyof T): any;
-    getStartPressed(id: keyof T): boolean;
+    getValue<Key extends keyof T>(id: Key): KeyContainerFromKeybind<T>[Key]['value'];
+    getStartPressed<Key extends keyof T>(id: Key): KeyContainerFromKeybind<T>[Key]['startPressed'];
+    getEndPressed<Key extends keyof T>(id: Key): KeyContainerFromKeybind<T>[Key]['endPressed'];
+    getPressed<Key extends keyof T>(id: Key): KeyContainerFromKeybind<T>[Key]['pressed'];
+    update(keyValues: RawKeyValue): void;
 }
+export {};

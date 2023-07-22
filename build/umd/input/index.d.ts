@@ -1,7 +1,6 @@
-import { InputKeybind } from './InputDefinition';
-export declare class InputManager {
-    private keybind;
-    constructor(window: Window);
-    setKeybind(keybind: InputKeybind): void;
-    getKey(id: string): void;
-}
+export * from './InputManager';
+export * from './IInputStateProvidable';
+export * from './InputDefinition';
+export * from './KeyBinder';
+export * from './ScalarProvider';
+export * from './Vector2Provider';

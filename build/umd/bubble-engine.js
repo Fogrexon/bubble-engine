@@ -4,6 +4,33 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.BubbleEngine = {}));
 })(this, (function (exports) { 'use strict';
 
+  function _iterableToArrayLimit(arr, i) {
+    var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"];
+    if (null != _i) {
+      var _s,
+        _e,
+        _x,
+        _r,
+        _arr = [],
+        _n = !0,
+        _d = !1;
+      try {
+        if (_x = (_i = _i.call(arr)).next, 0 === i) {
+          if (Object(_i) !== _i) return;
+          _n = !1;
+        } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0);
+      } catch (err) {
+        _d = !0, _e = err;
+      } finally {
+        try {
+          if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return;
+        } finally {
+          if (_d) throw _e;
+        }
+      }
+      return _arr;
+    }
+  }
   function _regeneratorRuntime() {
     _regeneratorRuntime = function () {
       return exports;
@@ -371,6 +398,28 @@
     }
     return obj;
   }
+  function _slicedToArray(arr, i) {
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+  }
+  function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+  }
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+    return arr2;
+  }
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
   function _toPrimitive(input, hint) {
     if (typeof input !== "object" || input === null) return input;
     var prim = input[Symbol.toPrimitive];
@@ -386,21 +435,189 @@
     return typeof key === "symbol" ? key : String(key);
   }
 
-  var GameManager = /*#__PURE__*/_createClass(function GameManager() {
-    _classCallCheck(this, GameManager);
-  });
+  /**
+   * ゲーム全体のライフタイムを管理
+   */
+  var GameManager = /*#__PURE__*/function () {
+    function GameManager() {
+      _classCallCheck(this, GameManager);
+      _defineProperty(this, "requestAnimationFrameId", -1);
+      GameManager.privateInstance = this;
+    }
+    _createClass(GameManager, [{
+      key: "start",
+      value: function start() {
+        this.requestAniamationFrameId = requestAnimationFrame(this.update.bind(this));
+      }
+    }, {
+      key: "update",
+      value: function update() {
+        this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
+      }
+    }], [{
+      key: "instance",
+      get: function get() {
+        return GameManager.privateInstance;
+      }
+    }]);
+    return GameManager;
+  }();
+  // eslint-disable-next-line no-use-before-define
+  _defineProperty(GameManager, "privateInstance", void 0);
 
-  var LevelManager = /*#__PURE__*/_createClass(function LevelManager() {
-    _classCallCheck(this, LevelManager);
-  });
+  var createGameEvent = function createGameEvent() {
+    var event = {
+      listeners: [],
+      listen: function listen(listener) {
+        this.listeners.push(listener);
+      },
+      unlisten: function unlisten(listener) {
+        this.listeners = this.listeners.filter(function (l) {
+          return l !== listener;
+        });
+      },
+      call: function call(data) {
+        this.listeners.forEach(function (l) {
+          return l(data);
+        });
+      }
+    };
+    return event;
+  };
 
-  var LoadImage = function LoadImage(path, progress) {
+  // eslint-disable-next-line no-shadow
+  var LevelEventType;
+  (function (LevelEventType) {
+    LevelEventType[LevelEventType["LevelStart"] = 0] = "LevelStart";
+    LevelEventType[LevelEventType["Pause"] = 1] = "Pause";
+    LevelEventType[LevelEventType["Resume"] = 2] = "Resume";
+    LevelEventType[LevelEventType["PlayerDeath"] = 3] = "PlayerDeath";
+    LevelEventType[LevelEventType["GameOver"] = 4] = "GameOver";
+    LevelEventType[LevelEventType["GameClear"] = 5] = "GameClear";
+  })(LevelEventType || (LevelEventType = {}));
+  var LevelEvent = createGameEvent();
+
+  // このLevelStateが二重定義されているというエラーが出るが、どこで定義されているのかわからないので暫定的に無視
+  // eslint-disable-next-line no-shadow
+  exports.LevelState = void 0;
+  (function (LevelState) {
+    LevelState[LevelState["Playing"] = 0] = "Playing";
+    LevelState[LevelState["Paused"] = 1] = "Paused";
+    LevelState[LevelState["GameOver"] = 2] = "GameOver";
+    LevelState[LevelState["GameClear"] = 3] = "GameClear";
+  })(exports.LevelState || (exports.LevelState = {}));
+  var LevelManager = /*#__PURE__*/function () {
+    function LevelManager(levelManagerSettings) {
+      _classCallCheck(this, LevelManager);
+      _defineProperty(this, "dependedEntries", void 0);
+      _defineProperty(this, "state", void 0);
+      this.dependedEntries = levelManagerSettings.dependedEntries;
+      this.state = exports.LevelState.Playing;
+    }
+    _createClass(LevelManager, [{
+      key: "levelEventListener",
+      value: function levelEventListener(levelEventType) {
+        switch (levelEventType) {
+          case LevelEventType.LevelStart:
+            // do nothing
+            break;
+          case LevelEventType.Pause:
+            this.state = exports.LevelState.Paused;
+            this.pause();
+            break;
+          case LevelEventType.Resume:
+            this.state = exports.LevelState.Playing;
+            this.resume();
+            break;
+          case LevelEventType.PlayerDeath:
+            this.playerDeath();
+            break;
+          case LevelEventType.GameClear:
+            this.state = exports.LevelState.GameClear;
+            this.gameClear();
+            break;
+          case LevelEventType.GameOver:
+            this.state = exports.LevelState.GameOver;
+            this.gameOver();
+            break;
+          default:
+            throw new Error("LevelManager: Invalid LevelEventType (".concat(levelEventType, ")"));
+        }
+      }
+    }, {
+      key: "start",
+      value: function start() {
+        this.state = exports.LevelState.Playing;
+        LevelEvent.listen(this.levelEventListener.bind(this));
+        this.dependedEntries.forEach(function (entry) {
+          entry.start();
+        });
+      }
+    }, {
+      key: "update",
+      value: function update() {
+        this.dependedEntries.forEach(function (entry) {
+          entry.update();
+        });
+      }
+    }, {
+      key: "exit",
+      value: function exit() {
+        this.dependedEntries.forEach(function (entry) {
+          entry.exit();
+        });
+        LevelEvent.unlisten(this.levelEventListener.bind(this));
+      }
+    }, {
+      key: "gameOver",
+      value: function gameOver() {
+        // no impl
+      }
+    }, {
+      key: "gameClear",
+      value: function gameClear() {
+        // no impl
+      }
+    }, {
+      key: "pause",
+      value: function pause() {
+        // no impl
+      }
+    }, {
+      key: "resume",
+      value: function resume() {
+        // no impl
+      }
+    }, {
+      key: "playerDeath",
+      value: function playerDeath() {
+        // no impl
+      }
+    }]);
+    return LevelManager;
+  }();
+
+  var ImageLoader = function ImageLoader(path, progress) {
     var target = new Image();
     target.src = path;
-    progress.bind(target)(0);
+    progress === null || progress === void 0 ? void 0 : progress.bind(target)(0);
     return new Promise(function (resolve, reject) {
       target.addEventListener('load', function () {
-        progress.bind(target)(1);
+        progress === null || progress === void 0 ? void 0 : progress.bind(target)(1);
+        resolve(target);
+      });
+      target.addEventListener('error', function () {
+        reject();
+      });
+    });
+  };
+  var AudioLoader = function AudioLoader(path, progress) {
+    var target = new Audio();
+    target.src = path;
+    progress === null || progress === void 0 ? void 0 : progress.bind(target)(0);
+    return new Promise(function (resolve, reject) {
+      target.addEventListener('load', function () {
+        progress === null || progress === void 0 ? void 0 : progress.bind(target)(1);
         resolve(target);
       });
       target.addEventListener('error', function () {
@@ -409,81 +626,53 @@
     });
   };
 
-  /**
-   * データローダー
-   */
-  var ResourceLoader = /*#__PURE__*/function () {
-    function ResourceLoader() {
-      _classCallCheck(this, ResourceLoader);
-      _defineProperty(this, "files", {});
-      /**
-       * ファイルタイプとロード関数の対応表
-       */
-      _defineProperty(this, "resourceLoaders", {
-        image: LoadImage
-      });
+  var defaultLoaderList = {
+    image: ImageLoader,
+    audio: AudioLoader
+  };
+
+  var StaticFileLoader = /*#__PURE__*/function () {
+    function StaticFileLoader(loaderList, fileList) {
+      _classCallCheck(this, StaticFileLoader);
+      _defineProperty(this, "loaderList", void 0);
+      _defineProperty(this, "fileList", void 0);
+      _defineProperty(this, "loadedFiles", {});
+      this.loaderList = loaderList;
+      this.fileList = fileList;
     }
-    _createClass(ResourceLoader, [{
-      key: "registerLoader",
-      value:
-      /**
-       * 新規のローダーを登録する
-       * @param type ローダーを登録するファイルタイプ
-       * @param loader ローダー本体
-       * @throws ファイルタイプが既に登録されている場合
-       */
-      function registerLoader(type, loader) {
-        if (this.resourceLoaders[type]) throw new Error("ResourceLoader: Loader for type ".concat(type, " already exists"));
-        this.resourceLoaders[type] = loader;
-      }
-      /**
-       * ファイル定義リストからファイルをロードする
-       * @param loadfiles ロードするファイルの定義
-       * @param progress 進捗状況を受け取るコールバック
-       */
-    }, {
+    _createClass(StaticFileLoader, [{
       key: "loadAll",
       value: function () {
-        var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(loadfiles, progress) {
+        var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(progress) {
           var _this = this;
-          var loadFileKeys, fileProgresses, recalculateProgress, promises, data;
+          var loadedCount, loadFilePromises, loadedFile;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                progress.bind(this)(0);
-                loadFileKeys = Object.keys(loadfiles);
-                fileProgresses = loadFileKeys.map(function () {
-                  return 0;
-                });
-                recalculateProgress = function recalculateProgress() {
-                  progress.bind(_this)(fileProgresses.reduce(function (a, b) {
-                    return a + b;
-                  }) / fileProgresses.length);
-                };
-                promises = Object.values(loadfiles).map(function (file, index) {
-                  if (!_this.resourceLoaders[file.type]) throw new Error("ResourceLoader: File type ".concat(file.type, " is not supported"));
-                  return _this.resourceLoaders[file.type](file.path, function (rate) {
-                    fileProgresses[index] = rate;
-                    recalculateProgress();
+                loadedCount = 0;
+                loadFilePromises = Object.entries(this.fileList).map(function (_ref) {
+                  var _ref2 = _slicedToArray(_ref, 2),
+                    key = _ref2[0],
+                    fileEntry = _ref2[1];
+                  var loader = _this.loaderList[fileEntry.type];
+                  return loader(fileEntry.path, null).then(function (data) {
+                    loadedCount += 1;
+                    progress(loadedCount / Object.keys(_this.fileList).length);
+                    return [key, data];
                   });
                 });
-                _context.next = 7;
-                return Promise.all(promises);
-              case 7:
-                data = _context.sent;
-                loadFileKeys.forEach(function (key, index) {
-                  _this.files[key] = {
-                    fileInfo: loadfiles[key],
-                    data: data[index]
-                  };
-                });
-              case 9:
+                _context.next = 4;
+                return Promise.all(loadFilePromises);
+              case 4:
+                loadedFile = _context.sent;
+                this.loadedFiles = Object.fromEntries(loadedFile);
+              case 6:
               case "end":
                 return _context.stop();
             }
           }, _callee, this);
         }));
-        function loadAll(_x, _x2) {
+        function loadAll(_x) {
           return _loadAll.apply(this, arguments);
         }
         return loadAll;
@@ -491,20 +680,79 @@
     }, {
       key: "get",
       value: function get(id) {
-        return this.files[id].data;
-      }
-    }, {
-      key: "unload",
-      value: function unload(id) {
-        delete this.files[id];
+        if (!this.loadedFiles[id]) throw new Error("StaticFileLoader: File(".concat(String(id), ") is not loaded"));
+        return this.loadedFiles[id];
       }
     }]);
-    return ResourceLoader;
+    return StaticFileLoader;
   }();
 
+  var DynamicFileLoader = /*#__PURE__*/function () {
+    function DynamicFileLoader(fileLoaderList) {
+      _classCallCheck(this, DynamicFileLoader);
+      _defineProperty(this, "fileLoaderList", void 0);
+      _defineProperty(this, "loadedFiles", {});
+      this.fileLoaderList = fileLoaderList;
+    }
+    _createClass(DynamicFileLoader, [{
+      key: "load",
+      value: function () {
+        var _load = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(key, file, progress) {
+          var loader;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                if (!(this.loadedFiles[key] !== undefined)) {
+                  _context.next = 2;
+                  break;
+                }
+                throw new Error("DynamicFileLoader: File(".concat(String(key), ") is already loaded"));
+              case 2:
+                loader = this.fileLoaderList[file.type];
+                this.loadedFiles[key] = null;
+                _context.next = 6;
+                return loader(file.path, progress);
+              case 6:
+                this.loadedFiles[key] = _context.sent;
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee, this);
+        }));
+        function load(_x, _x2, _x3) {
+          return _load.apply(this, arguments);
+        }
+        return load;
+      }()
+    }, {
+      key: "get",
+      value: function get(id) {
+        if (!this.loadedFiles[id]) throw new Error("DynamicFileLoader: File(".concat(String(id), ") is not loaded"));
+        return this.loadedFiles[id];
+      }
+    }, {
+      key: "isLoaded",
+      value: function isLoaded(id) {
+        return this.loadedFiles[id] !== undefined;
+      }
+    }, {
+      key: "dispose",
+      value: function dispose(id) {
+        if (!this.loadedFiles[id]) throw new Error("DynamicFileLoader: File(".concat(String(id), ") is not loaded"));
+        delete this.loadedFiles[id];
+      }
+    }]);
+    return DynamicFileLoader;
+  }();
+
+  exports.AudioLoader = AudioLoader;
+  exports.DynamicFileLoader = DynamicFileLoader;
   exports.GameManager = GameManager;
+  exports.ImageLoader = ImageLoader;
   exports.LevelManager = LevelManager;
-  exports.ResourceLoader = ResourceLoader;
+  exports.StaticFileLoader = StaticFileLoader;
+  exports.defaultLoaderList = defaultLoaderList;
 
 }));
 //# sourceMappingURL=bubble-engine.js.map
