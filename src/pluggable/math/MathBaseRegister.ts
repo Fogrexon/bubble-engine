@@ -7,30 +7,24 @@ import {Vector4Base} from './Vector4Base';
 import {ColorBase} from './ColorBase';
 import {QuaternionBase} from './QuaternionBase';
 
-export interface MathBaseTable {
-  matrix2: typeof Matrix2Base
-  matrix3: typeof Matrix3Base
-  matrix4: typeof Matrix4Base
-  vector2: typeof Vector2Base
-  vector3: typeof Vector3Base
-  vector4: typeof Vector4Base
-  color: typeof ColorBase
-  quaternion: typeof QuaternionBase
+export type MathBaseTable = {
+  matrix2: () => Matrix2Base
+  matrix3: () => Matrix3Base
+  matrix4: () => Matrix4Base
+  vector2: () => Vector2Base
+  vector3: () => Vector3Base
+  vector4: () => Vector4Base
+  color: () => ColorBase
+  quaternion: () => QuaternionBase
 }
 
 export class MathBaseRegister {
-  public static table: MathBaseTable = {
-    matrix2: Matrix2Base,
-    matrix3: Matrix3Base,
-    matrix4: Matrix4Base,
-    vector2: Vector2Base,
-    vector3: Vector3Base,
-    vector4: Vector4Base,
-    color: ColorBase,
-    quaternion: QuaternionBase
-  };
+  public static table: MathBaseTable | null;
 
-  static get<T extends keyof MathBaseTable>(key: T): MathBaseTable[T] {
-    return MathBaseRegister.table[key];
+  static get<T extends keyof MathBaseTable = 'matrix2'>(key: T): ReturnType<MathBaseTable[T]> {
+    if (!MathBaseRegister.table) {
+      throw new Error('Math bases are not registered.');
+    }
+    return MathBaseRegister.table[key]() as ReturnType<MathBaseTable[T]>;
   }
 }
