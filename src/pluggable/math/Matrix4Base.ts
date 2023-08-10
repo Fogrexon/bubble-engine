@@ -81,7 +81,9 @@ export abstract class Matrix4Base {
 
   abstract mul(m: Matrix4Base): this;
 
-  abstract scale(v: number): this;
+  abstract mul(v: Vector3Base): this;
+
+  abstract scale(v: number | Matrix4Base): this;
 
   abstract scale(v: Matrix4Base): this;
 
@@ -101,15 +103,11 @@ export abstract class Matrix4Base {
 
   abstract translate(x: number, y: number, z: number): this;
 
-  abstract scale(v: Vector3Base): this;
-
-  abstract scale(x: number, y: number, z: number): this;
-
   abstract frustum(left: number, right: number, bottom: number, top: number, near: number, far: number): this;
 
   abstract perspective(fov: number, aspect: number, near: number, far: number): this;
 
-  abstract ortho(left: number, right: number, bottom: number, top: number, near: number, far: number): this;
+  abstract orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number): this;
 
   abstract lookAt(eye: Vector3Base, target: Vector3Base, up: Vector3Base): this;
 
