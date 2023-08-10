@@ -5,4 +5,5 @@ export * from './Vector2Base';
 export * from './Vector3Base';
 export * from './Vector4Base';
 export * from './ColorBase';
+export * from './QuaternionBase';
 export * from './MathBaseRegister';
