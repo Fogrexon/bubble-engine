@@ -1,4 +1,5 @@
 import {Vector3Base} from './Vector3Base';
+import {Matrix3Base} from './Matrix3Base';
 
 export abstract class Matrix4Base {
   abstract get m00(): number;
@@ -111,7 +112,7 @@ export abstract class Matrix4Base {
 
   abstract lookAt(eye: Vector3Base, target: Vector3Base, up: Vector3Base): this;
 
-  abstract clone(): this;
+  abstract clone(): Matrix3Base;
 
   abstract copy(m: Matrix4Base): this;
 

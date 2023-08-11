@@ -41,7 +41,7 @@ export abstract class Vector4Base {
 
   abstract lerp(v: Vector4Base, t: number): this;
 
-  abstract clone(): this;
+  abstract clone(): Vector4Base;
 
   abstract copy(v: Vector4Base): this;
 

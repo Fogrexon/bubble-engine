@@ -36,7 +36,7 @@ export abstract class Vector2Base {
 
   abstract lerp(v: Vector2Base, t: number): this;
 
-  abstract clone(): this;
+  abstract clone(): Vector2Base;
 
   abstract copy(v: Vector2Base): this;
 

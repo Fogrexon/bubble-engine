@@ -50,9 +50,9 @@ export abstract class QuaternionBase {
 
   abstract slerp(qb: QuaternionBase, t: number): this;
 
+  abstract clone(): QuaternionBase;
+
+  abstract copy(q: QuaternionBase): this;
+
   abstract equals(v: QuaternionBase): boolean;
-
-  abstract fromArray(array: number[], offset?: number): this;
-
-  abstract toArray(array?: number[], offset?: number): number[];
 }

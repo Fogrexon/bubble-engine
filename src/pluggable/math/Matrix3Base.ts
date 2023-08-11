@@ -61,7 +61,7 @@ export abstract class Matrix3Base {
 
   abstract rotateZ(rad: number): this;
 
-  abstract clone(): this;
+  abstract clone(): Matrix3Base;
 
   abstract copy(m: Matrix3Base): this;
 
