@@ -1,3 +1,5 @@
+import {Vector2Base} from './Vector2Base';
+
 export abstract class Matrix2Base {
   abstract get m00(): number;
 
@@ -29,11 +31,9 @@ export abstract class Matrix2Base {
 
   abstract sub(m: Matrix2Base): this;
 
-  abstract mul(m: Matrix2Base): this;
+  abstract mul(m: Matrix2Base | Vector2Base): this;
 
-  abstract scale(v: number): this;
-
-  abstract scale(v: Matrix2Base): this;
+  abstract scale(v: number | Matrix2Base): this;
 
   abstract rotate(rad: number): this;
 

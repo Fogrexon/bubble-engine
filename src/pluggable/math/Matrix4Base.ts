@@ -1,5 +1,6 @@
 import {Vector3Base} from './Vector3Base';
 import {Matrix3Base} from './Matrix3Base';
+import {Vector4Base} from './Vector4Base';
 
 export abstract class Matrix4Base {
   abstract get m00(): number;
@@ -80,13 +81,9 @@ export abstract class Matrix4Base {
 
   abstract sub(m: Matrix4Base): this;
 
-  abstract mul(m: Matrix4Base): this;
-
-  abstract mul(v: Vector3Base): this;
+  abstract mul(m: Matrix4Base | Vector4Base): this;
 
   abstract scale(v: number | Matrix4Base): this;
-
-  abstract scale(v: Matrix4Base): this;
 
   abstract rotateX(rad: number): this;
 
@@ -101,8 +98,6 @@ export abstract class Matrix4Base {
   abstract rotateAxisAngle(axis: Vector3Base, rad: number): this;
 
   abstract translate(v: Vector3Base): this;
-
-  abstract translate(x: number, y: number, z: number): this;
 
   abstract frustum(left: number, right: number, bottom: number, top: number, near: number, far: number): this;
 

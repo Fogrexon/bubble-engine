@@ -17,45 +17,15 @@ export abstract class ColorBase {
 
   abstract set(r: number, g: number, b: number, a: number): this;
 
-  abstract set(color: ColorBase): this;
-
-  abstract set(color: number): this;
-
-  abstract set(color: string): this;
-
-  abstract set(color: number[]): this;
-
   abstract setHSL(h: number, s: number, l: number): this;
 
   abstract getHSL(): { h: number, s: number, l: number };
 
   abstract add(color: ColorBase): this;
 
-  abstract add(color: number): this;
-
-  abstract add(color: string): this;
-
-  abstract add(color: number[]): this;
-
-  abstract addScalar(s: number): this;
-
   abstract sub(color: ColorBase): this;
 
-  abstract sub(color: number): this;
-
-  abstract sub(color: string): this;
-
-  abstract sub(color: number[]): this;
-
-  abstract subScalar(s: number): this;
-
   abstract mul(color: ColorBase): this;
-
-  abstract mul(color: number): this;
-
-  abstract mul(color: string): this;
-
-  abstract mul(color: number[]): this;
 
   abstract scale(s: number): this;
 
