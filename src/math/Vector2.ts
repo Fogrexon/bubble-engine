@@ -1,94 +1,90 @@
 import {MathBaseRegister, Vector2Base} from '../pluggable/math';
 
 export class Vector2 {
-  private i: Vector2Base;
-
-  public get instance(): Vector2Base {
-    return this.i;
-  }
+  public readonly instance: Vector2Base;
 
   constructor(x: number = 0, y: number = 0) {
-    this.i = MathBaseRegister.get('vector2');
-    this.i.set(x, y);
+    this.instance = MathBaseRegister.get('vector2');
+    this.instance.set(x, y);
   }
 
   public get x(): number {
-    return this.i.x;
+    return this.instance.x;
   }
 
   public set x(value: number) {
-    this.i.x = value;
+    this.instance.x = value;
   }
 
   public get y(): number {
-    return this.i.y;
+    return this.instance.y;
   }
 
   public set y(value: number) {
-    this.i.y = value;
+    this.instance.y = value;
   }
 
   public get length(): number {
-    return this.i.length;
+    return this.instance.length;
   }
 
   public get length2(): number {
-    return this.i.length2;
+    return this.instance.length2;
   }
 
   public set(x: number, y: number): this {
-    this.i.set(x, y);
+    this.instance.set(x, y);
     return this;
   }
 
   public add(v: Vector2): this {
-    this.i.add(v.i);
+    this.instance.add(v.instance);
     return this;
   }
 
   public sub(v: Vector2): this {
-    this.i.sub(v.i);
+    this.instance.sub(v.instance);
     return this;
   }
 
   public mul(v: Vector2): this {
-    this.i.mul(v.i);
+    this.instance.mul(v.instance);
     return this;
   }
 
   public div(v: Vector2): this {
-    this.i.div(v.i);
+    this.instance.div(v.instance);
     return this;
   }
 
   public scale(s: number): this {
-    this.i.scale(s);
+    this.instance.scale(s);
     return this;
   }
 
   public normalize(): this {
-    this.i.normalize();
+    this.instance.normalize();
     return this;
   }
 
   public dot(v: Vector2): number {
-    return this.i.dot(v.i);
+    return this.instance.dot(v.instance);
   }
 
   public cross(v: Vector2): number {
-    return this.i.cross(v.i);
+    return this.instance.cross(v.instance);
   }
 
   public distance(v: Vector2): number {
-    return this.i.distance(v.i);
+    return this.instance.distance(v.instance);
   }
 
   public distance2(v: Vector2): number {
-    return this.i.distance2(v.i);
+    return this.instance.distance2(v.instance);
   }
 
   public lerp(v: Vector2, t: number): this {
-    this.i.lerp(v.i, t);
+    this.instance.lerp(v.instance, t);
     return this;
   }
 
@@ -97,11 +93,11 @@ export class Vector2 {
   }
 
   public copy(v: Vector2): this {
-    this.i.copy(v.i);
+    this.instance.copy(v.instance);
     return this;
   }
 
   public equals(v: Vector2): boolean {
-    return this.i.equals(v.i);
+    return this.instance.equals(v.instance);
   }
 }
