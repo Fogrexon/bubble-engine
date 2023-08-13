@@ -1,1 +1,0 @@
-export * as MathBase from './math';
