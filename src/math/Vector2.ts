@@ -1,103 +1,138 @@
-import {MathBaseRegister, Vector2Base} from '../pluggable/math';
+import {Matrix2} from './Matrix2';
+import {Matrix3} from './Matrix3';
 
 export class Vector2 {
-  public readonly instance: Vector2Base;
+  public x: number;
+
+  public y: number;
 
   constructor(x: number = 0, y: number = 0) {
-    this.instance = MathBaseRegister.get('vector2');
-    this.instance.set(x, y);
-  }
-
-  public get x(): number {
-    return this.instance.x;
-  }
-
-  public set x(value: number) {
-    this.instance.x = value;
-  }
-
-  public get y(): number {
-    return this.instance.y;
-  }
-
-  public set y(value: number) {
-    this.instance.y = value;
-  }
-
-  public get length(): number {
-    return this.instance.length;
-  }
-
-  public get length2(): number {
-    return this.instance.length2;
+    this.x = x;
+    this.y = y;
   }
 
   public set(x: number, y: number): this {
-    this.instance.set(x, y);
+    this.x = x;
+    this.y = y;
+    return this;
+  }
+
+  public setFromPolar(r: number, theta: number): this {
+    this.x = r * Math.cos(theta);
+    this.y = r * Math.sin(theta);
     return this;
   }
 
   public add(v: Vector2): this {
-    this.instance.add(v.instance);
+    this.x += v.x;
+    this.y += v.y;
+    return this;
+  }
+
+  public addScalar(s: number): this {
+    this.x += s;
+    this.y += s;
     return this;
   }
 
   public sub(v: Vector2): this {
-    this.instance.sub(v.instance);
+    this.x -= v.x;
+    this.y -= v.y;
     return this;
   }
 
-  public mul(v: Vector2): this {
-    this.instance.mul(v.instance);
+  public subScalar(s: number): this {
+    this.x -= s;
+    this.y -= s;
     return this;
   }
 
-  public div(v: Vector2): this {
-    this.instance.div(v.instance);
+  public multiply(v: Vector2): this {
+    this.x *= v.x;
+    this.y *= v.y;
     return this;
   }
 
-  public scale(s: number): this {
-    this.instance.scale(s);
+  public multiplyMat2(m: Matrix2): this {
+    const {x, y} = this;
+    this.x = m.m00 * x + m.m01 * y;
+    this.y = m.m10 * x + m.m11 * y;
     return this;
   }
 
-  public normalize(): this {
-    this.instance.normalize();
+  public multiplyMat3(m: Matrix3): this {
+    const {x, y} = this;
+    this.x = m.m00 * x + m.m01 * y + m.m02;
+    this.y = m.m10 * x + m.m11 * y + m.m12;
+    return this;
+  }
+
+  public multiplyScalar(s: number): this {
+    this.x *= s;
+    this.y *= s;
+    return this;
+  }
+
+  public divide(v: Vector2): this {
+    this.x /= v.x;
+    this.y /= v.y;
+    return this;
+  }
+
+  public divideScalar(s: number): this {
+    this.x /= s;
+    this.y /= s;
+    return this;
+  }
+
+  public lerp(v: Vector2, t: number): this {
+    this.x += (v.x - this.x) * t;
+    this.y += (v.y - this.y) * t;
     return this;
   }
 
   public dot(v: Vector2): number {
-    return this.instance.dot(v.instance);
+    return this.x * v.x + this.y * v.y;
   }
 
-  public cross(v: Vector2): number {
-    return this.instance.cross(v.instance);
+  public length(): number {
+    return Math.sqrt(this.lengthSquared());
   }
 
-  public distance(v: Vector2): number {
-    return this.instance.distance(v.instance);
+  public lengthSquared(): number {
+    return this.x * this.x + this.y * this.y;
   }
 
-  public distance2(v: Vector2): number {
-    return this.instance.distance2(v.instance);
+  public normalize(): this {
+    return this.divideScalar(this.length());
   }
 
-  public lerp(v: Vector2, t: number): this {
-    this.instance.lerp(v.instance, t);
-    return this;
+  public distanceTo(v: Vector2): number {
+    return Math.sqrt(this.distanceToSquared(v));
   }
 
-  public clone(): this {
-    return new Vector2(this.x, this.y) as this;
+  public distanceToSquared(v: Vector2): number {
+    const dx = this.x - v.x;
+    const dy = this.y - v.y;
+    return dx * dx + dy * dy;
+  }
+
+  public angleTo(v: Vector2): number {
+    const theta = this.dot(v) / (this.length() * v.length());
+    return Math.acos(theta);
+  }
+
+  public clone(): Vector2 {
+    return new Vector2().copy(this);
   }
 
   public copy(v: Vector2): this {
-    this.instance.copy(v.instance);
+    this.x = v.x;
+    this.y = v.y;
     return this;
   }
 
   public equals(v: Vector2): boolean {
-    return this.instance.equals(v.instance);
+    return this.x === v.x && this.y === v.y;
   }
 }
