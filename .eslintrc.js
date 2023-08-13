@@ -39,8 +39,9 @@ module.exports = {
     'indent': ['error', 2],
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
-    'no-underscore-dangle':['error', {'allowAfterThis':true, 'allowAfterSuper':true}],
+    'no-underscore-dangle':['off'],
     'no-bitwise': ['off'],
     'no-multi-assign': ['off'],
+    'no-param-reassign': ['error', { 'props': false }],
   },
 };
