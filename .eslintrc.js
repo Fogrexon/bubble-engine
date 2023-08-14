@@ -43,5 +43,6 @@ module.exports = {
     'no-bitwise': ['off'],
     'no-multi-assign': ['off'],
     'no-param-reassign': ['error', { 'props': false }],
+    'class-methods-use-this': ['off'],
   },
 };
