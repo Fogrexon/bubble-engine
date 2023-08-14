@@ -1,3 +1,5 @@
+import {Vector2} from './Vector2';
+
 export class Matrix3 {
   public m00: number;
 
@@ -248,6 +250,24 @@ export class Matrix3 {
       m20 * x,
       m21 * y,
       m22
+    );
+    return this;
+  }
+
+  public compose(position: Vector2, rotation: number, scale: Vector2) {
+    const cos = Math.cos(rotation);
+    const sin = Math.sin(rotation);
+    const {x: sx, y: sy} = scale;
+    this.set(
+      cos * sx,
+      -sin * sy,
+      position.x,
+      sin * sx,
+      cos * sy,
+      position.y,
+      0,
+      0,
+      1
     );
     return this;
   }
