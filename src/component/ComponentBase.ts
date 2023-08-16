@@ -59,6 +59,10 @@ export abstract class ComponentBase {
     }
   }
 
+  public getComponent<T extends ComponentBase>(type: new (entry: GameEntry) => T): T | null {
+    return this._entry.getComponent(type);
+  }
+
   protected abstract onInitialize(): void;
 
   protected abstract onStart(): void;
