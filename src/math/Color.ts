@@ -19,12 +19,14 @@ export class Color {
     this.g = g;
     this.b = b;
     this.a = a || this.a;
+    return this;
   }
 
   public setFromHex(hex: number) {
     this.r = (hex >> 16 & 255) / 255;
     this.g = (hex >> 8 & 255) / 255;
     this.b = (hex & 255) / 255;
+    return this;
   }
 
   public setFromHSL(h: number, s: number, l: number) {
@@ -57,9 +59,11 @@ export class Color {
       this.g = hue2rgb(p, q, h);
       this.b = hue2rgb(p, q, h - 1 / 3);
     }
+
+    return this;
   }
   
-  public getHSL() {
+  public toHSL() {
     // rgbToHsl
     const {r, g, b} = this;
     const max = Math.max(r, g, b);
@@ -94,6 +98,7 @@ export class Color {
     this.g += color.g;
     this.b += color.b;
     this.a += color.a;
+    return this;
   }
 
   public addScalar(s: number) {
@@ -101,6 +106,7 @@ export class Color {
     this.g += s;
     this.b += s;
     this.a += s;
+    return this;
   }
 
   public sub(color: Color) {
@@ -108,6 +114,15 @@ export class Color {
     this.g -= color.g;
     this.b -= color.b;
     this.a -= color.a;
+    return this;
+  }
+  
+  public subScalar(s: number) {
+    this.r -= s;
+    this.g -= s;
+    this.b -= s;
+    this.a -= s;
+    return this;
   }
 
   public multiply(color: Color) {
@@ -115,6 +130,7 @@ export class Color {
     this.g *= color.g;
     this.b *= color.b;
     this.a *= color.a;
+    return this;
   }
 
   public multiplyScalar(s: number) {
@@ -122,6 +138,7 @@ export class Color {
     this.g *= s;
     this.b *= s;
     this.a *= s;
+    return this;
   }
 
   public lerp(color: Color, t: number) {
@@ -129,15 +146,17 @@ export class Color {
     this.g += (color.g - this.g) * t;
     this.b += (color.b - this.b) * t;
     this.a += (color.a - this.a) * t;
+    return this;
   }
   
   public lerpHSL(color: Color, t: number) {
-    const hslA = this.getHSL();
-    const hslB = color.getHSL();
+    const hslA = this.toHSL();
+    const hslB = color.toHSL();
     const h = hslA.h + (hslB.h - hslA.h) * t;
     const s = hslA.s + (hslB.s - hslA.s) * t;
     const l = hslA.l + (hslB.l - hslA.l) * t;
     this.setFromHSL(h, s, l);
+    return this;
   }
 
   public clone() {
@@ -149,6 +168,7 @@ export class Color {
     this.g = color.g;
     this.b = color.b;
     this.a = color.a;
+    return this;
   }
 
   public equals(color: Color) {
