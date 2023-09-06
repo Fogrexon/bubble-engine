@@ -3,25 +3,23 @@
  */
 export class GameManager {
   // eslint-disable-next-line no-use-before-define
-  private static privateInstance: GameManager;
+  private static _instance: GameManager;
 
   public static get instance(): GameManager {
-    return GameManager.privateInstance;
+    return GameManager._instance;
   }
 
   private requestAnimationFrameId: number = -1;
 
   constructor() {
-    GameManager.privateInstance = this;
+    GameManager._instance = this;
   }
 
   public start() {
-    this.requestAniamationFrameId = requestAnimationFrame(this.update.bind(this));
+    this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
   }
 
   public update() {
     this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
   }
-
-  public moveLevel(string);
 }
