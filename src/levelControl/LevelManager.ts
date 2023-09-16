@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { GameEntry } from '../entry/GameEntry';
-import { LevelEvent, LevelEventType } from '../event/LevelEvent';
+import { LevelEvent, LevelEventType } from '../event';
 
 // このLevelStateが二重定義されているというエラーが出るが、どこで定義されているのかわからないので暫定的に無視
 // eslint-disable-next-line no-shadow
@@ -57,20 +57,17 @@ export class LevelManager {
   public start(): void {
     this.state = LevelState.Playing;
     LevelEvent.listen(this.levelEventListener.bind(this));
-    this.dependedEntries.forEach((entry) => {
-      entry.start();
-    });
   }
 
-  public update() {
+  public update(deltaTime: number) {
     this.dependedEntries.forEach((entry) => {
-      entry.update();
+      entry.update(deltaTime);
     });
   }
 
   public exit() {
     this.dependedEntries.forEach((entry) => {
-      entry.exit();
+      entry.destroy();
     });
     LevelEvent.unlisten(this.levelEventListener.bind(this));
   }
