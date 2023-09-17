@@ -1,6 +1,7 @@
 import babel from '@rollup/plugin-babel';
 import typescript from '@rollup/plugin-typescript';
 import nodeResolve from 'rollup-plugin-node-resolve';
+import image from '@rollup/plugin-image';
 
 const extensions = ['.ts', '.js'];
 
@@ -31,6 +32,7 @@ export default [
         rootDir: 'src',
         declarationDir: 'build/commonjs',
       }),
+      image(),
     ],
   },
 
@@ -54,6 +56,7 @@ export default [
         rootDir: 'src',
         declarationDir: 'build/es',
       }),
+      image(),
     ],
   },
 
@@ -76,6 +79,7 @@ export default [
         rootDir: 'src',
         declarationDir: 'build/umd',
       }),
+      image(),
     ],
   },
 ];

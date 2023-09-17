@@ -1,4 +1,2 @@
-export declare class Template {
-    constructor();
-}
-export * from './Math';
+export * from './core';
+export * from './loader';
