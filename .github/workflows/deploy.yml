@@ -12,13 +12,25 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 18.x
       - name: npm install
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Commit and Push
         run: |
-          npm install
-      - name: Build App
+          git add -N build/
+          if ! git diff --exit-code --quiet
+          then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add .
+            git commit -m "Update"
+            git push
+          fi
+      - name: Build Docs
         run: npm run docs
-      - name: App Deploy
+      - name: Docs Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
