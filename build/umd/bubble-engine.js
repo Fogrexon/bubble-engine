@@ -2606,7 +2606,70 @@
     return DynamicFileLoader;
   }();
 
+  var AssetBase = /*#__PURE__*/function () {
+    function AssetBase(data) {
+      _classCallCheck(this, AssetBase);
+      _defineProperty(this, "_data", void 0);
+      this._data = data;
+    }
+    _createClass(AssetBase, [{
+      key: "data",
+      get: function get() {
+        return this._data;
+      }
+    }]);
+    return AssetBase;
+  }();
+
+  var Sprite = /*#__PURE__*/function (_AssetBase) {
+    _inherits(Sprite, _AssetBase);
+    var _super = _createSuper(Sprite);
+    // eslint-disable-next-line no-useless-constructor
+    function Sprite(data) {
+      _classCallCheck(this, Sprite);
+      return _super.call(this, data);
+    }
+    return _createClass(Sprite);
+  }(AssetBase);
+
+  var SpriteSheet = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SpriteSheet, _AssetBase);
+    var _super = _createSuper(SpriteSheet);
+    function SpriteSheet(data, columns, rows) {
+      var _this;
+      _classCallCheck(this, SpriteSheet);
+      _this = _super.call(this, data);
+      _defineProperty(_assertThisInitialized(_this), "columns", void 0);
+      _defineProperty(_assertThisInitialized(_this), "rows", void 0);
+      _this.columns = columns;
+      _this.rows = rows;
+      return _this;
+    }
+    return _createClass(SpriteSheet);
+  }(AssetBase);
+
+  var SplitSprite = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SplitSprite, _AssetBase);
+    var _super = _createSuper(SplitSprite);
+    function SplitSprite(data, left, top, right, bottom) {
+      var _this;
+      _classCallCheck(this, SplitSprite);
+      _this = _super.call(this, data);
+      _defineProperty(_assertThisInitialized(_this), "left", void 0);
+      _defineProperty(_assertThisInitialized(_this), "top", void 0);
+      _defineProperty(_assertThisInitialized(_this), "right", void 0);
+      _defineProperty(_assertThisInitialized(_this), "bottom", void 0);
+      _this.left = left;
+      _this.top = top;
+      _this.right = right;
+      _this.bottom = bottom;
+      return _this;
+    }
+    return _createClass(SplitSprite);
+  }(AssetBase);
+
   exports.ActionLevelManager = ActionLevelManager;
+  exports.AssetBase = AssetBase;
   exports.AudioLoader = AudioLoader;
   exports.CanvasLayerInfo = CanvasLayerInfo;
   exports.Color = Color;
@@ -2627,6 +2690,9 @@
   exports.Matrix3 = Matrix3;
   exports.RespawnPoint = RespawnPoint;
   exports.ScalarProvider = ScalarProvider;
+  exports.SplitSprite = SplitSprite;
+  exports.Sprite = Sprite;
+  exports.SpriteSheet = SpriteSheet;
   exports.StaticFileLoader = StaticFileLoader;
   exports.Transform = Transform;
   exports.Vector2 = Vector2;
