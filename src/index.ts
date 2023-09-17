@@ -8,3 +8,4 @@ export * from './levelControl';
 export * from './loader';
 export * from './math';
 export * from './util';
+export * from './asset';
