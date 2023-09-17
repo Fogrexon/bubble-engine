@@ -1,4 +1,4 @@
-import {Matrix3} from './Matrix3';
+import { Matrix3 } from './Matrix3';
 
 export class Vector3 {
   public x: number;
@@ -64,7 +64,7 @@ export class Vector3 {
   }
 
   public multiplyMat3(m: Matrix3): this {
-    const {x, y, z} = this;
+    const { x, y, z } = this;
     this.x = m.m00 * x + m.m01 * y + m.m02 * z;
     this.y = m.m10 * x + m.m11 * y + m.m12 * z;
     this.z = m.m20 * x + m.m21 * y + m.m22 * z;
@@ -104,7 +104,7 @@ export class Vector3 {
   }
 
   public cross(v: Vector3): this {
-    const {x, y, z} = this;
+    const { x, y, z } = this;
     this.x = y * v.z - z * v.y;
     this.y = z * v.x - x * v.z;
     this.z = x * v.y - y * v.x;

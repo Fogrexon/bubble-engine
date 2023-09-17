@@ -1,4 +1,4 @@
-import {Vector2} from './Vector2';
+import { Vector2 } from './Vector2';
 
 export class Matrix3 {
   public m00: number;
@@ -70,7 +70,7 @@ export class Matrix3 {
   }
 
   public transpose(): this {
-    const {m01, m02, m10, m12, m20, m21} = this;
+    const { m01, m02, m10, m12, m20, m21 } = this;
     this.m01 = m10;
     this.m02 = m20;
     this.m10 = m01;
@@ -81,7 +81,7 @@ export class Matrix3 {
   }
 
   public invert(): this {
-    const {m00, m01, m02, m10, m11, m12, m20, m21, m22} = this;
+    const { m00, m01, m02, m10, m11, m12, m20, m21, m22 } = this;
     const det = this.determinant();
     if (det === 0) {
       return this.identity();
@@ -102,11 +102,9 @@ export class Matrix3 {
   }
 
   public determinant(): number {
-    const {m00, m01, m02, m10, m11, m12, m20, m21, m22} = this;
+    const { m00, m01, m02, m10, m11, m12, m20, m21, m22 } = this;
     return (
-      m00 * (m11 * m22 - m12 * m21) -
-      m01 * (m10 * m22 - m12 * m20) +
-      m02 * (m10 * m21 - m11 * m20)
+      m00 * (m11 * m22 - m12 * m21) - m01 * (m10 * m22 - m12 * m20) + m02 * (m10 * m21 - m11 * m20)
     );
   }
 
@@ -163,7 +161,7 @@ export class Matrix3 {
   }
 
   public multiply(m: Matrix3): this {
-    const {m00, m01, m02, m10, m11, m12, m20, m21, m22} = this;
+    const { m00, m01, m02, m10, m11, m12, m20, m21, m22 } = this;
     this.set(
       m00 * m.m00 + m01 * m.m10 + m02 * m.m20,
       m00 * m.m01 + m01 * m.m11 + m02 * m.m21,
@@ -207,7 +205,7 @@ export class Matrix3 {
   public rotateMat2D(radian: number): this {
     const cos = Math.cos(radian);
     const sin = Math.sin(radian);
-    const {m00, m01, m02, m10, m11, m12, m20, m21, m22} = this;
+    const { m00, m01, m02, m10, m11, m12, m20, m21, m22 } = this;
     this.set(
       m00 * cos + m01 * sin,
       m00 * -sin + m01 * cos,
@@ -223,52 +221,22 @@ export class Matrix3 {
   }
 
   public translateMat2D(x: number, y: number): this {
-    const {m00, m01, m02, m10, m11, m12, m20, m21, m22} = this;
-    this.set(
-      m00,
-      m01,
-      m02 + x,
-      m10,
-      m11,
-      m12 + y,
-      m20,
-      m21,
-      m22
-    );
+    const { m00, m01, m02, m10, m11, m12, m20, m21, m22 } = this;
+    this.set(m00, m01, m02 + x, m10, m11, m12 + y, m20, m21, m22);
     return this;
   }
 
   public scaleMat2D(x: number, y: number): this {
-    const {m00, m01, m02, m10, m11, m12, m20, m21, m22} = this;
-    this.set(
-      m00 * x,
-      m01 * y,
-      m02,
-      m10 * x,
-      m11 * y,
-      m12,
-      m20 * x,
-      m21 * y,
-      m22
-    );
+    const { m00, m01, m02, m10, m11, m12, m20, m21, m22 } = this;
+    this.set(m00 * x, m01 * y, m02, m10 * x, m11 * y, m12, m20 * x, m21 * y, m22);
     return this;
   }
 
   public compose(position: Vector2, rotation: number, scale: Vector2) {
     const cos = Math.cos(rotation);
     const sin = Math.sin(rotation);
-    const {x: sx, y: sy} = scale;
-    this.set(
-      cos * sx,
-      -sin * sy,
-      position.x,
-      sin * sx,
-      cos * sy,
-      position.y,
-      0,
-      0,
-      1
-    );
+    const { x: sx, y: sy } = scale;
+    this.set(cos * sx, -sin * sy, position.x, sin * sx, cos * sy, position.y, 0, 0, 1);
     return this;
   }
 

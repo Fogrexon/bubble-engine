@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
-import {Matrix3, Vector2} from '../math';
-import {ComponentBase} from './ComponentBase';
+import { Matrix3, Vector2 } from '../math';
+import { ComponentBase } from './ComponentBase';
 
 /**
  * GameEntryの場所を管理するコンポーネント
@@ -13,13 +13,13 @@ export class Transform extends ComponentBase {
   public scale: Vector2 = new Vector2(1, 1);
 
   private _worldPositionVector = new Vector2();
-  
+
   private _isMatrixCached = false;
-  
+
   private _isWorldMatrixCached = false;
-  
+
   private _cachedMatrix: Matrix3 = new Matrix3();
-  
+
   private _cachedWorldMatrix: Matrix3 = new Matrix3();
 
   public parent: Transform | null = null;
@@ -49,11 +49,8 @@ export class Transform extends ComponentBase {
   }
 
   public get worldPosition(): Vector2 {
-    const {worldMatrix} = this;
-    return this._worldPositionVector.set(
-      worldMatrix.m02,
-      worldMatrix.m12
-    );
+    const { worldMatrix } = this;
+    return this._worldPositionVector.set(worldMatrix.m02, worldMatrix.m12);
   }
 
   public get worldRotation(): number {

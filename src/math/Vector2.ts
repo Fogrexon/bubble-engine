@@ -1,5 +1,5 @@
-import {Matrix2} from './Matrix2';
-import {Matrix3} from './Matrix3';
+import { Matrix2 } from './Matrix2';
+import { Matrix3 } from './Matrix3';
 
 export class Vector2 {
   public x: number;
@@ -54,14 +54,14 @@ export class Vector2 {
   }
 
   public multiplyMat2(m: Matrix2): this {
-    const {x, y} = this;
+    const { x, y } = this;
     this.x = m.m00 * x + m.m01 * y;
     this.y = m.m10 * x + m.m11 * y;
     return this;
   }
 
   public multiplyMat3(m: Matrix3): this {
-    const {x, y} = this;
+    const { x, y } = this;
     this.x = m.m00 * x + m.m01 * y + m.m02;
     this.y = m.m10 * x + m.m11 * y + m.m12;
     return this;

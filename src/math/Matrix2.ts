@@ -1,5 +1,4 @@
 export class Matrix2 {
-
   public m00: number;
 
   public m01: number;
@@ -8,12 +7,7 @@ export class Matrix2 {
 
   public m11: number;
 
-  constructor(
-    m00: number = 1,
-    m01: number = 0,
-    m10: number = 0,
-    m11: number = 1
-  ) {
+  constructor(m00: number = 1, m01: number = 0, m10: number = 0, m11: number = 1) {
     this.m00 = m00;
     this.m01 = m01;
     this.m10 = m10;
@@ -34,14 +28,14 @@ export class Matrix2 {
   }
 
   public transpose(): this {
-    const {m01} = this;
+    const { m01 } = this;
     this.m01 = this.m10;
     this.m10 = m01;
     return this;
   }
 
   public invert(): this {
-    const {m00, m01, m10, m11} = this;
+    const { m00, m01, m10, m11 } = this;
     const det = this.determinant();
     if (det === 0) {
       return this.identity();
@@ -88,7 +82,7 @@ export class Matrix2 {
   }
 
   public multiply(m: Matrix2): this {
-    const {m00, m01, m10, m11} = this;
+    const { m00, m01, m10, m11 } = this;
     this.m00 = m00 * m.m00 + m01 * m.m10;
     this.m01 = m00 * m.m01 + m01 * m.m11;
     this.m10 = m10 * m.m00 + m11 * m.m10;
@@ -113,7 +107,7 @@ export class Matrix2 {
   }
 
   public rotate(rad: number): this {
-    const {m00, m01, m10, m11} = this;
+    const { m00, m01, m10, m11 } = this;
     const c = Math.cos(rad);
     const s = Math.sin(rad);
     this.m00 = m00 * c + m01 * s;
@@ -136,11 +130,6 @@ export class Matrix2 {
   }
 
   public equals(m: Matrix2): boolean {
-    return (
-      this.m00 === m.m00 &&
-      this.m01 === m.m01 &&
-      this.m10 === m.m10 &&
-      this.m11 === m.m11
-    );
+    return this.m00 === m.m00 && this.m01 === m.m01 && this.m10 === m.m10 && this.m11 === m.m11;
   }
 }

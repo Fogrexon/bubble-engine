@@ -1,4 +1,4 @@
-import {ComponentBase,Transform} from '../component';
+import { ComponentBase, Transform } from '../component';
 
 export abstract class GameEntry {
   private _components: ComponentBase[] = [];
@@ -45,7 +45,7 @@ export abstract class GameEntry {
       component.innerUpdate(deltaTime);
     });
 
-    this.transform.children.forEach(childTransform => {
+    this.transform.children.forEach((childTransform) => {
       childTransform.entry.update(deltaTime);
     });
   }
@@ -76,7 +76,9 @@ export abstract class GameEntry {
   }
 
   public getComponents<T extends ComponentBase>(componentType: new (...args: any[]) => T): T[] {
-    const foundComponents = this._components.filter((component) => component instanceof componentType);
+    const foundComponents = this._components.filter(
+      (component) => component instanceof componentType
+    );
     if (foundComponents) {
       return foundComponents as T[];
     }
@@ -84,13 +86,15 @@ export abstract class GameEntry {
     return [];
   }
 
-  public getComponentInChildren<T extends ComponentBase>(componentType: new (...args: any[]) => T): T | null {
+  public getComponentInChildren<T extends ComponentBase>(
+    componentType: new (...args: any[]) => T
+  ): T | null {
     const foundComponent = this._components.find((component) => component instanceof componentType);
     if (foundComponent) {
       return foundComponent as T;
     }
 
-    for (let i = 0; i < this.transform.children.length; i += 1){
+    for (let i = 0; i < this.transform.children.length; i += 1) {
       const child = this.transform.children[i].entry;
       const foundChildrenComponent = child.getComponentInChildren(componentType);
       if (foundChildrenComponent) {
@@ -101,12 +105,14 @@ export abstract class GameEntry {
     return null;
   }
 
-  public getComponentsInChildren<T extends ComponentBase>(componentType: new (...args: any[]) => T): T[] {
+  public getComponentsInChildren<T extends ComponentBase>(
+    componentType: new (...args: any[]) => T
+  ): T[] {
     const allComponents: T[] = [];
     const foundComponents = this.getComponents(componentType);
     allComponents.concat(foundComponents);
 
-    for (let i = 0; i < this.transform.children.length; i += 1){
+    for (let i = 0; i < this.transform.children.length; i += 1) {
       const child = this.transform.children[i].entry;
       const foundChildrenComponents = child.getComponentsInChildren(componentType);
       allComponents.concat(foundChildrenComponents);

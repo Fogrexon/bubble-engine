@@ -23,8 +23,8 @@ export class Color {
   }
 
   public setFromHex(hex: number) {
-    this.r = (hex >> 16 & 255) / 255;
-    this.g = (hex >> 8 & 255) / 255;
+    this.r = ((hex >> 16) & 255) / 255;
+    this.g = ((hex >> 8) & 255) / 255;
     this.b = (hex & 255) / 255;
     return this;
   }
@@ -62,10 +62,10 @@ export class Color {
 
     return this;
   }
-  
+
   public toHSL() {
     // rgbToHsl
-    const {r, g, b} = this;
+    const { r, g, b } = this;
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     let h: number;
@@ -116,7 +116,7 @@ export class Color {
     this.a -= color.a;
     return this;
   }
-  
+
   public subScalar(s: number) {
     this.r -= s;
     this.g -= s;
@@ -148,7 +148,7 @@ export class Color {
     this.a += (color.a - this.a) * t;
     return this;
   }
-  
+
   public lerpHSL(color: Color, t: number) {
     const hslA = this.toHSL();
     const hslB = color.toHSL();
@@ -176,6 +176,8 @@ export class Color {
   }
 
   public toStyle() {
-    return `rgba(${Math.floor(this.r * 255)}, ${Math.floor(this.g * 255)}, ${Math.floor(this.b * 255)}, ${this.a})`;
+    return `rgba(${Math.floor(this.r * 255)}, ${Math.floor(this.g * 255)}, ${Math.floor(
+      this.b * 255
+    )}, ${this.a})`;
   }
 }

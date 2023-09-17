@@ -1,18 +1,4 @@
-export class CanvasLayerInfo {
-  public readonly canvas: HTMLCanvasElement;
-
-  public readonly context: CanvasRenderingContext2D;
-
-  constructor(canvas: HTMLCanvasElement) {
-    this.canvas = canvas;
-    const context = canvas.getContext('2d');
-    if(context === null) {
-      throw new Error('CanvasRenderingContext2D is not supported.');
-    } else {
-      this.context = context;
-    }
-  }
-}
+import { CanvasLayerInfo } from './CanvasLayerInfo';
 
 export class GraphicManager<T extends Record<string, CanvasLayerInfo>> {
   private _layerTable: T;
@@ -27,7 +13,7 @@ export class GraphicManager<T extends Record<string, CanvasLayerInfo>> {
 
   public set width(value: number) {
     this._width = value;
-    Object.values(this._layerTable).forEach(layer => {
+    Object.values(this._layerTable).forEach((layer) => {
       layer.canvas.width = value;
     });
   }
@@ -38,7 +24,7 @@ export class GraphicManager<T extends Record<string, CanvasLayerInfo>> {
 
   public set height(value: number) {
     this._height = value;
-    Object.values(this._layerTable).forEach(layer => {
+    Object.values(this._layerTable).forEach((layer) => {
       layer.canvas.height = value;
     });
   }

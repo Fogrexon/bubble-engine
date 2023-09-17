@@ -1,4 +1,4 @@
-import {GameEntry} from '../entry/GameEntry';
+import { GameEntry } from '../entry/GameEntry';
 
 export abstract class ComponentBase {
   private _entry: GameEntry | null = null;
