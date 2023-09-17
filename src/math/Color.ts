@@ -175,9 +175,9 @@ export class Color {
     return this.r === color.r && this.g === color.g && this.b === color.b && this.a === color.a;
   }
 
-  public toStyle() {
-    return `rgba(${Math.floor(this.r * 255)}, ${Math.floor(this.g * 255)}, ${Math.floor(
-      this.b * 255
+  public toStyleText() {
+    return `rgba(${Math.floor(this.r * 256)}, ${Math.floor(this.g * 256)}, ${Math.floor(
+      this.b * 256
     )}, ${this.a})`;
   }
 }
