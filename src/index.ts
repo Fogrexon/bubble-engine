@@ -1,6 +1,10 @@
+export * from './component';
 export * from './core';
-// export * from './utils';
-// export * from './component';
-// export * from './input'
+export * from './entry';
+export * from './event';
+export * from './graphic';
+export * from './input';
+export * from './levelControl';
 export * from './loader';
-// export * from './plugin'
+export * from './math';
+export * from './util';
