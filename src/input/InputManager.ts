@@ -38,9 +38,4 @@ export class InputManager<T extends Record<string, InputKeybind>> {
       this.keybinders[key].update(this.rawKeyValues);
     });
   }
-
-  // イベントハンドラ系
-  private keydownHandler(e: KeyboardEvent) {
-    this.rawKeyValues[e.key as InputableKey] = 1;
-  }
 }

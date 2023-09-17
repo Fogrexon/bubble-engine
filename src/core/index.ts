@@ -1,2 +1,4 @@
 export * from './GameManager';
-export * from '../levelControl/LevelManager';
+export * from './GraphicManager';
+export * from './CanvasLayerInfo';
+export * from './ManagerBase';
