@@ -6,5 +6,4 @@ export declare class InputManager<T extends Record<string, InputKeybind>> {
     constructor(window: Window, keybinds: T);
     getKeybinder<Key extends keyof typeof this.keybinders>(key: Key): (typeof this.keybinders)[Key];
     updateKeyBinds(): void;
-    private keydownHandler;
 }

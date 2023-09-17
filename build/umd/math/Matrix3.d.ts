@@ -1,0 +1,32 @@
+import { Vector2 } from './Vector2';
+export declare class Matrix3 {
+    m00: number;
+    m01: number;
+    m02: number;
+    m10: number;
+    m11: number;
+    m12: number;
+    m20: number;
+    m21: number;
+    m22: number;
+    constructor(m00?: number, m01?: number, m02?: number, m10?: number, m11?: number, m12?: number, m20?: number, m21?: number, m22?: number);
+    set(m00: number, m01: number, m02: number, m10: number, m11: number, m12: number, m20: number, m21: number, m22: number): this;
+    identity(): this;
+    transpose(): this;
+    invert(): this;
+    determinant(): number;
+    add(m: Matrix3): this;
+    addScalar(s: number): this;
+    sub(m: Matrix3): this;
+    subScalar(s: number): this;
+    multiply(m: Matrix3): this;
+    scale(m: Matrix3): this;
+    scaleScalar(v: number): this;
+    rotateMat2D(radian: number): this;
+    translateMat2D(x: number, y: number): this;
+    scaleMat2D(x: number, y: number): this;
+    compose(position: Vector2, rotation: number, scale: Vector2): this;
+    clone(): Matrix3;
+    copy(m: Matrix3): this;
+    equals(m: Matrix3): boolean;
+}

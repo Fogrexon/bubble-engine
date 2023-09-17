@@ -1,4 +1,5 @@
 import { IInputStateProvidable } from './IInputStateProvidable';
+import { Vector2 } from '../math';
 export declare class Vector2Provider implements IInputStateProvidable {
     xValue: number;
     yValue: number;
@@ -9,6 +10,6 @@ export declare class Vector2Provider implements IInputStateProvidable {
     get startPressed(): boolean;
     get endPressed(): boolean;
     get pressed(): boolean;
-    get value(): any;
+    get value(): Vector2;
     update(x: number, y: number): void;
 }

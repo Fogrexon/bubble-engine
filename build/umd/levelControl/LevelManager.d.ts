@@ -1,5 +1,5 @@
-import { GameEntry } from '../entry/GameEntry';
-import { LevelEventType } from '../event/LevelEvent';
+import { GameEntry } from '../entry';
+import { LevelEventType } from '../event';
 export declare enum LevelState {
     Playing = 0,
     Paused = 1,
@@ -15,7 +15,7 @@ export declare class LevelManager {
     protected constructor(levelManagerSettings: LevelManagerSettings);
     protected levelEventListener(levelEventType: LevelEventType): void;
     start(): void;
-    update(): void;
+    update(deltaTime: number): void;
     exit(): void;
     protected gameOver(): void;
     protected gameClear(): void;

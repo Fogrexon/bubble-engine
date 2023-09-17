@@ -1,0 +1,30 @@
+import { Matrix2 } from './Matrix2';
+import { Matrix3 } from './Matrix3';
+export declare class Vector2 {
+    x: number;
+    y: number;
+    constructor(x?: number, y?: number);
+    set(x: number, y: number): this;
+    setFromPolar(r: number, theta: number): this;
+    add(v: Vector2): this;
+    addScalar(s: number): this;
+    sub(v: Vector2): this;
+    subScalar(s: number): this;
+    multiply(v: Vector2): this;
+    multiplyMat2(m: Matrix2): this;
+    multiplyMat3(m: Matrix3): this;
+    multiplyScalar(s: number): this;
+    divide(v: Vector2): this;
+    divideScalar(s: number): this;
+    lerp(v: Vector2, t: number): this;
+    dot(v: Vector2): number;
+    length(): number;
+    lengthSquared(): number;
+    normalize(): this;
+    distanceTo(v: Vector2): number;
+    distanceToSquared(v: Vector2): number;
+    angleTo(v: Vector2): number;
+    clone(): Vector2;
+    copy(v: Vector2): this;
+    equals(v: Vector2): boolean;
+}

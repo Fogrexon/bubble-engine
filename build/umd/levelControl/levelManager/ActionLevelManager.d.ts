@@ -1,5 +1,5 @@
 import { LevelManager, LevelManagerSettings } from '../LevelManager';
-import { RespawnPoint } from '../../entry/RespawnPoint';
+import { RespawnPoint } from '../../entry';
 export type ActionLevelManagerSettings = {
     respawnPoint: RespawnPoint;
     life: number;
