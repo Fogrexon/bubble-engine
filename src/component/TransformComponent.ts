@@ -5,7 +5,7 @@ import { ComponentBase } from './ComponentBase';
 /**
  * GameEntryの場所を管理するコンポーネント
  */
-export class Transform extends ComponentBase {
+export class TransformComponent extends ComponentBase {
   public position: Vector2 = new Vector2();
 
   public rotation: number = 0;
@@ -22,9 +22,9 @@ export class Transform extends ComponentBase {
 
   private _cachedWorldMatrix: Matrix3 = new Matrix3();
 
-  public parent: Transform | null = null;
+  public parent: TransformComponent | null = null;
 
-  public children: Transform[] = [];
+  public children: TransformComponent[] = [];
 
   public get matrix(): Matrix3 {
     if (!this._isMatrixCached) {
@@ -60,12 +60,12 @@ export class Transform extends ComponentBase {
     return this.rotation;
   }
 
-  public addChild(child: Transform): void {
+  public addChild(child: TransformComponent): void {
     child.parent = this;
     this.children.push(child);
   }
 
-  public removeChild(child: Transform): void {
+  public removeChild(child: TransformComponent): void {
     const index = this.children.indexOf(child);
     if (index >= 0) {
       this.children.splice(index, 1);

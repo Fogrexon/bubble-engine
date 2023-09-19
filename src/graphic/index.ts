@@ -1,1 +1,1 @@
-export * from './GraphicBase';
+export * from './GraphicBases';

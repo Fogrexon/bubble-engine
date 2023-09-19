@@ -1,2 +1,2 @@
 export * from './ComponentBase';
-export * from './Transform';
+export * from './TransformComponent';
