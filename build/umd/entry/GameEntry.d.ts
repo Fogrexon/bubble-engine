@@ -1,4 +1,4 @@
-import { ComponentBase, Transform } from '../component';
+import { ComponentBase, TransformComponent } from '../component';
 export declare abstract class GameEntry {
     private _components;
     private _destroyed;
@@ -6,7 +6,8 @@ export declare abstract class GameEntry {
     private _enabled;
     get enabled(): boolean;
     set enabled(value: boolean);
-    readonly transform: Transform;
+    readonly transform: TransformComponent;
+    objectIndex: number;
     protected constructor();
     update(deltaTime: number): void;
     destroy(): void;

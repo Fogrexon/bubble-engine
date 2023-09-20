@@ -1619,12 +1619,12 @@
   /**
    * GameEntryの場所を管理するコンポーネント
    */
-  var Transform = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(Transform, _ComponentBase);
-    var _super = _createSuper(Transform);
-    function Transform() {
+  var TransformComponent = /*#__PURE__*/function (_ComponentBase) {
+    _inherits(TransformComponent, _ComponentBase);
+    var _super = _createSuper(TransformComponent);
+    function TransformComponent() {
       var _this;
-      _classCallCheck(this, Transform);
+      _classCallCheck(this, TransformComponent);
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
@@ -1641,7 +1641,7 @@
       _defineProperty(_assertThisInitialized(_this), "children", []);
       return _this;
     }
-    _createClass(Transform, [{
+    _createClass(TransformComponent, [{
       key: "matrix",
       get: function get() {
         if (!this._isMatrixCached) {
@@ -1732,7 +1732,130 @@
         // no impl
       }
     }]);
-    return Transform;
+    return TransformComponent;
+  }(ComponentBase);
+
+  var wait = function wait(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  };
+  var waitFrame = function waitFrame() {
+    return new Promise(function (resolve) {
+      requestAnimationFrame(resolve);
+    });
+  };
+
+  var Rect = /*#__PURE__*/function () {
+    function Rect() {
+      var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      _classCallCheck(this, Rect);
+      _defineProperty(this, "x", void 0);
+      _defineProperty(this, "y", void 0);
+      _defineProperty(this, "width", void 0);
+      _defineProperty(this, "height", void 0);
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+    }
+    _createClass(Rect, [{
+      key: "set",
+      value: function set(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+      }
+    }, {
+      key: "copy",
+      value: function copy(rect) {
+        this.x = rect.x;
+        this.y = rect.y;
+        this.width = rect.width;
+        this.height = rect.height;
+      }
+    }, {
+      key: "clone",
+      value: function clone() {
+        return new Rect(this.x, this.y, this.width, this.height);
+      }
+    }, {
+      key: "contains",
+      value: function contains(x, y) {
+        return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
+      }
+    }, {
+      key: "containsRect",
+      value: function containsRect(rect) {
+        return this.contains(rect.x, rect.y) && this.contains(rect.x + rect.width, rect.y + rect.height);
+      }
+    }, {
+      key: "intersects",
+      value: function intersects(rect) {
+        return this.x < rect.x + rect.width && this.x + this.width > rect.x && this.y < rect.y + rect.height && this.y + this.height > rect.y;
+      }
+    }, {
+      key: "merge",
+      value: function merge(rect) {
+        var left = Math.min(this.x, rect.x);
+        var top = Math.min(this.y, rect.y);
+        var right = Math.max(this.x + this.width, rect.x + rect.width);
+        var bottom = Math.max(this.y + this.height, rect.y + rect.height);
+        return new Rect(left, top, right - left, bottom - top);
+      }
+    }]);
+    return Rect;
+  }();
+
+  var GraphicComponent = /*#__PURE__*/function (_ComponentBase) {
+    _inherits(GraphicComponent, _ComponentBase);
+    var _super = _createSuper(GraphicComponent);
+    function GraphicComponent(layer, parts) {
+      var _this;
+      _classCallCheck(this, GraphicComponent);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "parts", void 0);
+      _defineProperty(_assertThisInitialized(_this), "_layer", void 0);
+      _defineProperty(_assertThisInitialized(_this), "boundingRect", new Rect(0, 0, 0, 0));
+      _this._layer = layer;
+      _this.parts = parts;
+      return _this;
+    }
+    _createClass(GraphicComponent, [{
+      key: "onDestroy",
+      value: function onDestroy() {}
+    }, {
+      key: "onDisable",
+      value: function onDisable() {}
+    }, {
+      key: "onEnable",
+      value: function onEnable() {}
+    }, {
+      key: "onInitialize",
+      value: function onInitialize() {}
+    }, {
+      key: "onStart",
+      value: function onStart() {}
+    }, {
+      key: "onUpdate",
+      value: function onUpdate() {
+        var _this2 = this;
+        var worldMatrix = this.entry.transform.worldMatrix;
+        var ctx = this._layer.context;
+        ctx.save();
+        ctx.transform(worldMatrix.m00, worldMatrix.m01, worldMatrix.m10, worldMatrix.m11, worldMatrix.m02, worldMatrix.m12);
+        this.parts.forEach(function (part, index) {
+          var boundingBox = part.render(_this2._layer);
+          if (index === 0) _this2.boundingRect.copy(boundingBox);else _this2.boundingRect.merge(boundingBox);
+        });
+        ctx.restore();
+      }
+    }]);
+    return GraphicComponent;
   }(ComponentBase);
 
   /**
@@ -1766,41 +1889,58 @@
   _defineProperty(GameManager, "_instance", void 0);
 
   var GraphicManager = /*#__PURE__*/function () {
-    function GraphicManager(layerTable, width, height) {
+    function GraphicManager(layers, canvasWrapper) {
+      var _this = this;
       _classCallCheck(this, GraphicManager);
+      _defineProperty(this, "_layerNames", void 0);
       _defineProperty(this, "_layerTable", void 0);
+      _defineProperty(this, "_canvasWrapper", void 0);
       _defineProperty(this, "_width", 0);
       _defineProperty(this, "_height", 0);
-      this._layerTable = layerTable;
-      this.width = width;
-      this.height = height;
+      this._layerNames = layers;
+      this._canvasWrapper = canvasWrapper;
+      this._layerTable = {};
+      layers.forEach(function (layerName) {
+        var canvas = document.createElement('canvas');
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvasWrapper.appendChild(canvas);
+        _this._layerTable[layerName] = {
+          canvas: canvas,
+          context: canvas.getContext('2d')
+        };
+      });
+      this.resetSize();
+      window.addEventListener('resize', this.resetSize.bind(this));
     }
     _createClass(GraphicManager, [{
       key: "width",
       get: function get() {
         return this._width;
-      },
-      set: function set(value) {
-        this._width = value;
-        Object.values(this._layerTable).forEach(function (layer) {
-          layer.canvas.width = value;
-        });
       }
     }, {
       key: "height",
       get: function get() {
         return this._height;
-      },
-      set: function set(value) {
-        this._height = value;
-        Object.values(this._layerTable).forEach(function (layer) {
-          layer.canvas.height = value;
-        });
       }
     }, {
-      key: "getContext",
-      value: function getContext(id) {
-        return this._layerTable[id].context;
+      key: "getLayer",
+      value: function getLayer(id) {
+        return this._layerTable[id];
+      }
+    }, {
+      key: "resetSize",
+      value: function resetSize() {
+        var _this2 = this;
+        var rect = this._canvasWrapper.getBoundingClientRect();
+        this._width = rect.width;
+        this._height = rect.height;
+        this._layerNames.forEach(function (layerName) {
+          var layer = _this2._layerTable[layerName];
+          layer.canvas.width = _this2._width;
+          layer.canvas.height = _this2._height;
+        });
       }
     }]);
     return GraphicManager;
@@ -1830,7 +1970,8 @@
       _defineProperty(this, "_destroyed", false);
       _defineProperty(this, "_enabled", true);
       _defineProperty(this, "transform", void 0);
-      var transform = new Transform();
+      _defineProperty(this, "objectIndex", 0);
+      var transform = new TransformComponent();
       this.addComponent(transform);
       this.transform = transform;
     }
@@ -1867,8 +2008,14 @@
         this._components.forEach(function (component) {
           component.innerUpdate(deltaTime);
         });
-        this.transform.children.forEach(function (childTransform) {
-          childTransform.entry.update(deltaTime);
+        var childrenEntry = this.transform.children.map(function (childTransform) {
+          return childTransform.entry;
+        });
+        childrenEntry.sort(function (a, b) {
+          return a.objectIndex - b.objectIndex;
+        });
+        childrenEntry.forEach(function (child) {
+          child.update(deltaTime);
         });
       }
     }, {
@@ -2033,7 +2180,269 @@
 
   var GraphicBase = /*#__PURE__*/_createClass(function GraphicBase() {
     _classCallCheck(this, GraphicBase);
+    _defineProperty(this, "_boundingBox", new Rect());
   });
+
+  var SpriteGraphic = /*#__PURE__*/function (_GraphicBase) {
+    _inherits(SpriteGraphic, _GraphicBase);
+    var _super = _createSuper(SpriteGraphic);
+    function SpriteGraphic(sprite) {
+      var _this;
+      _classCallCheck(this, SpriteGraphic);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "position", new Vector2());
+      _defineProperty(_assertThisInitialized(_this), "anchor", new Vector2(0.5, 0.5));
+      _defineProperty(_assertThisInitialized(_this), "size", new Vector2());
+      _defineProperty(_assertThisInitialized(_this), "alpha", 1);
+      _defineProperty(_assertThisInitialized(_this), "sprite", void 0);
+      _this.sprite = sprite;
+      _this.size.set(sprite.width, sprite.height);
+      return _this;
+    }
+    _createClass(SpriteGraphic, [{
+      key: "render",
+      value: function render(layer) {
+        var left = this.position.x - this.anchor.x * this.size.x;
+        var top = this.position.y - this.anchor.y * this.size.y;
+        layer.context.globalAlpha = this.alpha;
+        layer.context.drawImage(this.sprite.data, left, top, this.size.x, this.size.y);
+        layer.context.globalAlpha = 1;
+        this._boundingBox.set(this.position.x, this.position.y, this.size.x, this.size.y);
+        return this._boundingBox;
+      }
+    }]);
+    return SpriteGraphic;
+  }(GraphicBase);
+
+  var SpriteSheetGraphic = /*#__PURE__*/function (_GraphicBase) {
+    _inherits(SpriteSheetGraphic, _GraphicBase);
+    var _super = _createSuper(SpriteSheetGraphic);
+    function SpriteSheetGraphic(sprite) {
+      var _this;
+      _classCallCheck(this, SpriteSheetGraphic);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "position", new Vector2());
+      _defineProperty(_assertThisInitialized(_this), "size", new Vector2());
+      _defineProperty(_assertThisInitialized(_this), "sprite", void 0);
+      _defineProperty(_assertThisInitialized(_this), "spriteIndex", void 0);
+      _this.sprite = sprite;
+      _this.size.set(sprite.segmentWidth, sprite.segmentHeight);
+      _this.spriteIndex = 0;
+      return _this;
+    }
+    _createClass(SpriteSheetGraphic, [{
+      key: "render",
+      value: function render(layer) {
+        layer.context.drawImage(this.sprite.data, this.spriteIndex % this.sprite.columns * this.sprite.segmentWidth, Math.floor(this.spriteIndex / this.sprite.columns) * this.sprite.segmentHeight, this.sprite.segmentWidth, this.sprite.segmentHeight, this.position.x, this.position.y, this.size.x, this.size.y);
+        this._boundingBox.set(this.position.x, this.position.y, this.size.x, this.size.y);
+        return this._boundingBox;
+      }
+    }]);
+    return SpriteSheetGraphic;
+  }(GraphicBase);
+
+  var setLineStyle = function setLineStyle(context, style) {
+    if (style.lineWidth) {
+      context.lineWidth = style.lineWidth;
+    }
+    if (style.lineCap) {
+      context.lineCap = style.lineCap;
+    }
+    if (style.lineJoin) {
+      context.lineJoin = style.lineJoin;
+    }
+    if (style.miterLimit) {
+      context.miterLimit = style.miterLimit;
+    }
+    if (style.lineDash) {
+      context.setLineDash(style.lineDash);
+    }
+    if (style.lineDashOffset) {
+      context.lineDashOffset = style.lineDashOffset;
+    }
+  };
+  var setTextStyle = function setTextStyle(context, style) {
+    if (style.font) {
+      context.font = style.font;
+    }
+    if (style.textAlign) {
+      context.textAlign = style.textAlign;
+    }
+    if (style.textBaseline) {
+      context.textBaseline = style.textBaseline;
+    }
+    if (style.direction) {
+      context.direction = style.direction;
+    }
+    if (style.letterSpacing) {
+      // @ts-ignore
+      context.letterSpacing = style.letterSpacing;
+    }
+    if (style.fontKerning) {
+      context.fontKerning = style.fontKerning;
+    }
+    if (style.fontStretch) {
+      // @ts-ignore
+      context.fontStretch = style.fontStretch;
+    }
+    if (style.fontVariantCaps) {
+      // @ts-ignore
+      context.fontVariantCaps = style.fontVariantCaps;
+    }
+    if (style.textRendering) {
+      // @ts-ignore
+      context.textRendering = style.textRendering;
+    }
+    if (style.wordSpacing) {
+      // @ts-ignore
+      context.wordSpacing = style.wordSpacing;
+    }
+  };
+  var setGraphicStyle = function setGraphicStyle(context, style) {
+    if (style.fill) {
+      context.fillStyle = style.fill;
+    }
+    if (style.stroke) {
+      context.strokeStyle = style.stroke;
+    }
+  };
+
+  var TextGraphic = /*#__PURE__*/function (_GraphicBase) {
+    _inherits(TextGraphic, _GraphicBase);
+    var _super = _createSuper(TextGraphic);
+    function TextGraphic(text, font, style) {
+      var _this;
+      _classCallCheck(this, TextGraphic);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "position", new Vector2());
+      _defineProperty(_assertThisInitialized(_this), "text", void 0);
+      _defineProperty(_assertThisInitialized(_this), "font", void 0);
+      _defineProperty(_assertThisInitialized(_this), "style", void 0);
+      _this.text = text;
+      _this.font = font;
+      _this.style = style;
+      return _this;
+    }
+    _createClass(TextGraphic, [{
+      key: "render",
+      value: function render(layer) {
+        var context = layer.context;
+        context.font = this.font;
+        setLineStyle(context, this.style);
+        setTextStyle(context, this.style);
+        setGraphicStyle(context, this.style);
+        if (this.style.fill) {
+          context.fillText(this.text, this.position.x, this.position.y);
+        }
+        if (this.style.stroke) {
+          context.strokeText(this.text, this.position.x, this.position.y);
+        }
+        var metrics = context.measureText(this.text);
+        this._boundingBox.set(metrics.actualBoundingBoxLeft, metrics.actualBoundingBoxAscent, metrics.actualBoundingBoxRight - metrics.actualBoundingBoxLeft, metrics.actualBoundingBoxDescent + metrics.actualBoundingBoxAscent);
+        return this._boundingBox;
+      }
+    }]);
+    return TextGraphic;
+  }(GraphicBase);
+
+  var PathGraphic = /*#__PURE__*/function (_GraphicBase) {
+    _inherits(PathGraphic, _GraphicBase);
+    var _super = _createSuper(PathGraphic);
+    function PathGraphic(path, style) {
+      var _this;
+      _classCallCheck(this, PathGraphic);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "path", void 0);
+      _defineProperty(_assertThisInitialized(_this), "style", void 0);
+      _defineProperty(_assertThisInitialized(_this), "_tempVector", new Vector2());
+      _this.path = path;
+      _this.style = style;
+      return _this;
+    }
+    _createClass(PathGraphic, [{
+      key: "render",
+      value: function render(layer) {
+        var _this2 = this;
+        this._tempVector.set(0, 0);
+        this.path.forEach(function (path, index) {
+          var boundingBox = path.render(layer, _this2._tempVector);
+          if (index === 0) _this2._boundingBox.copy(boundingBox);else _this2._boundingBox.merge(boundingBox);
+        });
+        return this._boundingBox;
+      }
+    }]);
+    return PathGraphic;
+  }(GraphicBase);
+
+  var PathBase = /*#__PURE__*/_createClass(function PathBase() {
+    _classCallCheck(this, PathBase);
+    _defineProperty(this, "_boundingBox", new Rect());
+  });
+
+  var BeginPath = /*#__PURE__*/function (_PathBase) {
+    _inherits(BeginPath, _PathBase);
+    var _super = _createSuper(BeginPath);
+    function BeginPath(x, y) {
+      var _this;
+      _classCallCheck(this, BeginPath);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "position", new Vector2());
+      _this.position.set(x, y);
+      return _this;
+    }
+    _createClass(BeginPath, [{
+      key: "render",
+      value: function render(layer, prevPos) {
+        layer.context.beginPath();
+        layer.context.moveTo(this.position.x, this.position.y);
+        prevPos.set(this.position.x, this.position.y);
+        this._boundingBox.set(this.position.x, this.position.y, 0, 0);
+        return this._boundingBox;
+      }
+    }]);
+    return BeginPath;
+  }(PathBase);
+
+  var LinePath = /*#__PURE__*/function (_PathBase) {
+    _inherits(LinePath, _PathBase);
+    var _super = _createSuper(LinePath);
+    function LinePath(x, y) {
+      var _this;
+      _classCallCheck(this, LinePath);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "position", new Vector2());
+      _this.position.set(x, y);
+      return _this;
+    }
+    _createClass(LinePath, [{
+      key: "render",
+      value: function render(layer, prevPos) {
+        layer.context.lineTo(this.position.x, this.position.y);
+        prevPos.set(this.position.x, this.position.y);
+        this._boundingBox.set(this.position.x, this.position.y, 0, 0);
+        return this._boundingBox;
+      }
+    }]);
+    return LinePath;
+  }(PathBase);
+
+  var ClosePath = /*#__PURE__*/function (_PathBase) {
+    _inherits(ClosePath, _PathBase);
+    var _super = _createSuper(ClosePath);
+    function ClosePath() {
+      _classCallCheck(this, ClosePath);
+      return _super.apply(this, arguments);
+    }
+    _createClass(ClosePath, [{
+      key: "render",
+      value: function render(layer, prevPos) {
+        layer.context.closePath();
+        this._boundingBox.set(prevPos.x, prevPos.y, 0, 0);
+        return this._boundingBox;
+      }
+    }]);
+    return ClosePath;
+  }(PathBase);
 
   var inputableKeyList = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', 'Enter', 'Shift', 'Control', 'Alt', 'Tab', 'Escape', 'Backspace', 'CapsLock', 'Delete', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'MouseLeft', 'MouseRight', 'MouseMiddle', 'MouseX', 'MouseY', 'MouseWheel', 'GamepadA', 'GamepadB', 'GamepadX', 'GamepadY', 'GamepadL1', 'GamepadL2', 'GamepadL3', 'GamepadR1', 'GamepadR2', 'GamepadR3', 'GamepadStart', 'GamepadSelect', 'GamepadUp', 'GamepadDown', 'GamepadLeft', 'GamepadRight', 'GamepadAxisLeftX', 'GamepadAxisLeftY', 'GamepadAxisRightX', 'GamepadAxisRightY', 'GamepadAxisL2', 'GamepadAxisR2', 'GamepadAxisL3', 'GamepadAxisR3'];
 
@@ -2354,17 +2763,6 @@
     return LevelManager;
   }();
 
-  var wait = function wait(ms) {
-    return new Promise(function (resolve) {
-      setTimeout(resolve, ms);
-    });
-  };
-  var waitFrame = function waitFrame() {
-    return new Promise(function (resolve) {
-      requestAnimationFrame(resolve);
-    });
-  };
-
   var ActionLevelManager = /*#__PURE__*/function (_LevelManager) {
     _inherits(ActionLevelManager, _LevelManager);
     var _super = _createSuper(ActionLevelManager);
@@ -2624,12 +3022,22 @@
   var Sprite = /*#__PURE__*/function (_AssetBase) {
     _inherits(Sprite, _AssetBase);
     var _super = _createSuper(Sprite);
-    // eslint-disable-next-line no-useless-constructor
-    function Sprite(data) {
+    function Sprite() {
       _classCallCheck(this, Sprite);
-      return _super.call(this, data);
+      return _super.apply(this, arguments);
     }
-    return _createClass(Sprite);
+    _createClass(Sprite, [{
+      key: "width",
+      get: function get() {
+        return this.data.width;
+      }
+    }, {
+      key: "height",
+      get: function get() {
+        return this.data.height;
+      }
+    }]);
+    return Sprite;
   }(AssetBase);
 
   var SpriteSheet = /*#__PURE__*/function (_AssetBase) {
@@ -2645,7 +3053,28 @@
       _this.rows = rows;
       return _this;
     }
-    return _createClass(SpriteSheet);
+    _createClass(SpriteSheet, [{
+      key: "width",
+      get: function get() {
+        return this.data.width;
+      }
+    }, {
+      key: "height",
+      get: function get() {
+        return this.data.height;
+      }
+    }, {
+      key: "segmentWidth",
+      get: function get() {
+        return this.width / this.columns;
+      }
+    }, {
+      key: "segmentHeight",
+      get: function get() {
+        return this.height / this.rows;
+      }
+    }]);
+    return SpriteSheet;
   }(AssetBase);
 
   var SplitSprite = /*#__PURE__*/function (_AssetBase) {
@@ -2671,13 +3100,16 @@
   exports.ActionLevelManager = ActionLevelManager;
   exports.AssetBase = AssetBase;
   exports.AudioLoader = AudioLoader;
+  exports.BeginPath = BeginPath;
   exports.CanvasLayerInfo = CanvasLayerInfo;
+  exports.ClosePath = ClosePath;
   exports.Color = Color;
   exports.ComponentBase = ComponentBase;
   exports.DynamicFileLoader = DynamicFileLoader;
   exports.GameEntry = GameEntry;
   exports.GameManager = GameManager;
   exports.GraphicBase = GraphicBase;
+  exports.GraphicComponent = GraphicComponent;
   exports.GraphicManager = GraphicManager;
   exports.ImageLoader = ImageLoader;
   exports.InputManager = InputManager;
@@ -2685,22 +3117,32 @@
   exports.LevelEvent = LevelEvent;
   exports.LevelManager = LevelManager;
   exports.LevelSelector = LevelSelector;
+  exports.LinePath = LinePath;
   exports.ManagerBase = ManagerBase;
   exports.Matrix2 = Matrix2;
   exports.Matrix3 = Matrix3;
+  exports.PathBase = PathBase;
+  exports.PathGraphic = PathGraphic;
+  exports.Rect = Rect;
   exports.RespawnPoint = RespawnPoint;
   exports.ScalarProvider = ScalarProvider;
   exports.SplitSprite = SplitSprite;
   exports.Sprite = Sprite;
+  exports.SpriteGraphic = SpriteGraphic;
   exports.SpriteSheet = SpriteSheet;
+  exports.SpriteSheetGraphic = SpriteSheetGraphic;
   exports.StaticFileLoader = StaticFileLoader;
-  exports.Transform = Transform;
+  exports.TextGraphic = TextGraphic;
+  exports.TransformComponent = TransformComponent;
   exports.Vector2 = Vector2;
   exports.Vector2Provider = Vector2Provider;
   exports.Vector3 = Vector3;
   exports.createGameEvent = createGameEvent;
   exports.defaultLoaderList = defaultLoaderList;
   exports.inputableKeyList = inputableKeyList;
+  exports.setGraphicStyle = setGraphicStyle;
+  exports.setLineStyle = setLineStyle;
+  exports.setTextStyle = setTextStyle;
   exports.wait = wait;
   exports.waitFrame = waitFrame;
 
