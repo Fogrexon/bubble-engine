@@ -1,8 +1,15 @@
-import {GraphicBase} from './GraphicBase';
-import {CanvasLayerInfo} from '../core';
-import {Rect} from '../util';
-import {Vector2} from '../math';
-import {GraphicStyle, LineStyle, setGraphicStyle, setLineStyle, setTextStyle, TextStyle} from './util';
+import { GraphicBase } from './GraphicBase';
+import { CanvasLayerInfo } from '../core';
+import { Rect } from '../util';
+import { Vector2 } from '../math';
+import {
+  GraphicStyle,
+  LineStyle,
+  setGraphicStyle,
+  setLineStyle,
+  setTextStyle,
+  TextStyle,
+} from './util';
 
 export class TextGraphic extends GraphicBase {
   public readonly position = new Vector2();
@@ -21,7 +28,7 @@ export class TextGraphic extends GraphicBase {
   }
 
   public render(layer: CanvasLayerInfo): Rect {
-    const {context} = layer;
+    const { context } = layer;
     context.font = this.font;
     setLineStyle(context, this.style);
     setTextStyle(context, this.style);
@@ -33,7 +40,7 @@ export class TextGraphic extends GraphicBase {
     if (this.style.stroke) {
       context.strokeText(this.text, this.position.x, this.position.y);
     }
-    
+
     const metrics = context.measureText(this.text);
     this._boundingBox.set(
       metrics.actualBoundingBoxLeft,

@@ -1,12 +1,10 @@
-import {GraphicBase} from './GraphicBase';
-import {CanvasLayerInfo} from '../core';
-import {Rect} from '../util';
-import {SpriteSheet} from '../asset';
-import {Vector2} from '../math';
-
+import { GraphicBase } from './GraphicBase';
+import { CanvasLayerInfo } from '../core';
+import { Rect } from '../util';
+import { SpriteSheet } from '../asset';
+import { Vector2 } from '../math';
 
 export class SpriteSheetGraphic extends GraphicBase {
-
   public readonly position = new Vector2();
 
   public readonly size = new Vector2();
@@ -23,7 +21,8 @@ export class SpriteSheetGraphic extends GraphicBase {
   }
 
   public render(layer: CanvasLayerInfo): Rect {
-    layer.context.drawImage(this.sprite.data,
+    layer.context.drawImage(
+      this.sprite.data,
       (this.spriteIndex % this.sprite.columns) * this.sprite.segmentWidth,
       Math.floor(this.spriteIndex / this.sprite.columns) * this.sprite.segmentHeight,
       this.sprite.segmentWidth,
@@ -31,7 +30,8 @@ export class SpriteSheetGraphic extends GraphicBase {
       this.position.x,
       this.position.y,
       this.size.x,
-      this.size.y);
+      this.size.y
+    );
     this._boundingBox.set(this.position.x, this.position.y, this.size.x, this.size.y);
     return this._boundingBox;
   }

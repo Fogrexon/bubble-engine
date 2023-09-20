@@ -1,7 +1,7 @@
 import { ComponentBase } from './ComponentBase';
 import { GraphicBase } from '../graphic';
-import {CanvasLayerInfo} from '../core';
-import {Rect} from '../util';
+import { CanvasLayerInfo } from '../core';
+import { Rect } from '../util';
 
 export class GraphicComponent extends ComponentBase {
   public readonly parts: GraphicBase[];
@@ -16,23 +16,18 @@ export class GraphicComponent extends ComponentBase {
     this.parts = parts;
   }
 
-  protected onDestroy(): void {
-  }
+  protected onDestroy(): void {}
 
-  protected onDisable(): void {
-  }
+  protected onDisable(): void {}
 
-  protected onEnable(): void {
-  }
+  protected onEnable(): void {}
 
-  protected onInitialize(): void {
-  }
+  protected onInitialize(): void {}
 
-  protected onStart(): void {
-  }
+  protected onStart(): void {}
 
   protected onUpdate(): void {
-    const {worldMatrix} = this.entry.transform;
+    const { worldMatrix } = this.entry.transform;
     const ctx = this._layer.context;
     ctx.save();
     ctx.transform(
@@ -41,7 +36,7 @@ export class GraphicComponent extends ComponentBase {
       worldMatrix.m10,
       worldMatrix.m11,
       worldMatrix.m02,
-      worldMatrix.m12,
+      worldMatrix.m12
     );
 
     this.parts.forEach((part, index) => {

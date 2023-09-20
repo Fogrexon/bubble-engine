@@ -1,7 +1,6 @@
 import { AssetBase } from './AssetBase';
 
 export class SpriteSheet extends AssetBase<HTMLImageElement> {
-
   public readonly columns: number;
 
   public readonly rows: number;

@@ -37,11 +37,18 @@ export class Rect {
   }
 
   public containsRect(rect: Rect): boolean {
-    return this.contains(rect.x, rect.y) && this.contains(rect.x + rect.width, rect.y + rect.height);
+    return (
+      this.contains(rect.x, rect.y) && this.contains(rect.x + rect.width, rect.y + rect.height)
+    );
   }
 
   public intersects(rect: Rect): boolean {
-    return this.x < rect.x + rect.width && this.x + this.width > rect.x && this.y < rect.y + rect.height && this.y + this.height > rect.y;
+    return (
+      this.x < rect.x + rect.width &&
+      this.x + this.width > rect.x &&
+      this.y < rect.y + rect.height &&
+      this.y + this.height > rect.y
+    );
   }
 
   public merge(rect: Rect): Rect {

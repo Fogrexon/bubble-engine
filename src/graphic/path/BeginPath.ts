@@ -1,6 +1,6 @@
-import {PathBase} from './PathBase';
-import {Vector2} from '../../math';
-import {CanvasLayerInfo} from '../../core';
+import { PathBase } from './PathBase';
+import { Vector2 } from '../../math';
+import { CanvasLayerInfo } from '../../core';
 
 export class BeginPath extends PathBase {
   public readonly position: Vector2 = new Vector2();

@@ -33,7 +33,7 @@ export class GraphicManager<LayerNames extends string[]> {
       canvasWrapper.appendChild(canvas);
       this._layerTable[layerName] = {
         canvas,
-        context: canvas.getContext('2d') as CanvasRenderingContext2D
+        context: canvas.getContext('2d') as CanvasRenderingContext2D,
       };
     });
 

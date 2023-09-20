@@ -65,7 +65,7 @@ test('算術系', () => {
 });
 
 test('正常にHSLに変換されるか', () => {
-  const color = new Color(76/256, 153/256, 51/256);
+  const color = new Color(76 / 256, 153 / 256, 51 / 256);
   const hsl = color.toHSL();
 
   expect(hsl.h).toBeCloseTo(105 / 360);
@@ -74,7 +74,7 @@ test('正常にHSLに変換されるか', () => {
 
   const color2 = new Color();
   color2.setFromHSL(hsl.h, hsl.s, hsl.l);
-  expectCloseColor(color2, 76/256, 153/256, 51/256);
+  expectCloseColor(color2, 76 / 256, 153 / 256, 51 / 256);
 
   const color3 = new Color();
   const color4 = new Color();

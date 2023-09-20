@@ -1,12 +1,10 @@
-import {GraphicBase} from './GraphicBase';
-import {CanvasLayerInfo} from '../core';
-import {Rect} from '../util';
-import {Sprite} from '../asset';
-import {Vector2} from '../math';
-
+import { GraphicBase } from './GraphicBase';
+import { CanvasLayerInfo } from '../core';
+import { Rect } from '../util';
+import { Sprite } from '../asset';
+import { Vector2 } from '../math';
 
 export class SpriteGraphic extends GraphicBase {
-
   public readonly position = new Vector2();
 
   public readonly anchor = new Vector2(0.5, 0.5);
@@ -24,7 +22,6 @@ export class SpriteGraphic extends GraphicBase {
   }
 
   public render(layer: CanvasLayerInfo): Rect {
-
     const left = this.position.x - this.anchor.x * this.size.x;
     const top = this.position.y - this.anchor.y * this.size.y;
 

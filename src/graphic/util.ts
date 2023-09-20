@@ -6,7 +6,7 @@ export type LineStyle = {
   miterLimit?: number;
   lineDash?: number[];
   lineDashOffset?: number;
-}
+};
 
 export type TextStyle = {
   font?: string;
@@ -19,12 +19,12 @@ export type TextStyle = {
   fontVariantCaps?: CanvasFontVariantCaps;
   textRendering?: CanvasTextRendering;
   wordSpacing?: string;
-}
+};
 
 export type GraphicStyle = {
   fill?: string | CanvasGradient | CanvasPattern;
   stroke?: string | CanvasGradient | CanvasPattern;
-}
+};
 
 export const setLineStyle = (context: CanvasRenderingContext2D, style: LineStyle): void => {
   if (style.lineWidth) {
