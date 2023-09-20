@@ -1,16 +1,16 @@
 import { ComponentBase } from './ComponentBase';
-import { GraphicBases } from '../graphic';
+import { GraphicBase } from '../graphic';
 import {CanvasLayerInfo} from '../core';
 import {Rect} from '../util';
 
 export class GraphicComponent extends ComponentBase {
-  public readonly parts: GraphicBases[];
+  public readonly parts: GraphicBase[];
 
-  private _layer: CanvasLayerInfo;
+  private readonly _layer: CanvasLayerInfo;
 
   public readonly boundingRect: Rect = new Rect(0, 0, 0, 0);
 
-  constructor(layer: CanvasLayerInfo, parts: GraphicBases[]) {
+  constructor(layer: CanvasLayerInfo, parts: GraphicBase[]) {
     super();
     this._layer = layer;
     this.parts = parts;
@@ -45,10 +45,9 @@ export class GraphicComponent extends ComponentBase {
     );
 
     this.parts.forEach((part, index) => {
-      part.render(this._layer);
-      if (index === 0) {
-        this.boundingRect.copy(part.getBoundingBox());
-      } else this.boundingRect.merge(part.getBoundingBox());
+      const boundingBox = part.render(this._layer);
+      if (index === 0) this.boundingRect.copy(boundingBox);
+      else this.boundingRect.merge(boundingBox);
     });
     ctx.restore();
   }
