@@ -1,18 +1,15 @@
+import { ManagerBase } from './ManagerBase';
+
 /**
  * ゲーム全体のライフタイムを管理
  */
 export class GameManager {
-  // eslint-disable-next-line no-use-before-define
-  private static _instance: GameManager;
-
-  public static get instance(): GameManager {
-    return GameManager._instance;
-  }
-
   private requestAnimationFrameId: number = -1;
 
-  constructor() {
-    GameManager._instance = this;
+  private managers: ManagerBase[];
+
+  constructor(managers: ManagerBase[]) {
+    this.managers = managers;
   }
 
   public start() {
@@ -20,6 +17,8 @@ export class GameManager {
   }
 
   public update() {
+    this.managers.forEach((manager) => manager.beforeUpdate());
     this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
+    this.managers.forEach((manager) => manager.afterUpdate());
   }
 }

@@ -1,6 +1,7 @@
 import { CanvasLayerInfo } from './CanvasLayerInfo';
+import { ManagerBase } from './ManagerBase';
 
-export class GraphicManager<LayerNames extends string[]> {
+export class GraphicManager<LayerNames extends string[]> extends ManagerBase {
   private _layerNames: LayerNames;
 
   private _layerTable: Record<LayerNames[number], CanvasLayerInfo>;
@@ -20,6 +21,7 @@ export class GraphicManager<LayerNames extends string[]> {
   }
 
   constructor(layers: LayerNames, canvasWrapper: HTMLElement) {
+    super();
     this._layerNames = layers;
     this._canvasWrapper = canvasWrapper;
 
@@ -55,5 +57,16 @@ export class GraphicManager<LayerNames extends string[]> {
       layer.canvas.width = this._width;
       layer.canvas.height = this._height;
     });
+  }
+
+  public beforeUpdate() {
+    this._layerNames.forEach((layerName: LayerNames[number]) => {
+      const layer = this._layerTable[layerName];
+      layer.context.clearRect(0, 0, this._width, this._height);
+    });
+  }
+
+  public afterUpdate() {
+    // no impl
   }
 }
