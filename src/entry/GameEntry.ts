@@ -1,4 +1,4 @@
-import { ComponentBase, Transform } from '../component';
+import { ComponentBase, TransformComponent } from '../component';
 
 export abstract class GameEntry {
   private _components: ComponentBase[] = [];
@@ -31,8 +31,10 @@ export abstract class GameEntry {
 
   public readonly transform;
 
+  public objectIndex: number = 0;
+
   protected constructor() {
-    const transform = new Transform();
+    const transform = new TransformComponent();
     this.addComponent(transform);
     this.transform = transform;
   }
@@ -45,8 +47,11 @@ export abstract class GameEntry {
       component.innerUpdate(deltaTime);
     });
 
-    this.transform.children.forEach((childTransform) => {
-      childTransform.entry.update(deltaTime);
+    const childrenEntry = this.transform.children.map((childTransform) => childTransform.entry);
+    childrenEntry.sort((a, b) => a.objectIndex - b.objectIndex);
+
+    childrenEntry.forEach((child) => {
+      child.update(deltaTime);
     });
   }
 

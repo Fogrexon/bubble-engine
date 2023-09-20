@@ -1,12 +1,8 @@
-export interface Rect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import { CanvasLayerInfo } from '../core';
+import { Rect } from '../util';
 
 export abstract class GraphicBase {
-  public abstract render(ctx: CanvasRenderingContext2D): void;
+  protected _boundingBox: Rect = new Rect();
 
-  public abstract getBoundingBox(): Rect;
+  public abstract render(layer: CanvasLayerInfo): Rect;
 }

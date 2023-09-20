@@ -1,8 +1,11 @@
 import { AssetBase } from './AssetBase';
 
 export class Sprite extends AssetBase<HTMLImageElement> {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(data: HTMLImageElement) {
-    super(data);
+  public get width(): number {
+    return this.data.width;
+  }
+
+  public get height(): number {
+    return this.data.height;
   }
 }

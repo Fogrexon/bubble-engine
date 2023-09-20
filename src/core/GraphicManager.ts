@@ -1,7 +1,11 @@
 import { CanvasLayerInfo } from './CanvasLayerInfo';
 
-export class GraphicManager<T extends Record<string, CanvasLayerInfo>> {
-  private _layerTable: T;
+export class GraphicManager<LayerNames extends string[]> {
+  private _layerNames: LayerNames;
+
+  private _layerTable: Record<LayerNames[number], CanvasLayerInfo>;
+
+  private _canvasWrapper: HTMLElement;
 
   private _width: number = 0;
 
@@ -11,31 +15,45 @@ export class GraphicManager<T extends Record<string, CanvasLayerInfo>> {
     return this._width;
   }
 
-  public set width(value: number) {
-    this._width = value;
-    Object.values(this._layerTable).forEach((layer) => {
-      layer.canvas.width = value;
-    });
-  }
-
   public get height() {
     return this._height;
   }
 
-  public set height(value: number) {
-    this._height = value;
-    Object.values(this._layerTable).forEach((layer) => {
-      layer.canvas.height = value;
+  constructor(layers: LayerNames, canvasWrapper: HTMLElement) {
+    this._layerNames = layers;
+    this._canvasWrapper = canvasWrapper;
+
+    this._layerTable = {} as Record<LayerNames[number], CanvasLayerInfo>;
+
+    layers.forEach((layerName: LayerNames[number]) => {
+      const canvas = document.createElement('canvas');
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvasWrapper.appendChild(canvas);
+      this._layerTable[layerName] = {
+        canvas,
+        context: canvas.getContext('2d') as CanvasRenderingContext2D,
+      };
     });
+
+    this.resetSize();
+
+    window.addEventListener('resize', this.resetSize.bind(this));
   }
 
-  constructor(layerTable: T, width: number, height: number) {
-    this._layerTable = layerTable;
-    this.width = width;
-    this.height = height;
+  public getLayer(id: LayerNames[number]): CanvasLayerInfo {
+    return this._layerTable[id];
   }
 
-  public getContext(id: keyof T): CanvasRenderingContext2D {
-    return this._layerTable[id].context;
+  private resetSize() {
+    const rect = this._canvasWrapper.getBoundingClientRect();
+    this._width = rect.width;
+    this._height = rect.height;
+    this._layerNames.forEach((layerName: LayerNames[number]) => {
+      const layer = this._layerTable[layerName];
+      layer.canvas.width = this._width;
+      layer.canvas.height = this._height;
+    });
   }
 }
