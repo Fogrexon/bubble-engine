@@ -1,4 +1,4 @@
-import { PathBase } from './path/PathBase';
+import { PathBase } from './path';
 import { CanvasLayerInfo } from '../core';
 import { GraphicStyle, LineStyle } from './util';
 import { Vector2 } from '../math';
