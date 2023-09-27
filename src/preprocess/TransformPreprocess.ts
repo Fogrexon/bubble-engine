@@ -1,11 +1,11 @@
 /* eslint-disable no-use-before-define */
 import { Matrix3, Vector2 } from '../math';
-import { ComponentBase } from './ComponentBase';
+import { PreprocessBase } from './PreprocessBase';
 
 /**
  * GameEntryの場所を管理するコンポーネント
  */
-export class TransformComponent extends ComponentBase {
+export class TransformPreprocess extends PreprocessBase {
   /**
    * ローカル座標
    */
@@ -38,9 +38,9 @@ export class TransformComponent extends ComponentBase {
 
   private _worldScaleVector = new Vector2();
 
-  public parent: TransformComponent | null = null;
+  public parent: TransformPreprocess | null = null;
 
-  public children: TransformComponent[] = [];
+  public children: TransformPreprocess[] = [];
 
   /**
    * グローバル座標を取得する
@@ -73,7 +73,7 @@ export class TransformComponent extends ComponentBase {
    * 子供を追加する
    * @param child
    */
-  public addChild(child: TransformComponent): void {
+  public addChild(child: TransformPreprocess): void {
     child.parent = this;
     this.children.push(child);
   }
@@ -82,14 +82,16 @@ export class TransformComponent extends ComponentBase {
    * 子供を削除する
    * @param child
    */
-  public removeChild(child: TransformComponent): void {
+  public removeChild(child: TransformPreprocess): void {
     const index = this.children.indexOf(child);
     if (index >= 0) {
       this.children.splice(index, 1);
     }
   }
 
-  public update(): void {
+  public override process(): void {
+    if (!this.entry.enabled) return;
+
     // 行列の更新
     this.matrix.compose(this.position, this.rotation, this.scale);
     if (this.parent) {
@@ -99,33 +101,9 @@ export class TransformComponent extends ComponentBase {
       this.worldMatrix.copy(this.matrix);
     }
 
-    // 子コンポーネントの更新
+    // 子供の更新
     this.children.forEach((child) => {
-      child.update();
+      child.process();
     });
-  }
-
-  protected onDestroy(): void {
-    this.parent?.removeChild(this);
-  }
-
-  protected onDisable(): void {
-    // no impl
-  }
-
-  protected onEnable(): void {
-    // no impl
-  }
-
-  protected onInitialize(): void {
-    // no impl
-  }
-
-  protected onStart(): void {
-    // no impl
-  }
-
-  protected onUpdate(): void {
-    // no impl
   }
 }

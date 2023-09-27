@@ -1,6 +1,14 @@
-import { ComponentBase, TransformComponent } from '../component';
+import { ComponentBase } from '../component';
+import { CollisionPreprocess, GraphicPreprocess, TransformPreprocess } from '../preprocess';
 
 export abstract class GameEntry {
+  // プリプロセス系
+  public readonly transform: TransformPreprocess;
+
+  public readonly graphic: GraphicPreprocess;
+
+  public readonly collision: CollisionPreprocess;
+
   private _components: ComponentBase[] = [];
 
   private _destroyed = false;
@@ -29,14 +37,10 @@ export abstract class GameEntry {
     }
   }
 
-  public readonly transform;
-
-  public objectIndex: number = 0;
-
   protected constructor() {
-    const transform = new TransformComponent();
-    this.addComponent(transform);
-    this.transform = transform;
+    this.transform = new TransformPreprocess(this);
+    this.graphic = new GraphicPreprocess(this);
+    this.collision = new CollisionPreprocess(this);
   }
 
   // region LifeCycle
@@ -48,7 +52,6 @@ export abstract class GameEntry {
     });
 
     const childrenEntry = this.transform.children.map((childTransform) => childTransform.entry);
-    childrenEntry.sort((a, b) => a.objectIndex - b.objectIndex);
 
     childrenEntry.forEach((child) => {
       child.update(deltaTime);
@@ -65,12 +68,20 @@ export abstract class GameEntry {
 
   // region Process Components
 
+  /**
+   * コンポーネントを追加する
+   * @param component
+   */
   public addComponent<T extends ComponentBase>(component: T): T {
     this._components.push(component);
     component.innerAdded(this);
     return component;
   }
 
+  /**
+   * 自分のコンポーネントで最初に合致するものを取得する
+   * @param componentType
+   */
   public getComponent<T extends ComponentBase>(componentType: new (...args: any[]) => T): T | null {
     const foundComponent = this._components.find((component) => component instanceof componentType);
     if (foundComponent) {
@@ -80,6 +91,10 @@ export abstract class GameEntry {
     return null;
   }
 
+  /**
+   * 自分のコンポーネントで合致するものをすべて取得する
+   * @param componentType
+   */
   public getComponents<T extends ComponentBase>(componentType: new (...args: any[]) => T): T[] {
     const foundComponents = this._components.filter(
       (component) => component instanceof componentType
@@ -91,6 +106,10 @@ export abstract class GameEntry {
     return [];
   }
 
+  /**
+   * 自分を含む子孫のコンポーネントを探索して最初に合致するコンポーネントを取得
+   * @param componentType
+   */
   public getComponentInChildren<T extends ComponentBase>(
     componentType: new (...args: any[]) => T
   ): T | null {
@@ -110,6 +129,10 @@ export abstract class GameEntry {
     return null;
   }
 
+  /**
+   * 自分を含む子孫のコンポーネントを探索してすべて取得する
+   * @param componentType
+   */
   public getComponentsInChildren<T extends ComponentBase>(
     componentType: new (...args: any[]) => T
   ): T[] {
@@ -126,6 +149,10 @@ export abstract class GameEntry {
     return allComponents;
   }
 
+  /**
+   * 指定したコンポーネントを削除する
+   * @param component
+   */
   public removeComponent<T extends ComponentBase>(component: T): void {
     const foundIndex = this._components.findIndex((entry) => entry === component);
     if (foundIndex >= 0) {
@@ -134,6 +161,9 @@ export abstract class GameEntry {
     }
   }
 
+  /**
+   * 属するコンポーネントをすべて削除する
+   */
   public removeAllComponents(): void {
     this._components.forEach((component) => {
       component.innerDestroy();

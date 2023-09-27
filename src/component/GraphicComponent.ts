@@ -1,18 +1,29 @@
-import { ComponentBase } from './ComponentBase';
 import { GraphicBase } from '../graphic';
 import { CanvasLayerInfo } from '../core';
 import { Rect } from '../util';
+import { ComponentBase } from './ComponentBase';
 
+/**
+ * 描画系をつかさどるコンポーネント
+ */
 export class GraphicComponent extends ComponentBase {
+  /**
+   * グラフィックコンポーネントの回転
+   */
+  public rotation: number = 0;
+
+  /**
+   * グラフィックコンポーネントのバウンディングボックス
+   */
+  public readonly boundingRect: Rect = new Rect(0, 0, 0, 0);
+
   public readonly parts: GraphicBase[];
 
-  private readonly _layer: CanvasLayerInfo;
-
-  public readonly boundingRect: Rect = new Rect(0, 0, 0, 0);
+  public readonly layer: CanvasLayerInfo;
 
   constructor(layer: CanvasLayerInfo, parts: GraphicBase[]) {
     super();
-    this._layer = layer;
+    this.layer = layer;
     this.parts = parts;
   }
 
@@ -26,24 +37,5 @@ export class GraphicComponent extends ComponentBase {
 
   protected onStart(): void {}
 
-  protected onUpdate(): void {
-    const { worldMatrix } = this.entry.transform;
-    const ctx = this._layer.context;
-    ctx.save();
-    ctx.transform(
-      worldMatrix.m00,
-      worldMatrix.m01,
-      worldMatrix.m10,
-      worldMatrix.m11,
-      worldMatrix.m02,
-      worldMatrix.m12
-    );
-
-    this.parts.forEach((part, index) => {
-      const boundingBox = part.render(this._layer);
-      if (index === 0) this.boundingRect.copy(boundingBox);
-      else this.boundingRect.merge(boundingBox);
-    });
-    ctx.restore();
-  }
+  protected onUpdate(): void {}
 }

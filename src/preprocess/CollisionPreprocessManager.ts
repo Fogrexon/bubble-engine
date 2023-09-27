@@ -1,7 +1,7 @@
-import { ManagerBase } from './ManagerBase';
 import { CollisionLayerInfo } from './CollisionLayerInfo';
+import { PreprocessManager } from './PreprocessManager';
 
-export class CollisionManager<LayerNames extends string[]> extends ManagerBase {
+export class CollisionPreprocessManager<LayerNames extends string[]> extends PreprocessManager {
   private readonly _layerNames: LayerNames;
 
   private readonly _layerTable: Record<LayerNames[number], CollisionLayerInfo> = {} as Record<
@@ -21,18 +21,16 @@ export class CollisionManager<LayerNames extends string[]> extends ManagerBase {
     return this._layerTable[id];
   }
 
-  public beforeUpdate(): void {
+  public beforeProcess(): void {
     Object.keys(this._layerTable).forEach((layerName: LayerNames[number]) => {
       this._layerTable[layerName].colliders = [];
     });
   }
 
-  public afterUpdate(): void {
-    Object.keys(this._layerTable).forEach((layerName: LayerNames[number]) => {
-      const layer = this._layerTable[layerName];
-      layer.colliders.forEach((collider) => {
-        collider.update();
-      });
-    });
+  public afterProcess(): void {
+    // 衝突判定
+    // Object.keys(this._layerTable).forEach((layerName: LayerNames[number]) => {
+    // const layer = this._layerTable[layerName];
+    // });
   }
 }

@@ -24,6 +24,7 @@ export type TextStyle = {
 export type GraphicStyle = {
   fill?: string | CanvasGradient | CanvasPattern;
   stroke?: string | CanvasGradient | CanvasPattern;
+  alpha?: number;
 };
 
 export const setLineStyle = (context: CanvasRenderingContext2D, style: LineStyle): void => {
@@ -91,5 +92,8 @@ export const setGraphicStyle = (context: CanvasRenderingContext2D, style: Graphi
   }
   if (style.stroke) {
     context.strokeStyle = style.stroke;
+  }
+  if (style.alpha) {
+    context.globalAlpha = style.alpha;
   }
 };
