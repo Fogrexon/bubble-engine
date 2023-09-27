@@ -1,8 +1,8 @@
 import { GraphicBase } from './GraphicBase';
-import { CanvasLayerInfo } from '../core';
 import { Rect } from '../util';
 import { SpriteSheet } from '../asset';
 import { Vector2 } from '../math';
+import { CanvasLayerInfo } from '../preprocess';
 
 export class SpriteSheetGraphic extends GraphicBase {
   public readonly position = new Vector2();

@@ -44,17 +44,17 @@ export abstract class GameEntry {
   }
 
   // region LifeCycle
-  public update(deltaTime: number): void {
+  public update(): void {
     this._components = this._components.filter((component) => !component.destroyed);
 
     this._components.forEach((component) => {
-      component.innerUpdate(deltaTime);
+      component.innerUpdate();
     });
 
     const childrenEntry = this.transform.children.map((childTransform) => childTransform.entry);
 
     childrenEntry.forEach((child) => {
-      child.update(deltaTime);
+      child.update();
     });
   }
 

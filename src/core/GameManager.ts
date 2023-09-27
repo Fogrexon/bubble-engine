@@ -1,24 +1,35 @@
-import { ManagerBase } from './ManagerBase';
+import { GamePipeline } from './GamePipeline';
+import { LevelSelector } from '../levelControl';
 
 /**
  * ゲーム全体のライフタイムを管理
  */
 export class GameManager {
-  private requestAnimationFrameId: number = -1;
+  private _requestAnimationFrameId: number = -1;
 
-  private managers: ManagerBase[];
+  private _gamePipeline: GamePipeline;
 
-  constructor(managers: ManagerBase[]) {
-    this.managers = managers;
+  private _levelSelector: LevelSelector;
+
+  constructor(gamePipeline: GamePipeline, levelSelector: LevelSelector) {
+    this._gamePipeline = gamePipeline;
+    this._levelSelector = levelSelector;
   }
 
+  /**
+   * ゲームの開始
+   */
   public start() {
-    this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
+    this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
   }
 
-  public update() {
-    this.managers.forEach((manager) => manager.beforeUpdate());
-    this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
-    this.managers.forEach((manager) => manager.afterUpdate());
+  /**
+   * ゲームのメインループ
+   */
+  public gameLoop() {
+    this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+
+    const currentLevelManager = this._levelSelector.currentLevel();
+    this._gamePipeline.process(currentLevelManager);
   }
 }

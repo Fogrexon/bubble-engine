@@ -2,7 +2,7 @@ import { PreprocessBase } from './PreprocessBase';
 import { ColliderComponent } from '../component';
 
 export class CollisionPreprocess extends PreprocessBase {
-  public process(deltaTime: number): void {
+  public process(): void {
     if (!this.entry.enabled) return;
 
     const collider = this.entry.getComponent(ColliderComponent);
@@ -14,7 +14,7 @@ export class CollisionPreprocess extends PreprocessBase {
       (childTransform) => childTransform.entry.collision
     );
     childrenCollision.forEach((child) => {
-      child.process(deltaTime);
+      child.process();
     });
   }
 }

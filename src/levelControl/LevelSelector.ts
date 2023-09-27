@@ -2,23 +2,30 @@ import { LevelManager } from './LevelManager';
 
 type LevelRecord = Record<string, LevelManager>;
 
-export class LevelSelector {
-  private static levels: LevelRecord;
+export class LevelSelector<T extends LevelRecord = LevelRecord> {
+  private readonly _levelRecord: T;
 
-  private static currentLevelKey: keyof LevelRecord = '';
+  private _currentLevelKey: keyof T;
 
-  public static init(levels: LevelRecord) {
-    LevelSelector.levels = levels;
-    [LevelSelector.currentLevelKey] = Object.keys(levels);
+  constructor(levels: T, initialLevelKey: keyof T) {
+    this._levelRecord = levels;
+    this._currentLevelKey = initialLevelKey;
   }
 
-  public static moveLevel(levelName: keyof LevelRecord) {
-    LevelSelector.levels[this.currentLevelKey].exit();
-    this.currentLevelKey = levelName;
-    LevelSelector.levels[this.currentLevelKey].start();
+  /**
+   * レベルを移動
+   * @param levelName
+   */
+  public moveLevel(levelName: keyof LevelRecord) {
+    this._levelRecord[this._currentLevelKey].exit();
+    this._currentLevelKey = levelName;
+    this._levelRecord[this._currentLevelKey].start();
   }
 
-  public static currentLevel() {
-    return LevelSelector.levels[LevelSelector.currentLevelKey];
+  /**
+   * 現在のレベルのLevelManagerを取得
+   */
+  public currentLevel() {
+    return this._levelRecord[this._currentLevelKey];
   }
 }

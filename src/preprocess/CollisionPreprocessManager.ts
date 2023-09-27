@@ -1,7 +1,9 @@
 import { CollisionLayerInfo } from './CollisionLayerInfo';
 import { PreprocessManager } from './PreprocessManager';
 
-export class CollisionPreprocessManager<LayerNames extends string[]> extends PreprocessManager {
+export class CollisionPreprocessManager<
+  LayerNames extends string[] = string[]
+> extends PreprocessManager {
   private readonly _layerNames: LayerNames;
 
   private readonly _layerTable: Record<LayerNames[number], CollisionLayerInfo> = {} as Record<

@@ -10,7 +10,7 @@ export class GraphicPreprocess extends PreprocessBase {
    */
   public index: number = 0;
 
-  public process(deltaTime: number): void {
+  public process(): void {
     if (!this.entry.enabled) return;
 
     const comp = this.entry.getComponent(GraphicComponent);
@@ -24,7 +24,7 @@ export class GraphicPreprocess extends PreprocessBase {
     );
     childrenGraphic.sort((a, b) => a.index - b.index);
     childrenGraphic.forEach((child) => {
-      child.process(deltaTime);
+      child.process();
     });
   }
 

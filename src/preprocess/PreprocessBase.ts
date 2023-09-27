@@ -10,5 +10,5 @@ export abstract class PreprocessBase {
     this.entry = entry;
   }
 
-  public abstract process(deltaTime: number): void;
+  public abstract process(): void;
 }

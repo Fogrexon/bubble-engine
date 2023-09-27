@@ -12,45 +12,55 @@ export enum LevelState {
 }
 
 export interface LevelManagerSettings {
-  dependedEntries: GameEntry[];
+  rootEntry: GameEntry;
 }
 
+/**
+ * レベルに関する処理を管轄するクラス
+ */
 export class LevelManager {
-  private dependedEntries: GameEntry[];
+  /**
+   * レベルにあるEntryのルート
+   */
+  public readonly rootEntry;
 
+  /**
+   * レベルの状態を表す
+   * @protected
+   */
   protected state: LevelState;
 
   protected constructor(levelManagerSettings: LevelManagerSettings) {
-    this.dependedEntries = levelManagerSettings.dependedEntries;
+    this.rootEntry = levelManagerSettings.rootEntry;
     this.state = LevelState.Playing;
   }
 
   protected levelEventListener(levelEventType: LevelEventType) {
     switch (levelEventType) {
-    case LevelEventType.LevelStart:
-      // do nothing
-      break;
-    case LevelEventType.Pause:
-      this.state = LevelState.Paused;
-      this.pause();
-      break;
-    case LevelEventType.Resume:
-      this.state = LevelState.Playing;
-      this.resume();
-      break;
-    case LevelEventType.PlayerDeath:
-      this.playerDeath();
-      break;
-    case LevelEventType.GameClear:
-      this.state = LevelState.GameClear;
-      this.gameClear();
-      break;
-    case LevelEventType.GameOver:
-      this.state = LevelState.GameOver;
-      this.gameOver();
-      break;
-    default:
-      throw new Error(`LevelManager: Invalid LevelEventType (${levelEventType})`);
+      case LevelEventType.LevelStart:
+        // do nothing
+        break;
+      case LevelEventType.Pause:
+        this.state = LevelState.Paused;
+        this.pause();
+        break;
+      case LevelEventType.Resume:
+        this.state = LevelState.Playing;
+        this.resume();
+        break;
+      case LevelEventType.PlayerDeath:
+        this.playerDeath();
+        break;
+      case LevelEventType.GameClear:
+        this.state = LevelState.GameClear;
+        this.gameClear();
+        break;
+      case LevelEventType.GameOver:
+        this.state = LevelState.GameOver;
+        this.gameOver();
+        break;
+      default:
+        throw new Error(`LevelManager: Invalid LevelEventType (${levelEventType})`);
     }
   }
 
@@ -59,16 +69,8 @@ export class LevelManager {
     LevelEvent.listen(this.levelEventListener.bind(this));
   }
 
-  public update(deltaTime: number) {
-    this.dependedEntries.forEach((entry) => {
-      entry.update(deltaTime);
-    });
-  }
-
   public exit() {
-    this.dependedEntries.forEach((entry) => {
-      entry.destroy();
-    });
+    this.rootEntry.destroy();
     LevelEvent.unlisten(this.levelEventListener.bind(this));
   }
 

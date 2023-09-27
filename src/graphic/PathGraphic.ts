@@ -1,8 +1,8 @@
 import { PathBase } from './path';
-import { CanvasLayerInfo } from '../core';
 import { GraphicStyle, LineStyle } from './util';
 import { Vector2 } from '../math';
 import { GraphicBase } from './GraphicBase';
+import { CanvasLayerInfo } from '../preprocess';
 
 export class PathGraphic extends GraphicBase {
   public path: PathBase[];

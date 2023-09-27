@@ -1,7 +1,7 @@
 import { GraphicBase } from '../graphic';
-import { CanvasLayerInfo } from '../core';
 import { Rect } from '../util';
 import { ComponentBase } from './ComponentBase';
+import { CanvasLayerInfo } from '../preprocess/CanvasLayerInfo';
 
 /**
  * 描画系をつかさどるコンポーネント

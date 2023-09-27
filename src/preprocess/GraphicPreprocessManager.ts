@@ -1,7 +1,9 @@
 import { CanvasLayerInfo } from './CanvasLayerInfo';
 import { PreprocessManager } from './PreprocessManager';
 
-export class GraphicPreprocessManager<LayerNames extends string[]> extends PreprocessManager {
+export class GraphicPreprocessManager<
+  LayerNames extends string[] = string[]
+> extends PreprocessManager {
   private _layerNames: LayerNames;
 
   private _layerTable: Record<LayerNames[number], CanvasLayerInfo>;
