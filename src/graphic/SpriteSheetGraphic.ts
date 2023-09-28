@@ -1,7 +1,7 @@
 import { GraphicBase } from './GraphicBase';
 import { CanvasLayerInfo } from '../core';
 import { Rect } from '../util';
-import { SpriteSheet } from '../asset';
+import { SpriteSheetAsset } from '../loader/asset';
 import { Vector2 } from '../math';
 
 export class SpriteSheetGraphic extends GraphicBase {
@@ -9,11 +9,11 @@ export class SpriteSheetGraphic extends GraphicBase {
 
   public readonly size = new Vector2();
 
-  public sprite: SpriteSheet;
+  public sprite: SpriteSheetAsset;
 
   public spriteIndex: number;
 
-  constructor(sprite: SpriteSheet) {
+  constructor(sprite: SpriteSheetAsset) {
     super();
     this.sprite = sprite;
     this.size.set(sprite.segmentWidth, sprite.segmentHeight);

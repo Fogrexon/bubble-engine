@@ -1,6 +1,9 @@
 import { AssetBase } from './AssetBase';
 
-export class SplitSprite extends AssetBase<HTMLImageElement> {
+/**
+ * 画像の一部を切り出した画像を表すクラス
+ */
+export class SubSpriteAsset extends AssetBase<HTMLImageElement> {
   public readonly left: number;
 
   public readonly top: number;
@@ -9,8 +12,8 @@ export class SplitSprite extends AssetBase<HTMLImageElement> {
 
   public readonly bottom: number;
 
-  constructor(data: HTMLImageElement, left: number, top: number, right: number, bottom: number) {
-    super(data);
+  constructor(path: string, left: number, top: number, right: number, bottom: number) {
+    super(path, 'image');
     this.left = left;
     this.top = top;
     this.right = right;
