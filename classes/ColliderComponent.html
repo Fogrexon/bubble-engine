@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>TransformComponent | @fogrexon/bubble-engine</title><meta name="description" content="Documentation for @fogrexon/bubble-engine"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>ColliderComponent | @fogrexon/bubble-engine</title><meta name="description" content="Documentation for @fogrexon/bubble-engine"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -13,10 +13,10 @@
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">@fogrexon/bubble-engine</a></li>
-<li><a href="TransformComponent.html">TransformComponent</a></li></ul>
-<h1>Class TransformComponent</h1></div>
+<li><a href="ColliderComponent.html">ColliderComponent</a></li></ul>
+<h1>Class ColliderComponent</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>GameEntryの場所を管理するコンポーネント</p>
+<div class="tsd-comment tsd-typography"><p>コライダーを格納するコンポーネント</p>
 </div>
 <div class="tsd-comment tsd-typography"></div></section>
 <section class="tsd-panel tsd-hierarchy">
@@ -24,9 +24,9 @@
 <ul class="tsd-hierarchy">
 <li><a href="ComponentBase.html" class="tsd-signature-type tsd-kind-class">ComponentBase</a>
 <ul class="tsd-hierarchy">
-<li><span class="target">TransformComponent</span></li></ul></li></ul></section><aside class="tsd-sources">
+<li><span class="target">ColliderComponent</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L8">component/TransformComponent.ts:8</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L8">component/ColliderComponent.ts:8</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -34,109 +34,63 @@
 <div class="tsd-accordion-details">
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Constructors</h3>
-<div class="tsd-index-list"><a href="TransformComponent.html#constructor" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-512"><rect fill="var(--color-icon-background)" stroke="#4D7FFF" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)"></path></g></svg><span>constructor</span></a>
+<div class="tsd-index-list"><a href="ColliderComponent.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-512"><rect fill="var(--color-icon-background)" stroke="#4D7FFF" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)"></path></g></svg><span>constructor</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Properties</h3>
-<div class="tsd-index-list"><a href="TransformComponent.html#_cachedMatrix" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-1024"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)"></path></g></svg><span>_cached<wbr/>Matrix</span></a>
-<a href="TransformComponent.html#_cachedWorldMatrix" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_cached<wbr/>World<wbr/>Matrix</span></a>
-<a href="TransformComponent.html#_isMatrixCached" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_is<wbr/>Matrix<wbr/>Cached</span></a>
-<a href="TransformComponent.html#_isWorldMatrixCached" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_is<wbr/>World<wbr/>Matrix<wbr/>Cached</span></a>
-<a href="TransformComponent.html#_worldPositionVector" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_world<wbr/>Position<wbr/>Vector</span></a>
-<a href="TransformComponent.html#children" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>children</span></a>
-<a href="TransformComponent.html#parent" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>parent</span></a>
-<a href="TransformComponent.html#position" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>position</span></a>
-<a href="TransformComponent.html#rotation" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>rotation</span></a>
-<a href="TransformComponent.html#scale" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>scale</span></a>
+<div class="tsd-index-list"><a href="ColliderComponent.html#colliders" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-1024"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)"></path></g></svg><span>colliders</span></a>
+<a href="ColliderComponent.html#layer" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>layer</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Accessors</h3>
-<div class="tsd-index-list"><a href="TransformComponent.html#destroyed" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-262144"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)"></path></g></svg><span>destroyed</span></a>
-<a href="TransformComponent.html#enabled" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>enabled</span></a>
-<a href="TransformComponent.html#entry" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>entry</span></a>
-<a href="TransformComponent.html#matrix" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>matrix</span></a>
-<a href="TransformComponent.html#worldMatrix" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>world<wbr/>Matrix</span></a>
-<a href="TransformComponent.html#worldPosition" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>world<wbr/>Position</span></a>
-<a href="TransformComponent.html#worldRotation" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>world<wbr/>Rotation</span></a>
+<div class="tsd-index-list"><a href="ColliderComponent.html#destroyed" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-262144"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)"></path></g></svg><span>destroyed</span></a>
+<a href="ColliderComponent.html#enabled" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>enabled</span></a>
+<a href="ColliderComponent.html#entry" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>entry</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
-<div class="tsd-index-list"><a href="TransformComponent.html#addChild" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-2048"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)"></path></g></svg><span>add<wbr/>Child</span></a>
-<a href="TransformComponent.html#innerAdded" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Added</span></a>
-<a href="TransformComponent.html#innerDestroy" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Destroy</span></a>
-<a href="TransformComponent.html#innerDisable" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Disable</span></a>
-<a href="TransformComponent.html#innerEnable" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Enable</span></a>
-<a href="TransformComponent.html#innerUpdate" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Update</span></a>
-<a href="TransformComponent.html#onDestroy" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Destroy</span></a>
-<a href="TransformComponent.html#onDisable" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Disable</span></a>
-<a href="TransformComponent.html#onEnable" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Enable</span></a>
-<a href="TransformComponent.html#onInitialize" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Initialize</span></a>
-<a href="TransformComponent.html#onStart" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Start</span></a>
-<a href="TransformComponent.html#onUpdate" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Update</span></a>
-<a href="TransformComponent.html#removeChild" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>remove<wbr/>Child</span></a>
-<a href="TransformComponent.html#update" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>update</span></a>
+<div class="tsd-index-list"><a href="ColliderComponent.html#innerAdded" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-2048"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)"></path></g></svg><span>inner<wbr/>Added</span></a>
+<a href="ColliderComponent.html#innerDestroy" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Destroy</span></a>
+<a href="ColliderComponent.html#innerDisable" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Disable</span></a>
+<a href="ColliderComponent.html#innerEnable" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Enable</span></a>
+<a href="ColliderComponent.html#innerUpdate" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Update</span></a>
+<a href="ColliderComponent.html#onDestroy" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Destroy</span></a>
+<a href="ColliderComponent.html#onDisable" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Disable</span></a>
+<a href="ColliderComponent.html#onEnable" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Enable</span></a>
+<a href="ColliderComponent.html#onInitialize" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Initialize</span></a>
+<a href="ColliderComponent.html#onStart" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Start</span></a>
+<a href="ColliderComponent.html#onUpdate" class="tsd-index-link tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Update</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
-<section class="tsd-panel tsd-member tsd-is-inherited"><a id="constructor" class="tsd-anchor"></a>
+<section class="tsd-panel tsd-member"><a id="constructor" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" id="icon-anchor"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></g></svg></a></h3>
-<ul class="tsd-signatures tsd-is-inherited">
-<li class="tsd-signature tsd-anchor-link" id="constructor.new_TransformComponent"><span class="tsd-kind-constructor-signature">new <wbr/>Transform<wbr/>Component</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="TransformComponent.html" class="tsd-signature-type tsd-kind-class">TransformComponent</a><a href="#constructor.new_TransformComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="constructor.new_ColliderComponent"><span class="tsd-kind-constructor-signature">new <wbr/>Collider<wbr/>Component</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">colliders</span>, <span class="tsd-kind-parameter">layer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ColliderComponent.html" class="tsd-signature-type tsd-kind-class">ColliderComponent</a><a href="#constructor.new_ColliderComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="TransformComponent.html" class="tsd-signature-type tsd-kind-class">TransformComponent</a></h4><aside class="tsd-sources">
-<p>Inherited from <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#constructor">constructor</a></p></aside></li></ul></section></section>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">colliders</span>: <span class="tsd-signature-type ">ColliderBase</span><span class="tsd-signature-symbol">[]</span></h5></li>
+<li>
+<h5><span class="tsd-kind-parameter">layer</span>: <span class="tsd-signature-type ">CollisionLayerInfo</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="ColliderComponent.html" class="tsd-signature-type tsd-kind-class">ColliderComponent</a></h4><aside class="tsd-sources">
+<p>Overrides <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#constructor">constructor</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L13">component/ColliderComponent.ts:13</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="_cachedMatrix" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_cached<wbr/>Matrix</span><a href="#_cachedMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">_cached<wbr/>Matrix</span><span class="tsd-signature-symbol">:</span> <a href="Matrix3.html" class="tsd-signature-type tsd-kind-class">Matrix3</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<section class="tsd-panel tsd-member"><a id="colliders" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>colliders</span><a href="#colliders" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">colliders</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">ColliderBase</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L21">component/TransformComponent.ts:21</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="_cachedWorldMatrix" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_cached<wbr/>World<wbr/>Matrix</span><a href="#_cachedWorldMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">_cached<wbr/>World<wbr/>Matrix</span><span class="tsd-signature-symbol">:</span> <a href="Matrix3.html" class="tsd-signature-type tsd-kind-class">Matrix3</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L9">component/ColliderComponent.ts:9</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="layer" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>layer</span><a href="#layer" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">layer</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">CollisionLayerInfo</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L23">component/TransformComponent.ts:23</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="_isMatrixCached" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_is<wbr/>Matrix<wbr/>Cached</span><a href="#_isMatrixCached" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">_is<wbr/>Matrix<wbr/>Cached</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L17">component/TransformComponent.ts:17</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="_isWorldMatrixCached" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_is<wbr/>World<wbr/>Matrix<wbr/>Cached</span><a href="#_isWorldMatrixCached" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">_is<wbr/>World<wbr/>Matrix<wbr/>Cached</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L19">component/TransformComponent.ts:19</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="_worldPositionVector" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>_world<wbr/>Position<wbr/>Vector</span><a href="#_worldPositionVector" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">_world<wbr/>Position<wbr/>Vector</span><span class="tsd-signature-symbol">:</span> <a href="Vector2.html" class="tsd-signature-type tsd-kind-class">Vector2</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L15">component/TransformComponent.ts:15</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member"><a id="children" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>children</span><a href="#children" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">children</span><span class="tsd-signature-symbol">:</span> <a href="TransformComponent.html" class="tsd-signature-type tsd-kind-class">TransformComponent</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L27">component/TransformComponent.ts:27</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member"><a id="parent" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>parent</span><a href="#parent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">parent</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="TransformComponent.html" class="tsd-signature-type tsd-kind-class">TransformComponent</a><span class="tsd-signature-symbol"> = null</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L25">component/TransformComponent.ts:25</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member"><a id="position" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>position</span><a href="#position" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">position</span><span class="tsd-signature-symbol">:</span> <a href="Vector2.html" class="tsd-signature-type tsd-kind-class">Vector2</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L9">component/TransformComponent.ts:9</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member"><a id="rotation" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>rotation</span><a href="#rotation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">rotation</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L11">component/TransformComponent.ts:11</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member"><a id="scale" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>scale</span><a href="#scale" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">scale</span><span class="tsd-signature-symbol">:</span> <a href="Vector2.html" class="tsd-signature-type tsd-kind-class">Vector2</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L13">component/TransformComponent.ts:13</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L11">component/ColliderComponent.ts:11</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="destroyed" class="tsd-anchor"></a>
@@ -147,7 +101,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from ComponentBase.destroyed</p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L38">component/ComponentBase.ts:38</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L38">component/ComponentBase.ts:38</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="enabled" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>enabled</span><a href="#enabled" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -156,7 +110,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from ComponentBase.enabled</p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L17">component/ComponentBase.ts:17</a></li></ul></aside></li>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L17">component/ComponentBase.ts:17</a></li></ul></aside></li>
 <li class="tsd-signature" id="enabled.enabled-2"><span class="tsd-signature-symbol">set</span> enabled<span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">value</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
@@ -167,7 +121,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from ComponentBase.enabled</p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L21">component/ComponentBase.ts:21</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L21">component/ComponentBase.ts:21</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="entry" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>entry</span><a href="#entry" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -176,54 +130,9 @@
 <h4 class="tsd-returns-title">Returns <a href="GameEntry.html" class="tsd-signature-type tsd-kind-class">GameEntry</a></h4><aside class="tsd-sources">
 <p>Inherited from ComponentBase.entry</p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L6">component/ComponentBase.ts:6</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="matrix" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>matrix</span><a href="#matrix" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature" id="matrix.matrix-1"><span class="tsd-signature-symbol">get</span> matrix<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Matrix3.html" class="tsd-signature-type tsd-kind-class">Matrix3</a></li>
-<li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="Matrix3.html" class="tsd-signature-type tsd-kind-class">Matrix3</a></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L29">component/TransformComponent.ts:29</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="worldMatrix" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>world<wbr/>Matrix</span><a href="#worldMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature" id="worldMatrix.worldMatrix-1"><span class="tsd-signature-symbol">get</span> worldMatrix<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Matrix3.html" class="tsd-signature-type tsd-kind-class">Matrix3</a></li>
-<li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="Matrix3.html" class="tsd-signature-type tsd-kind-class">Matrix3</a></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L37">component/TransformComponent.ts:37</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="worldPosition" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>world<wbr/>Position</span><a href="#worldPosition" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature" id="worldPosition.worldPosition-1"><span class="tsd-signature-symbol">get</span> worldPosition<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Vector2.html" class="tsd-signature-type tsd-kind-class">Vector2</a></li>
-<li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="Vector2.html" class="tsd-signature-type tsd-kind-class">Vector2</a></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L51">component/TransformComponent.ts:51</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="worldRotation" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>world<wbr/>Rotation</span><a href="#worldRotation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature" id="worldRotation.worldRotation-1"><span class="tsd-signature-symbol">get</span> worldRotation<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-<li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L56">component/TransformComponent.ts:56</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L6">component/ComponentBase.ts:6</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
-<section class="tsd-panel tsd-member"><a id="addChild" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>add<wbr/>Child</span><a href="#addChild" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="addChild.addChild-1"><span class="tsd-kind-call-signature">add<wbr/>Child</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">child</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#addChild.addChild-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">child</span>: <a href="TransformComponent.html" class="tsd-signature-type tsd-kind-class">TransformComponent</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L63">component/TransformComponent.ts:63</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="innerAdded" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>inner<wbr/>Added</span><a href="#innerAdded" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -237,7 +146,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#innerAdded">innerAdded</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L44">component/ComponentBase.ts:44</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L44">component/ComponentBase.ts:44</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="innerDestroy" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>inner<wbr/>Destroy</span><a href="#innerDestroy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -246,7 +155,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#innerDestroy">innerDestroy</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L79">component/ComponentBase.ts:79</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L79">component/ComponentBase.ts:79</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="innerDisable" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>inner<wbr/>Disable</span><a href="#innerDisable" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -255,7 +164,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#innerDisable">innerDisable</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L73">component/ComponentBase.ts:73</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L73">component/ComponentBase.ts:73</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="innerEnable" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>inner<wbr/>Enable</span><a href="#innerEnable" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -264,21 +173,16 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#innerEnable">innerEnable</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L66">component/ComponentBase.ts:66</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L66">component/ComponentBase.ts:66</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="innerUpdate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>inner<wbr/>Update</span><a href="#innerUpdate" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
-<li class="tsd-signature tsd-anchor-link" id="innerUpdate.innerUpdate-1"><span class="tsd-kind-call-signature">inner<wbr/>Update</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">deltaTime</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#innerUpdate.innerUpdate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="innerUpdate.innerUpdate-1"><span class="tsd-kind-call-signature">inner<wbr/>Update</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#innerUpdate.innerUpdate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">deltaTime</span>: <span class="tsd-signature-type">number</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#innerUpdate">innerUpdate</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/ComponentBase.ts#L51">component/ComponentBase.ts:51</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ComponentBase.ts#L51">component/ComponentBase.ts:51</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="onDestroy" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>on<wbr/>Destroy</span><a href="#onDestroy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -287,7 +191,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#onDestroy">onDestroy</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L81">component/TransformComponent.ts:81</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L19">component/ColliderComponent.ts:19</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="onDisable" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>on<wbr/>Disable</span><a href="#onDisable" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -296,7 +200,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#onDisable">onDisable</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L85">component/TransformComponent.ts:85</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L21">component/ColliderComponent.ts:21</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="onEnable" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>on<wbr/>Enable</span><a href="#onEnable" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -305,7 +209,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#onEnable">onEnable</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L89">component/TransformComponent.ts:89</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L23">component/ColliderComponent.ts:23</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="onInitialize" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>on<wbr/>Initialize</span><a href="#onInitialize" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -314,7 +218,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#onInitialize">onInitialize</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L93">component/TransformComponent.ts:93</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L25">component/ColliderComponent.ts:25</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="onStart" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>on<wbr/>Start</span><a href="#onStart" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -323,7 +227,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#onStart">onStart</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L97">component/TransformComponent.ts:97</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L27">component/ColliderComponent.ts:27</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-protected"><a id="onUpdate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>on<wbr/>Update</span><a href="#onUpdate" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-protected">
@@ -332,28 +236,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="ComponentBase.html">ComponentBase</a>.<a href="ComponentBase.html#onUpdate">onUpdate</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L101">component/TransformComponent.ts:101</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="removeChild" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>remove<wbr/>Child</span><a href="#removeChild" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="removeChild.removeChild-1"><span class="tsd-kind-call-signature">remove<wbr/>Child</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">child</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#removeChild.removeChild-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">child</span>: <a href="TransformComponent.html" class="tsd-signature-type tsd-kind-class">TransformComponent</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L68">component/TransformComponent.ts:68</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="update" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>update</span><a href="#update" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="update.update-1"><span class="tsd-kind-call-signature">update</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#update.update-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/11a6fb8/src/component/TransformComponent.ts#L75">component/TransformComponent.ts:75</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/9408dd5/src/component/ColliderComponent.ts#L29">component/ColliderComponent.ts:29</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -373,25 +256,12 @@
 <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="#icon-chevronDown"></use></svg>On This Page</h3></summary>
 <div class="tsd-accordion-details">
 <ul>
-<li><a href="#constructor" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-512"></use></svg><span>constructor</span></a></li>
-<li><a href="#_cachedMatrix" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_cached<wbr/>Matrix</span></a></li>
-<li><a href="#_cachedWorldMatrix" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_cached<wbr/>World<wbr/>Matrix</span></a></li>
-<li><a href="#_isMatrixCached" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_is<wbr/>Matrix<wbr/>Cached</span></a></li>
-<li><a href="#_isWorldMatrixCached" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_is<wbr/>World<wbr/>Matrix<wbr/>Cached</span></a></li>
-<li><a href="#_worldPositionVector" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>_world<wbr/>Position<wbr/>Vector</span></a></li>
-<li><a href="#children" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>children</span></a></li>
-<li><a href="#parent" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>parent</span></a></li>
-<li><a href="#position" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>position</span></a></li>
-<li><a href="#rotation" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>rotation</span></a></li>
-<li><a href="#scale" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>scale</span></a></li>
+<li><a href="#constructor" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-512"></use></svg><span>constructor</span></a></li>
+<li><a href="#colliders" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>colliders</span></a></li>
+<li><a href="#layer" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>layer</span></a></li>
 <li><a href="#destroyed" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>destroyed</span></a></li>
 <li><a href="#enabled" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>enabled</span></a></li>
 <li><a href="#entry" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>entry</span></a></li>
-<li><a href="#matrix" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>matrix</span></a></li>
-<li><a href="#worldMatrix" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>world<wbr/>Matrix</span></a></li>
-<li><a href="#worldPosition" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>world<wbr/>Position</span></a></li>
-<li><a href="#worldRotation" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>world<wbr/>Rotation</span></a></li>
-<li><a href="#addChild" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Child</span></a></li>
 <li><a href="#innerAdded" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Added</span></a></li>
 <li><a href="#innerDestroy" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Destroy</span></a></li>
 <li><a href="#innerDisable" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>inner<wbr/>Disable</span></a></li>
@@ -402,9 +272,7 @@
 <li><a href="#onEnable" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Enable</span></a></li>
 <li><a href="#onInitialize" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Initialize</span></a></li>
 <li><a href="#onStart" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Start</span></a></li>
-<li><a href="#onUpdate" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Update</span></a></li>
-<li><a href="#removeChild" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>remove<wbr/>Child</span></a></li>
-<li><a href="#update" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>update</span></a></li></ul></div></details></div>
+<li><a href="#onUpdate" class="tsd-is-protected"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>on<wbr/>Update</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)"></path></g></svg><span>@fogrexon/bubble-<wbr/>engine</span></a>
 <ul class="tsd-small-nested-navigation">
@@ -414,16 +282,16 @@
 <li><a href="ActionLevelManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-128"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)"></path></g></svg><span>Action<wbr/>Level<wbr/>Manager</span></a></li>
 <li><a href="AssetBase.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Asset<wbr/>Base</span></a></li>
 <li><a href="BeginPath.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Begin<wbr/>Path</span></a></li>
-<li><a href="CanvasLayerInfo.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Canvas<wbr/>Layer<wbr/>Info</span></a></li>
 <li><a href="ClosePath.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Close<wbr/>Path</span></a></li>
+<li><a href="ColliderComponent.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Collider<wbr/>Component</span></a></li>
 <li><a href="Color.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Color</span></a></li>
 <li><a href="ComponentBase.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Component<wbr/>Base</span></a></li>
 <li><a href="DynamicFileLoader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Dynamic<wbr/>File<wbr/>Loader</span></a></li>
 <li><a href="GameEntry.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Game<wbr/>Entry</span></a></li>
 <li><a href="GameManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Game<wbr/>Manager</span></a></li>
+<li><a href="GamePipeline.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Game<wbr/>Pipeline</span></a></li>
 <li><a href="GraphicBase.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Graphic<wbr/>Base</span></a></li>
 <li><a href="GraphicComponent.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Graphic<wbr/>Component</span></a></li>
-<li><a href="GraphicManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Graphic<wbr/>Manager</span></a></li>
 <li><a href="InputManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Input<wbr/>Manager</span></a></li>
 <li><a href="KeyBinder.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Key<wbr/>Binder</span></a></li>
 <li><a href="LevelManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Level<wbr/>Manager</span></a></li>
@@ -444,7 +312,7 @@
 <li><a href="SpriteSheetGraphic.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Sprite<wbr/>Sheet<wbr/>Graphic</span></a></li>
 <li><a href="StaticFileLoader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Static<wbr/>File<wbr/>Loader</span></a></li>
 <li><a href="TextGraphic.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Text<wbr/>Graphic</span></a></li>
-<li><a href="TransformComponent.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Transform<wbr/>Component</span></a></li>
+<li><a href="Time.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Time</span></a></li>
 <li><a href="Vector2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Vector2</span></a></li>
 <li><a href="Vector2Provider.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Vector2<wbr/>Provider</span></a></li>
 <li><a href="Vector3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Vector3</span></a></li>
