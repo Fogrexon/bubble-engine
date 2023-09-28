@@ -1,5 +1,6 @@
 import { CollisionLayerInfo } from './CollisionLayerInfo';
 import { PreprocessManager } from './PreprocessManager';
+import { UndirectedTable } from '../util/Table';
 
 export class CollisionPreprocessManager<
   LayerNames extends string[] = string[]
@@ -11,14 +12,21 @@ export class CollisionPreprocessManager<
     CollisionLayerInfo
   >;
 
+  public readonly collisionTable: UndirectedTable<LayerNames, boolean>;
+
   constructor(layers: LayerNames) {
     super();
     this._layerNames = layers;
     layers.forEach((layerName: LayerNames[number]) => {
       this._layerTable[layerName] = new CollisionLayerInfo();
     });
+    this.collisionTable = new UndirectedTable<LayerNames, boolean>(layers, true);
   }
 
+  /**
+   * レイヤーIDからレイヤーを取得
+   * @param id
+   */
   public getLayer(id: LayerNames[number]): CollisionLayerInfo {
     return this._layerTable[id];
   }

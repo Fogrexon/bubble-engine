@@ -1,6 +1,6 @@
 import { ComponentBase } from './ComponentBase';
 import { ColliderBase } from '../collision';
-import { CollisionLayerInfo } from '../preprocess/CollisionLayerInfo';
+import { CollisionLayerInfo } from '../preprocess';
 
 /**
  * コライダーを格納するコンポーネント

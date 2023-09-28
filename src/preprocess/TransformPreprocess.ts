@@ -34,9 +34,9 @@ export class TransformPreprocess extends PreprocessBase {
    */
   public readonly worldMatrix: Matrix3 = new Matrix3();
 
-  private _worldPositionVector = new Vector2();
+  private _worldPosition = new Vector2();
 
-  private _worldScaleVector = new Vector2();
+  private _worldScale = new Vector2();
 
   public parent: TransformPreprocess | null = null;
 
@@ -47,7 +47,7 @@ export class TransformPreprocess extends PreprocessBase {
    */
   public get worldPosition(): Vector2 {
     const { worldMatrix } = this;
-    return this._worldPositionVector.set(worldMatrix.m02, worldMatrix.m12);
+    return this._worldPosition.set(worldMatrix.m02, worldMatrix.m12);
   }
 
   /**
@@ -66,7 +66,7 @@ export class TransformPreprocess extends PreprocessBase {
    */
   public get worldScale(): Vector2 {
     const { worldMatrix } = this;
-    return this._worldScaleVector.set(worldMatrix.m00, worldMatrix.m11);
+    return this._worldScale.set(worldMatrix.m00, worldMatrix.m11);
   }
 
   /**

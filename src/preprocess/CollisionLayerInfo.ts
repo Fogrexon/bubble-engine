@@ -1,9 +1,9 @@
-import { ColliderBase } from '../collision';
+import { ColliderComponent } from '../component';
 
 export class CollisionLayerInfo {
-  public colliders: ColliderBase[] = [];
+  public colliders: ColliderComponent[] = [];
 
-  public registerCollider(collider: ColliderBase): void {
+  public registerCollider(collider: ColliderComponent): void {
     this.colliders.push(collider);
   }
 }
