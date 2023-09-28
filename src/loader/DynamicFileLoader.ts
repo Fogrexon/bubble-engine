@@ -1,38 +1,29 @@
-import { LoadFileFunc, ProgressFunc } from './defaultLoader';
-import { defaultLoaderList, FileType } from './defaultLoadType';
+import { fileLoaderTable, ProgressFunc, FileType } from './fileLoaders';
+import { AssetBase } from './asset';
 
-export class DynamicFileLoader<
-  T extends Record<string, LoadFileFunc<unknown>> = typeof defaultLoaderList
-> {
-  private fileLoaderList: T;
+/**
+ * ゲーム開始後動的にファイルを読むためのクラス
+ */
+export class DynamicFileLoader {
+  private _registeredAssetTable: Record<string, AssetBase<FileType>> = {};
 
-  private loadedFiles: Record<string, Awaited<ReturnType<T[keyof T]>> | null> = {};
-
-  constructor(fileLoaderList: T) {
-    this.fileLoaderList = fileLoaderList;
+  public async load(key: string, asset: AssetBase<FileType>, progress: ProgressFunc) {
+    if (this._registeredAssetTable[key] !== undefined)
+      throw new Error(`DynamicFileLoader: Asset(${String(key)}) is already registered`);
+    const loader = fileLoaderTable[asset.fileType];
+    this._registeredAssetTable[key] = asset;
+    this._registeredAssetTable[key].data = await loader(asset.path, progress);
   }
 
-  public async load(key: string, file: FileType<keyof T>, progress: ProgressFunc) {
-    if (this.loadedFiles[key] !== undefined)
-      throw new Error(`DynamicFileLoader: File(${String(key)}) is already loaded`);
-    const loader = this.fileLoaderList[file.type];
-    this.loadedFiles[key] = null;
-    this.loadedFiles[key] = (await loader(file.path, progress)) as Awaited<ReturnType<T[keyof T]>>;
-  }
-
-  public get<K extends keyof T>(id: string): Awaited<ReturnType<T[K]>> {
-    if (!this.loadedFiles[id])
-      throw new Error(`DynamicFileLoader: File(${String(id)}) is not loaded`);
-    return this.loadedFiles[id] as Awaited<ReturnType<T[K]>>;
-  }
-
-  public isLoaded(id: string): boolean {
-    return this.loadedFiles[id] !== undefined;
+  public get(id: string): AssetBase<FileType> {
+    if (!this._registeredAssetTable[id])
+      throw new Error(`DynamicFileLoader: Asset(${String(id)}) is not registered`);
+    return this._registeredAssetTable[id];
   }
 
   public dispose(id: string) {
-    if (!this.loadedFiles[id])
-      throw new Error(`DynamicFileLoader: File(${String(id)}) is not loaded`);
-    delete this.loadedFiles[id];
+    if (!this._registeredAssetTable[id])
+      throw new Error(`DynamicFileLoader: Asset(${String(id)}) is not registered`);
+    delete this._registeredAssetTable[id];
   }
 }

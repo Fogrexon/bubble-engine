@@ -1,10 +1,7 @@
 export type ProgressFunc = ((rate: number) => void) | null;
 export type LoadFileFunc<T> = (path: string, progress: ProgressFunc) => Promise<T>;
 
-export const ImageLoader: LoadFileFunc<HTMLImageElement> = (
-  path: string,
-  progress: ProgressFunc
-) => {
+const imageFileLoader: LoadFileFunc<HTMLImageElement> = (path: string, progress: ProgressFunc) => {
   const target = new Image();
   target.src = path;
   progress?.bind(target)(0);
@@ -19,10 +16,7 @@ export const ImageLoader: LoadFileFunc<HTMLImageElement> = (
   });
 };
 
-export const AudioLoader: LoadFileFunc<HTMLAudioElement> = (
-  path: string,
-  progress: ProgressFunc
-) => {
+const audioFileLoader: LoadFileFunc<HTMLAudioElement> = (path: string, progress: ProgressFunc) => {
   const target = new Audio();
   target.src = path;
   progress?.bind(target)(0);
@@ -36,3 +30,12 @@ export const AudioLoader: LoadFileFunc<HTMLAudioElement> = (
     });
   });
 };
+
+export const fileLoaderTable = {
+  image: imageFileLoader,
+  audio: audioFileLoader,
+} as const;
+
+export type LoaderTableType = typeof fileLoaderTable;
+export type FileLoaderType = keyof LoaderTableType;
+export type FileType = Awaited<ReturnType<LoaderTableType[FileLoaderType]>>;
