@@ -1,5 +1,4 @@
 import { GraphicBase } from './GraphicBase';
-import { CanvasLayerInfo } from '../core';
 import { Rect } from '../util';
 import { Vector2 } from '../math';
 import {
@@ -10,6 +9,7 @@ import {
   setTextStyle,
   TextStyle,
 } from './util';
+import { CanvasLayerInfo } from '../preprocess';
 
 export class TextGraphic extends GraphicBase {
   public readonly position = new Vector2();

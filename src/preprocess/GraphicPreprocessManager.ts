@@ -1,6 +1,9 @@
 import { CanvasLayerInfo } from './CanvasLayerInfo';
+import { PreprocessManager } from './PreprocessManager';
 
-export class GraphicManager<LayerNames extends string[]> {
+export class GraphicPreprocessManager<
+  LayerNames extends string[] = string[]
+> extends PreprocessManager {
   private _layerNames: LayerNames;
 
   private _layerTable: Record<LayerNames[number], CanvasLayerInfo>;
@@ -20,6 +23,7 @@ export class GraphicManager<LayerNames extends string[]> {
   }
 
   constructor(layers: LayerNames, canvasWrapper: HTMLElement) {
+    super();
     this._layerNames = layers;
     this._canvasWrapper = canvasWrapper;
 
@@ -55,5 +59,16 @@ export class GraphicManager<LayerNames extends string[]> {
       layer.canvas.width = this._width;
       layer.canvas.height = this._height;
     });
+  }
+
+  public beforeProcess() {
+    this._layerNames.forEach((layerName: LayerNames[number]) => {
+      const layer = this._layerTable[layerName];
+      layer.context.clearRect(0, 0, this._width, this._height);
+    });
+  }
+
+  public afterProcess() {
+    // no impl
   }
 }
