@@ -1,6 +1,6 @@
 import { GraphicBase } from './GraphicBase';
 import { Rect } from '../util';
-import { SpriteSheetAsset } from '../loader/asset';
+import { SpriteSheetAsset } from '../loader';
 import { Vector2 } from '../math';
 import { CanvasLayerInfo } from '../preprocess';
 
@@ -21,17 +21,19 @@ export class SpriteSheetGraphic extends GraphicBase {
   }
 
   public render(layer: CanvasLayerInfo): Rect {
-    layer.context.drawImage(
-      this.sprite.data,
-      (this.spriteIndex % this.sprite.columns) * this.sprite.segmentWidth,
-      Math.floor(this.spriteIndex / this.sprite.columns) * this.sprite.segmentHeight,
-      this.sprite.segmentWidth,
-      this.sprite.segmentHeight,
-      this.position.x,
-      this.position.y,
-      this.size.x,
-      this.size.y
-    );
+    if (this.sprite.data) {
+      layer.context.drawImage(
+        this.sprite.data,
+        (this.spriteIndex % this.sprite.columns) * this.sprite.segmentWidth,
+        Math.floor(this.spriteIndex / this.sprite.columns) * this.sprite.segmentHeight,
+        this.sprite.segmentWidth,
+        this.sprite.segmentHeight,
+        this.position.x,
+        this.position.y,
+        this.size.x,
+        this.size.y
+      );
+    }
     this._boundingBox.set(this.position.x, this.position.y, this.size.x, this.size.y);
     return this._boundingBox;
   }

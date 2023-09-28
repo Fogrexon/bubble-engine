@@ -1,6 +1,6 @@
 import { GraphicBase } from './GraphicBase';
 import { Rect } from '../util';
-import { SpriteAsset } from '../loader/asset';
+import { SpriteAsset } from '../loader';
 import { Vector2 } from '../math';
 import { CanvasLayerInfo } from '../preprocess';
 
@@ -25,9 +25,12 @@ export class SpriteGraphic extends GraphicBase {
     const left = this.position.x - this.anchor.x * this.size.x;
     const top = this.position.y - this.anchor.y * this.size.y;
 
-    layer.context.globalAlpha = this.alpha;
-    layer.context.drawImage(this.sprite.data, left, top, this.size.x, this.size.y);
-    layer.context.globalAlpha = 1;
+    if (this.sprite.data) {
+      layer.context.globalAlpha = this.alpha;
+      layer.context.drawImage(this.sprite.data, left, top, this.size.x, this.size.y);
+      layer.context.globalAlpha = 1;
+    }
+
     this._boundingBox.set(this.position.x, this.position.y, this.size.x, this.size.y);
     return this._boundingBox;
   }
