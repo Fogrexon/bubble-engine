@@ -1,11 +1,11 @@
-import { LoadFileFunc, ProgressFunc } from './defaultLoader';
-import { defaultLoaderList, FileType } from './defaultLoadType';
-export declare class DynamicFileLoader<T extends Record<string, LoadFileFunc<unknown>> = typeof defaultLoaderList> {
-    private fileLoaderList;
-    private loadedFiles;
-    constructor(fileLoaderList: T);
-    load(key: string, file: FileType<keyof T>, progress: ProgressFunc): Promise<void>;
-    get<K extends keyof T>(id: string): Awaited<ReturnType<T[K]>>;
-    isLoaded(id: string): boolean;
+import { ProgressFunc, FileType } from './fileLoaders';
+import { AssetBase } from './asset';
+/**
+ * ゲーム開始後動的にファイルを読むためのクラス
+ */
+export declare class DynamicFileLoader {
+    private _registeredAssetTable;
+    load(key: string, asset: AssetBase<FileType>, progress: ProgressFunc): Promise<void>;
+    get(id: string): AssetBase<FileType>;
     dispose(id: string): void;
 }

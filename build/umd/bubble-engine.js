@@ -2357,9 +2357,11 @@
       value: function render(layer) {
         var left = this.position.x - this.anchor.x * this.size.x;
         var top = this.position.y - this.anchor.y * this.size.y;
-        layer.context.globalAlpha = this.alpha;
-        layer.context.drawImage(this.sprite.data, left, top, this.size.x, this.size.y);
-        layer.context.globalAlpha = 1;
+        if (this.sprite.data) {
+          layer.context.globalAlpha = this.alpha;
+          layer.context.drawImage(this.sprite.data, left, top, this.size.x, this.size.y);
+          layer.context.globalAlpha = 1;
+        }
         this._boundingBox.set(this.position.x, this.position.y, this.size.x, this.size.y);
         return this._boundingBox;
       }
@@ -2386,7 +2388,9 @@
     _createClass(SpriteSheetGraphic, [{
       key: "render",
       value: function render(layer) {
-        layer.context.drawImage(this.sprite.data, this.spriteIndex % this.sprite.columns * this.sprite.segmentWidth, Math.floor(this.spriteIndex / this.sprite.columns) * this.sprite.segmentHeight, this.sprite.segmentWidth, this.sprite.segmentHeight, this.position.x, this.position.y, this.size.x, this.size.y);
+        if (this.sprite.data) {
+          layer.context.drawImage(this.sprite.data, this.spriteIndex % this.sprite.columns * this.sprite.segmentWidth, Math.floor(this.spriteIndex / this.sprite.columns) * this.sprite.segmentHeight, this.sprite.segmentWidth, this.sprite.segmentHeight, this.position.x, this.position.y, this.size.x, this.size.y);
+        }
         this._boundingBox.set(this.position.x, this.position.y, this.size.x, this.size.y);
         return this._boundingBox;
       }
@@ -3013,7 +3017,7 @@
     return LevelSelector;
   }();
 
-  var ImageLoader = function ImageLoader(path, progress) {
+  var imageFileLoader = function imageFileLoader(path, progress) {
     var target = new Image();
     target.src = path;
     progress === null || progress === void 0 || progress.bind(target)(0);
@@ -3027,7 +3031,7 @@
       });
     });
   };
-  var AudioLoader = function AudioLoader(path, progress) {
+  var audioFileLoader = function audioFileLoader(path, progress) {
     var target = new Audio();
     target.src = path;
     progress === null || progress === void 0 || progress.bind(target)(0);
@@ -3041,48 +3045,50 @@
       });
     });
   };
-
-  var defaultLoaderList = {
-    image: ImageLoader,
-    audio: AudioLoader
+  var fileLoaderTable = {
+    image: imageFileLoader,
+    audio: audioFileLoader
   };
 
+  /**
+   * ゲームに必要なファイルを読み取るクラス
+   * 型安全にするために、ファイルのリストをコンストラクタで渡す
+   */
   var StaticFileLoader = /*#__PURE__*/function () {
-    function StaticFileLoader(loaderList, fileList) {
+    function StaticFileLoader(fileList) {
       _classCallCheck(this, StaticFileLoader);
-      _defineProperty(this, "loaderList", void 0);
-      _defineProperty(this, "fileList", void 0);
-      _defineProperty(this, "loadedFiles", {});
-      this.loaderList = loaderList;
-      this.fileList = fileList;
+      _defineProperty(this, "_fileList", void 0);
+      this._fileList = fileList;
     }
+    /**
+     * ファイルをすべて読み込む
+     * @param progress
+     */
     _createClass(StaticFileLoader, [{
       key: "loadAll",
       value: function () {
         var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(progress) {
           var _this = this;
-          var loadedCount, loadFilePromises, loadedFile;
+          var loadedCount, loadFilePromises;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 loadedCount = 0;
-                loadFilePromises = Object.entries(this.fileList).map(function (_ref) {
+                loadFilePromises = Object.entries(this._fileList).map(function (_ref) {
                   var _ref2 = _slicedToArray(_ref, 2),
                     key = _ref2[0],
-                    fileEntry = _ref2[1];
-                  var loader = _this.loaderList[fileEntry.type];
-                  return loader(fileEntry.path, null).then(function (data) {
+                    asset = _ref2[1];
+                  var loader = fileLoaderTable[asset.fileType];
+                  return loader(asset.path, null).then(function (data) {
                     loadedCount += 1;
-                    progress(loadedCount / Object.keys(_this.fileList).length);
+                    progress(loadedCount / Object.keys(_this._fileList).length);
+                    asset.data = data;
                     return [key, data];
                   });
                 });
                 _context.next = 4;
                 return Promise.all(loadFilePromises);
               case 4:
-                loadedFile = _context.sent;
-                this.loadedFiles = Object.fromEntries(loadedFile);
-              case 6:
               case "end":
                 return _context.stop();
             }
@@ -3096,40 +3102,40 @@
     }, {
       key: "get",
       value: function get(id) {
-        if (!this.loadedFiles[id]) throw new Error("StaticFileLoader: File(".concat(String(id), ") is not loaded"));
-        return this.loadedFiles[id];
+        return this._fileList[id];
       }
     }]);
     return StaticFileLoader;
   }();
 
+  /**
+   * ゲーム開始後動的にファイルを読むためのクラス
+   */
   var DynamicFileLoader = /*#__PURE__*/function () {
-    function DynamicFileLoader(fileLoaderList) {
+    function DynamicFileLoader() {
       _classCallCheck(this, DynamicFileLoader);
-      _defineProperty(this, "fileLoaderList", void 0);
-      _defineProperty(this, "loadedFiles", {});
-      this.fileLoaderList = fileLoaderList;
+      _defineProperty(this, "_registeredAssetTable", {});
     }
     _createClass(DynamicFileLoader, [{
       key: "load",
       value: function () {
-        var _load = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(key, file, progress) {
+        var _load = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(key, asset, progress) {
           var loader;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                if (!(this.loadedFiles[key] !== undefined)) {
+                if (!(this._registeredAssetTable[key] !== undefined)) {
                   _context.next = 2;
                   break;
                 }
-                throw new Error("DynamicFileLoader: File(".concat(String(key), ") is already loaded"));
+                throw new Error("DynamicFileLoader: Asset(".concat(String(key), ") is already registered"));
               case 2:
-                loader = this.fileLoaderList[file.type];
-                this.loadedFiles[key] = null;
+                loader = fileLoaderTable[asset.fileType];
+                this._registeredAssetTable[key] = asset;
                 _context.next = 6;
-                return loader(file.path, progress);
+                return loader(asset.path, progress);
               case 6:
-                this.loadedFiles[key] = _context.sent;
+                this._registeredAssetTable[key].data = _context.sent;
               case 7:
               case "end":
                 return _context.stop();
@@ -3144,104 +3150,192 @@
     }, {
       key: "get",
       value: function get(id) {
-        if (!this.loadedFiles[id]) throw new Error("DynamicFileLoader: File(".concat(String(id), ") is not loaded"));
-        return this.loadedFiles[id];
-      }
-    }, {
-      key: "isLoaded",
-      value: function isLoaded(id) {
-        return this.loadedFiles[id] !== undefined;
+        if (!this._registeredAssetTable[id]) throw new Error("DynamicFileLoader: Asset(".concat(String(id), ") is not registered"));
+        return this._registeredAssetTable[id];
       }
     }, {
       key: "dispose",
       value: function dispose(id) {
-        if (!this.loadedFiles[id]) throw new Error("DynamicFileLoader: File(".concat(String(id), ") is not loaded"));
-        delete this.loadedFiles[id];
+        if (!this._registeredAssetTable[id]) throw new Error("DynamicFileLoader: Asset(".concat(String(id), ") is not registered"));
+        delete this._registeredAssetTable[id];
       }
     }]);
     return DynamicFileLoader;
   }();
 
   var AssetBase = /*#__PURE__*/function () {
-    function AssetBase(data) {
+    function AssetBase(path, fileType) {
       _classCallCheck(this, AssetBase);
+      _defineProperty(this, "_path", void 0);
+      _defineProperty(this, "_fileType", void 0);
       _defineProperty(this, "_data", void 0);
-      this._data = data;
+      _defineProperty(this, "_isLoaded", void 0);
+      this._path = path;
+      this._fileType = fileType;
+      this._isLoaded = false;
     }
     _createClass(AssetBase, [{
-      key: "data",
+      key: "path",
+      get:
+      /**
+       * ファイルのあるパス
+       */
+      function get() {
+        return this._path;
+      }
+    }, {
+      key: "fileType",
       get: function get() {
+        return this._fileType;
+      }
+    }, {
+      key: "data",
+      get:
+      /**
+       * ファイルのデータ本体
+       */
+      function get() {
         return this._data;
+      },
+      set: function set(data) {
+        this._data = data;
+        this._isLoaded = true;
+      }
+    }, {
+      key: "isLoaded",
+      get:
+      /**
+       * ファイルがロード済みかどうか
+       */
+      function get() {
+        return this._isLoaded;
       }
     }]);
     return AssetBase;
   }();
 
-  var Sprite = /*#__PURE__*/function (_AssetBase) {
-    _inherits(Sprite, _AssetBase);
-    var _super = _createSuper(Sprite);
-    function Sprite() {
-      _classCallCheck(this, Sprite);
-      return _super.apply(this, arguments);
+  var AudioAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(AudioAsset, _AssetBase);
+    var _super = _createSuper(AudioAsset);
+    function AudioAsset(path, audioType) {
+      var _this;
+      _classCallCheck(this, AudioAsset);
+      _this = _super.call(this, path, 'audio');
+      /**
+       * 音声アセットのタイプ
+       */
+      _defineProperty(_assertThisInitialized(_this), "audioType", void 0);
+      /**
+       * ループ開始時間
+       * bgm以外では効果なし
+       */
+      _defineProperty(_assertThisInitialized(_this), "loopStartTime", 0);
+      /**
+       * ループ終了時間
+       * bgm以外では効果なし
+       */
+      _defineProperty(_assertThisInitialized(_this), "loopEndTime", 0);
+      _this.audioType = audioType;
+      return _this;
     }
-    _createClass(Sprite, [{
+    _createClass(AudioAsset, [{
+      key: "length",
+      get:
+      /**
+       * 音声の長さ
+       */
+      function get() {
+        var _this$data;
+        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.duration) || 0;
+      }
+    }]);
+    return AudioAsset;
+  }(AssetBase);
+
+  /**
+   * 画像を表すクラス
+   */
+  var SpriteAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SpriteAsset, _AssetBase);
+    var _super = _createSuper(SpriteAsset);
+    function SpriteAsset(path) {
+      _classCallCheck(this, SpriteAsset);
+      return _super.call(this, path, 'image');
+    }
+    _createClass(SpriteAsset, [{
       key: "width",
       get: function get() {
-        return this.data.width;
+        var _this$data;
+        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.width) || 0;
       }
     }, {
       key: "height",
       get: function get() {
-        return this.data.height;
+        var _this$data2;
+        return ((_this$data2 = this.data) === null || _this$data2 === void 0 ? void 0 : _this$data2.height) || 0;
       }
     }]);
-    return Sprite;
+    return SpriteAsset;
   }(AssetBase);
 
-  var SpriteSheet = /*#__PURE__*/function (_AssetBase) {
-    _inherits(SpriteSheet, _AssetBase);
-    var _super = _createSuper(SpriteSheet);
-    function SpriteSheet(data, columns, rows) {
+  /**
+   * スプライトシートの画像を表すクラス
+   */
+  var SpriteSheetAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SpriteSheetAsset, _AssetBase);
+    var _super = _createSuper(SpriteSheetAsset);
+    function SpriteSheetAsset(path, columns, rows) {
       var _this;
-      _classCallCheck(this, SpriteSheet);
-      _this = _super.call(this, data);
+      _classCallCheck(this, SpriteSheetAsset);
+      _this = _super.call(this, path, 'image');
       _defineProperty(_assertThisInitialized(_this), "columns", void 0);
       _defineProperty(_assertThisInitialized(_this), "rows", void 0);
       _this.columns = columns;
       _this.rows = rows;
       return _this;
     }
-    _createClass(SpriteSheet, [{
+    _createClass(SpriteSheetAsset, [{
       key: "width",
       get: function get() {
-        return this.data.width;
+        var _this$data;
+        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.width) || 0;
       }
     }, {
       key: "height",
       get: function get() {
-        return this.data.height;
+        var _this$data2;
+        return ((_this$data2 = this.data) === null || _this$data2 === void 0 ? void 0 : _this$data2.height) || 0;
       }
+      /**
+       * スプライトシートの各画像の幅
+       */
     }, {
       key: "segmentWidth",
       get: function get() {
         return this.width / this.columns;
       }
+      /**
+       * スプライトシートの各画像の高さ
+       */
     }, {
       key: "segmentHeight",
       get: function get() {
         return this.height / this.rows;
       }
     }]);
-    return SpriteSheet;
+    return SpriteSheetAsset;
   }(AssetBase);
 
-  var SplitSprite = /*#__PURE__*/function (_AssetBase) {
-    _inherits(SplitSprite, _AssetBase);
-    var _super = _createSuper(SplitSprite);
-    function SplitSprite(data, left, top, right, bottom) {
+  /**
+   * 画像の一部を切り出した画像を表すクラス
+   */
+  var SubSpriteAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SubSpriteAsset, _AssetBase);
+    var _super = _createSuper(SubSpriteAsset);
+    function SubSpriteAsset(path, left, top, right, bottom) {
       var _this;
-      _classCallCheck(this, SplitSprite);
-      _this = _super.call(this, data);
+      _classCallCheck(this, SubSpriteAsset);
+      _this = _super.call(this, path, 'image');
       _defineProperty(_assertThisInitialized(_this), "left", void 0);
       _defineProperty(_assertThisInitialized(_this), "top", void 0);
       _defineProperty(_assertThisInitialized(_this), "right", void 0);
@@ -3252,12 +3346,12 @@
       _this.bottom = bottom;
       return _this;
     }
-    return _createClass(SplitSprite);
+    return _createClass(SubSpriteAsset);
   }(AssetBase);
 
   exports.ActionLevelManager = ActionLevelManager;
   exports.AssetBase = AssetBase;
-  exports.AudioLoader = AudioLoader;
+  exports.AudioAsset = AudioAsset;
   exports.BeginPath = BeginPath;
   exports.ClosePath = ClosePath;
   exports.ColliderComponent = ColliderComponent;
@@ -3269,7 +3363,6 @@
   exports.GamePipeline = GamePipeline;
   exports.GraphicBase = GraphicBase;
   exports.GraphicComponent = GraphicComponent;
-  exports.ImageLoader = ImageLoader;
   exports.InputManager = InputManager;
   exports.KeyBinder = KeyBinder;
   exports.LevelEvent = LevelEvent;
@@ -3284,19 +3377,19 @@
   exports.Rect = Rect;
   exports.RespawnPoint = RespawnPoint;
   exports.ScalarProvider = ScalarProvider;
-  exports.SplitSprite = SplitSprite;
-  exports.Sprite = Sprite;
+  exports.SpriteAsset = SpriteAsset;
   exports.SpriteGraphic = SpriteGraphic;
-  exports.SpriteSheet = SpriteSheet;
+  exports.SpriteSheetAsset = SpriteSheetAsset;
   exports.SpriteSheetGraphic = SpriteSheetGraphic;
   exports.StaticFileLoader = StaticFileLoader;
+  exports.SubSpriteAsset = SubSpriteAsset;
   exports.TextGraphic = TextGraphic;
   exports.Time = Time;
   exports.Vector2 = Vector2;
   exports.Vector2Provider = Vector2Provider;
   exports.Vector3 = Vector3;
   exports.createGameEvent = createGameEvent;
-  exports.defaultLoaderList = defaultLoaderList;
+  exports.fileLoaderTable = fileLoaderTable;
   exports.inputableKeyList = inputableKeyList;
   exports.setGraphicStyle = setGraphicStyle;
   exports.setLineStyle = setLineStyle;

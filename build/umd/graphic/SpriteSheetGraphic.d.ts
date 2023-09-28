@@ -1,13 +1,13 @@
 import { GraphicBase } from './GraphicBase';
 import { Rect } from '../util';
-import { SpriteSheet } from '../asset';
+import { SpriteSheetAsset } from '../loader';
 import { Vector2 } from '../math';
 import { CanvasLayerInfo } from '../preprocess';
 export declare class SpriteSheetGraphic extends GraphicBase {
     readonly position: Vector2;
     readonly size: Vector2;
-    sprite: SpriteSheet;
+    sprite: SpriteSheetAsset;
     spriteIndex: number;
-    constructor(sprite: SpriteSheet);
+    constructor(sprite: SpriteSheetAsset);
     render(layer: CanvasLayerInfo): Rect;
 }
