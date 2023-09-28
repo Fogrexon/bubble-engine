@@ -1,6 +1,6 @@
 import { PathBase } from './PathBase';
-import { CanvasLayerInfo } from '../../core';
 import { Vector2 } from '../../math';
+import { CanvasLayerInfo } from '../../preprocess';
 
 export class ClosePath extends PathBase {
   public render(layer: CanvasLayerInfo, prevPos: Vector2) {

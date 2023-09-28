@@ -1,7 +1,7 @@
 import { InputableKey, inputableKeyList, InputKeybind, RawKeyValue } from './InputDefinition';
 import { KeyBinder } from './KeyBinder';
 
-export class InputManager<T extends Record<string, InputKeybind>> {
+export class InputManager<T extends Record<string, InputKeybind> = Record<string, InputKeybind>> {
   private keybinds: T;
 
   private keybinders: { [K in keyof T]: KeyBinder<T[K]> };

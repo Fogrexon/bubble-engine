@@ -1,6 +1,6 @@
 import { Rect } from '../../util';
-import { CanvasLayerInfo } from '../../core';
 import { Vector2 } from '../../math';
+import { CanvasLayerInfo } from '../../preprocess';
 
 export abstract class PathBase {
   protected readonly _boundingBox = new Rect();

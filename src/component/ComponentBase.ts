@@ -4,7 +4,7 @@ export abstract class ComponentBase {
   private _entry: GameEntry | null = null;
 
   public get entry(): GameEntry {
-    if (!this._entry) throw new Error('ComponentBase: Entry is not initialized.');
+    if (!this._entry) throw new Error('ComponentBase: This component is not attached to entry.');
     return this._entry;
   }
 
@@ -48,7 +48,7 @@ export abstract class ComponentBase {
     this._started = false;
   }
 
-  public innerUpdate(deltaTime: number) {
+  public innerUpdate() {
     if (this._enabled) {
       if (!this._initialized) {
         this.onInitialize();
@@ -59,7 +59,7 @@ export abstract class ComponentBase {
         this._started = true;
       }
 
-      this.onUpdate(deltaTime);
+      this.onUpdate();
     }
   }
 
@@ -89,7 +89,7 @@ export abstract class ComponentBase {
 
   protected abstract onStart(): void;
 
-  protected abstract onUpdate(deltaTime: number): void;
+  protected abstract onUpdate(): void;
 
   protected abstract onEnable(): void;
 

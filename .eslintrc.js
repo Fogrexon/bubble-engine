@@ -2,29 +2,23 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    'jest/globals': true
+    'jest/globals': true,
   },
-  extends: [
-    'airbnb-base',
-    'eslint-config-prettier',
-  ],
-  'overrides': [
+  extends: ['airbnb-base', 'prettier'],
+  overrides: [
     {
-      'files': ['test/**'],
-      'plugins': ['jest'],
-      'extends': ['plugin:jest/recommended'],
-      'rules': { 'jest/prefer-expect-assertions': 'off' }
-    }
+      files: ['test/**'],
+      plugins: ['jest'],
+      extends: ['plugin:jest/recommended'],
+      rules: { 'jest/prefer-expect-assertions': 'off' },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    '@typescript-eslint',
-    'jest'
-  ],
+  plugins: ['@typescript-eslint', 'jest'],
   rules: {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
@@ -36,13 +30,12 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
-    'indent': ['error', 2],
-    'quotes': ['error', 'single'],
-    'semi': ['error', 'always'],
-    'no-underscore-dangle':['off'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'always'],
+    'no-underscore-dangle': ['off'],
     'no-bitwise': ['off'],
     'no-multi-assign': ['off'],
-    'no-param-reassign': ['error', { 'props': false }],
+    'no-param-reassign': ['error', { props: false }],
     'class-methods-use-this': ['off'],
   },
 };
