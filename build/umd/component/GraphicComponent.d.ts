@@ -1,11 +1,21 @@
-import { ComponentBase } from './ComponentBase';
 import { GraphicBase } from '../graphic';
-import { CanvasLayerInfo } from '../core';
 import { Rect } from '../util';
+import { ComponentBase } from './ComponentBase';
+import { CanvasLayerInfo } from '../preprocess/CanvasLayerInfo';
+/**
+ * 描画系をつかさどるコンポーネント
+ */
 export declare class GraphicComponent extends ComponentBase {
-    readonly parts: GraphicBase[];
-    private readonly _layer;
+    /**
+     * グラフィックコンポーネントの回転
+     */
+    rotation: number;
+    /**
+     * グラフィックコンポーネントのバウンディングボックス
+     */
     readonly boundingRect: Rect;
+    readonly parts: GraphicBase[];
+    readonly layer: CanvasLayerInfo;
     constructor(layer: CanvasLayerInfo, parts: GraphicBase[]);
     protected onDestroy(): void;
     protected onDisable(): void;

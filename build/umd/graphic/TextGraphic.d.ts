@@ -1,8 +1,8 @@
 import { GraphicBase } from './GraphicBase';
-import { CanvasLayerInfo } from '../core';
 import { Rect } from '../util';
 import { Vector2 } from '../math';
 import { GraphicStyle, LineStyle, TextStyle } from './util';
+import { CanvasLayerInfo } from '../preprocess';
 export declare class TextGraphic extends GraphicBase {
     readonly position: Vector2;
     text: string;

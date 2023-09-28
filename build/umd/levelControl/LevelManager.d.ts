@@ -7,15 +7,24 @@ export declare enum LevelState {
     GameClear = 3
 }
 export interface LevelManagerSettings {
-    dependedEntries: GameEntry[];
+    rootEntry: GameEntry;
 }
+/**
+ * レベルに関する処理を管轄するクラス
+ */
 export declare class LevelManager {
-    private dependedEntries;
+    /**
+     * レベルにあるEntryのルート
+     */
+    readonly rootEntry: GameEntry;
+    /**
+     * レベルの状態を表す
+     * @protected
+     */
     protected state: LevelState;
     protected constructor(levelManagerSettings: LevelManagerSettings);
     protected levelEventListener(levelEventType: LevelEventType): void;
     start(): void;
-    update(deltaTime: number): void;
     exit(): void;
     protected gameOver(): void;
     protected gameClear(): void;

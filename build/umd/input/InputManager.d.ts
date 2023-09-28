@@ -1,5 +1,5 @@
 import { InputKeybind } from './InputDefinition';
-export declare class InputManager<T extends Record<string, InputKeybind>> {
+export declare class InputManager<T extends Record<string, InputKeybind> = Record<string, InputKeybind>> {
     private keybinds;
     private keybinders;
     private rawKeyValues;

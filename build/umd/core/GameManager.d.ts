@@ -1,11 +1,19 @@
+import { GamePipeline } from './GamePipeline';
+import { LevelSelector } from '../levelControl';
 /**
  * ゲーム全体のライフタイムを管理
  */
 export declare class GameManager {
-    private static _instance;
-    static get instance(): GameManager;
-    private requestAnimationFrameId;
-    constructor();
+    private _requestAnimationFrameId;
+    private _gamePipeline;
+    private _levelSelector;
+    constructor(gamePipeline: GamePipeline, levelSelector: LevelSelector);
+    /**
+     * ゲームの開始
+     */
     start(): void;
-    update(): void;
+    /**
+     * ゲームのメインループ
+     */
+    gameLoop(): void;
 }

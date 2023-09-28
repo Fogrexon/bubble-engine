@@ -538,7 +538,7 @@
     _createClass(ComponentBase, [{
       key: "entry",
       get: function get() {
-        if (!this._entry) throw new Error('ComponentBase: Entry is not initialized.');
+        if (!this._entry) throw new Error('ComponentBase: This component is not attached to entry.');
         return this._entry;
       }
     }, {
@@ -576,7 +576,7 @@
       }
     }, {
       key: "innerUpdate",
-      value: function innerUpdate(deltaTime) {
+      value: function innerUpdate() {
         if (this._enabled) {
           if (!this._initialized) {
             this.onInitialize();
@@ -586,7 +586,7 @@
             this.onStart();
             this._started = true;
           }
-          this.onUpdate(deltaTime);
+          this.onUpdate();
         }
       }
     }, {
@@ -615,6 +615,338 @@
     }]);
     return ComponentBase;
   }();
+
+  var wait = function wait(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  };
+  var waitFrame = function waitFrame() {
+    return new Promise(function (resolve) {
+      requestAnimationFrame(resolve);
+    });
+  };
+
+  var Rect = /*#__PURE__*/function () {
+    function Rect() {
+      var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      _classCallCheck(this, Rect);
+      _defineProperty(this, "x", void 0);
+      _defineProperty(this, "y", void 0);
+      _defineProperty(this, "width", void 0);
+      _defineProperty(this, "height", void 0);
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+    }
+    _createClass(Rect, [{
+      key: "set",
+      value: function set(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+      }
+    }, {
+      key: "copy",
+      value: function copy(rect) {
+        this.x = rect.x;
+        this.y = rect.y;
+        this.width = rect.width;
+        this.height = rect.height;
+      }
+    }, {
+      key: "clone",
+      value: function clone() {
+        return new Rect(this.x, this.y, this.width, this.height);
+      }
+    }, {
+      key: "contains",
+      value: function contains(x, y) {
+        return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
+      }
+    }, {
+      key: "containsRect",
+      value: function containsRect(rect) {
+        return this.contains(rect.x, rect.y) && this.contains(rect.x + rect.width, rect.y + rect.height);
+      }
+    }, {
+      key: "intersects",
+      value: function intersects(rect) {
+        return this.x < rect.x + rect.width && this.x + this.width > rect.x && this.y < rect.y + rect.height && this.y + this.height > rect.y;
+      }
+    }, {
+      key: "merge",
+      value: function merge(rect) {
+        var left = Math.min(this.x, rect.x);
+        var top = Math.min(this.y, rect.y);
+        var right = Math.max(this.x + this.width, rect.x + rect.width);
+        var bottom = Math.max(this.y + this.height, rect.y + rect.height);
+        return new Rect(left, top, right - left, bottom - top);
+      }
+    }]);
+    return Rect;
+  }();
+
+  /**
+   * 描画系をつかさどるコンポーネント
+   */
+  var GraphicComponent = /*#__PURE__*/function (_ComponentBase) {
+    _inherits(GraphicComponent, _ComponentBase);
+    var _super = _createSuper(GraphicComponent);
+    function GraphicComponent(layer, parts) {
+      var _this;
+      _classCallCheck(this, GraphicComponent);
+      _this = _super.call(this);
+      /**
+       * グラフィックコンポーネントの回転
+       */
+      _defineProperty(_assertThisInitialized(_this), "rotation", 0);
+      /**
+       * グラフィックコンポーネントのバウンディングボックス
+       */
+      _defineProperty(_assertThisInitialized(_this), "boundingRect", new Rect(0, 0, 0, 0));
+      _defineProperty(_assertThisInitialized(_this), "parts", void 0);
+      _defineProperty(_assertThisInitialized(_this), "layer", void 0);
+      _this.layer = layer;
+      _this.parts = parts;
+      return _this;
+    }
+    _createClass(GraphicComponent, [{
+      key: "onDestroy",
+      value: function onDestroy() {}
+    }, {
+      key: "onDisable",
+      value: function onDisable() {}
+    }, {
+      key: "onEnable",
+      value: function onEnable() {}
+    }, {
+      key: "onInitialize",
+      value: function onInitialize() {}
+    }, {
+      key: "onStart",
+      value: function onStart() {}
+    }, {
+      key: "onUpdate",
+      value: function onUpdate() {}
+    }]);
+    return GraphicComponent;
+  }(ComponentBase);
+
+  /**
+   * コライダーを格納するコンポーネント
+   */
+  var ColliderComponent = /*#__PURE__*/function (_ComponentBase) {
+    _inherits(ColliderComponent, _ComponentBase);
+    var _super = _createSuper(ColliderComponent);
+    function ColliderComponent(colliders, layer) {
+      var _this;
+      _classCallCheck(this, ColliderComponent);
+      _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "colliders", void 0);
+      _defineProperty(_assertThisInitialized(_this), "layer", void 0);
+      _this.colliders = colliders;
+      _this.layer = layer;
+      return _this;
+    }
+    _createClass(ColliderComponent, [{
+      key: "onDestroy",
+      value: function onDestroy() {}
+    }, {
+      key: "onDisable",
+      value: function onDisable() {}
+    }, {
+      key: "onEnable",
+      value: function onEnable() {}
+    }, {
+      key: "onInitialize",
+      value: function onInitialize() {}
+    }, {
+      key: "onStart",
+      value: function onStart() {}
+    }, {
+      key: "onUpdate",
+      value: function onUpdate() {}
+    }]);
+    return ColliderComponent;
+  }(ComponentBase);
+
+  /**
+   * ゲーム全体のライフタイムを管理
+   */
+  var GameManager = /*#__PURE__*/function () {
+    function GameManager(gamePipeline, levelSelector) {
+      _classCallCheck(this, GameManager);
+      _defineProperty(this, "_requestAnimationFrameId", -1);
+      _defineProperty(this, "_gamePipeline", void 0);
+      _defineProperty(this, "_levelSelector", void 0);
+      this._gamePipeline = gamePipeline;
+      this._levelSelector = levelSelector;
+    }
+    /**
+     * ゲームの開始
+     */
+    _createClass(GameManager, [{
+      key: "start",
+      value: function start() {
+        this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+      }
+      /**
+       * ゲームのメインループ
+       */
+    }, {
+      key: "gameLoop",
+      value: function gameLoop() {
+        this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+        var currentLevelManager = this._levelSelector.currentLevel();
+        this._gamePipeline.process(currentLevelManager);
+      }
+    }]);
+    return GameManager;
+  }();
+
+  var ManagerBase = /*#__PURE__*/_createClass(function ManagerBase() {
+    _classCallCheck(this, ManagerBase);
+  });
+
+  var GamePipeline = /*#__PURE__*/function () {
+    function GamePipeline(time, inputManager, graphicManager, collisionManager) {
+      _classCallCheck(this, GamePipeline);
+      _defineProperty(this, "_time", void 0);
+      _defineProperty(this, "_inputManager", void 0);
+      _defineProperty(this, "_graphicManager", void 0);
+      _defineProperty(this, "_collisionManager", void 0);
+      this._time = time;
+      this._inputManager = inputManager;
+      this._graphicManager = graphicManager;
+      this._collisionManager = collisionManager;
+    }
+    _createClass(GamePipeline, [{
+      key: "process",
+      value: function process(levelManager) {
+        var root = levelManager.rootEntry;
+        this._time.calcDeltaTime();
+        this._inputManager.updateKeyBinds();
+        // preprocess
+        root.transform.process();
+        this._collisionManager.beforeProcess();
+        root.collision.process();
+        this._collisionManager.afterProcess();
+        this._graphicManager.beforeProcess();
+        root.graphic.process();
+        this._graphicManager.afterProcess();
+        // normal components
+        root.update();
+      }
+    }]);
+    return GamePipeline;
+  }();
+
+  var Time = /*#__PURE__*/function () {
+    function Time() {
+      _classCallCheck(this, Time);
+      _defineProperty(this, "timeScale", 1);
+      _defineProperty(this, "_gameTime", 0);
+      _defineProperty(this, "_deltaTime", 0);
+      _defineProperty(this, "_prevSystemTime", 0);
+    }
+    _createClass(Time, [{
+      key: "gameTime",
+      get: function get() {
+        return this._gameTime;
+      }
+    }, {
+      key: "deltaTime",
+      get: function get() {
+        return this._deltaTime;
+      }
+    }, {
+      key: "unscaledDeltaTime",
+      get: function get() {
+        return this._deltaTime / this.timeScale;
+      }
+    }, {
+      key: "calcDeltaTime",
+      value: function calcDeltaTime() {
+        var systemTime = performance.now();
+        this._deltaTime = systemTime - this._prevSystemTime;
+        this._deltaTime *= 0.001;
+        this._deltaTime *= this.timeScale;
+        this._prevSystemTime = systemTime;
+        this._gameTime += this._deltaTime;
+      }
+    }]);
+    return Time;
+  }();
+
+  /**
+   * 基本的なコンポーネント更新前に実行される事前処理用のコンポーネント
+   */
+  var PreprocessBase = /*#__PURE__*/_createClass(function PreprocessBase(entry) {
+    _classCallCheck(this, PreprocessBase);
+    _defineProperty(this, "entry", void 0);
+    this.entry = entry;
+  });
+
+  /**
+   * 描画系をつかさどるコンポーネント
+   */
+  var GraphicPreprocess = /*#__PURE__*/function (_PreprocessBase) {
+    _inherits(GraphicPreprocess, _PreprocessBase);
+    var _super = _createSuper(GraphicPreprocess);
+    function GraphicPreprocess() {
+      var _this;
+      _classCallCheck(this, GraphicPreprocess);
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      _this = _super.call.apply(_super, [this].concat(args));
+      /**
+       * 描画順
+       */
+      _defineProperty(_assertThisInitialized(_this), "index", 0);
+      return _this;
+    }
+    _createClass(GraphicPreprocess, [{
+      key: "process",
+      value: function process() {
+        if (!this.entry.enabled) return;
+        var comp = this.entry.getComponent(GraphicComponent);
+        if (comp && comp.enabled) {
+          this.draw(comp);
+        }
+        var childrenGraphic = this.entry.transform.children.map(function (childTransform) {
+          return childTransform.entry.graphic;
+        });
+        childrenGraphic.sort(function (a, b) {
+          return a.index - b.index;
+        });
+        childrenGraphic.forEach(function (child) {
+          child.process();
+        });
+      }
+    }, {
+      key: "draw",
+      value: function draw(comp) {
+        var worldMatrix = this.entry.transform.worldMatrix;
+        var ctx = comp.layer.context;
+        ctx.save();
+        ctx.transform(worldMatrix.m00, worldMatrix.m01, worldMatrix.m10, worldMatrix.m11, worldMatrix.m02, worldMatrix.m12);
+        ctx.rotate(comp.rotation);
+        comp.parts.forEach(function (part, index) {
+          var boundingBox = part.render(comp.layer);
+          if (index === 0) comp.boundingRect.copy(boundingBox);else comp.boundingRect.merge(boundingBox);
+        });
+        ctx.restore();
+      }
+    }]);
+    return GraphicPreprocess;
+  }(PreprocessBase);
 
   var Matrix2 = /*#__PURE__*/function () {
     function Matrix2() {
@@ -1619,58 +1951,59 @@
   /**
    * GameEntryの場所を管理するコンポーネント
    */
-  var TransformComponent = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(TransformComponent, _ComponentBase);
-    var _super = _createSuper(TransformComponent);
-    function TransformComponent() {
+  var TransformPreprocess = /*#__PURE__*/function (_PreprocessBase) {
+    _inherits(TransformPreprocess, _PreprocessBase);
+    var _super = _createSuper(TransformPreprocess);
+    function TransformPreprocess() {
       var _this;
-      _classCallCheck(this, TransformComponent);
+      _classCallCheck(this, TransformPreprocess);
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
       _this = _super.call.apply(_super, [this].concat(args));
+      /**
+       * ローカル座標
+       */
       _defineProperty(_assertThisInitialized(_this), "position", new Vector2());
+      /**
+       * ローカル回転角度
+       * 回転を考慮し始めると当たり判定などで判定が面倒になるので、0固定
+       */
       _defineProperty(_assertThisInitialized(_this), "rotation", 0);
+      /**
+       * ローカルスケール
+       */
       _defineProperty(_assertThisInitialized(_this), "scale", new Vector2(1, 1));
-      _defineProperty(_assertThisInitialized(_this), "_worldPositionVector", new Vector2());
-      _defineProperty(_assertThisInitialized(_this), "_isMatrixCached", false);
-      _defineProperty(_assertThisInitialized(_this), "_isWorldMatrixCached", false);
-      _defineProperty(_assertThisInitialized(_this), "_cachedMatrix", new Matrix3());
-      _defineProperty(_assertThisInitialized(_this), "_cachedWorldMatrix", new Matrix3());
+      /**
+       * ローカル座標系での変換行列
+       * update後に再計算される
+       */
+      _defineProperty(_assertThisInitialized(_this), "matrix", new Matrix3());
+      /**
+       * グローバル座標系での変換行列
+       * update後に再計算される
+       */
+      _defineProperty(_assertThisInitialized(_this), "worldMatrix", new Matrix3());
+      _defineProperty(_assertThisInitialized(_this), "_worldPosition", new Vector2());
+      _defineProperty(_assertThisInitialized(_this), "_worldScale", new Vector2());
       _defineProperty(_assertThisInitialized(_this), "parent", null);
       _defineProperty(_assertThisInitialized(_this), "children", []);
       return _this;
     }
-    _createClass(TransformComponent, [{
-      key: "matrix",
-      get: function get() {
-        if (!this._isMatrixCached) {
-          this._cachedMatrix.compose(this.position, this.rotation, this.scale);
-          this._isMatrixCached = true;
-        }
-        return this._cachedMatrix;
-      }
-    }, {
-      key: "worldMatrix",
-      get: function get() {
-        var matrix = this.matrix;
-        if (!this._isWorldMatrixCached) {
-          if (this.parent) {
-            this._cachedWorldMatrix.copy(this.parent.worldMatrix);
-            this._cachedWorldMatrix.multiply(matrix);
-          } else {
-            this._cachedWorldMatrix.copy(matrix);
-          }
-          this._isWorldMatrixCached = true;
-        }
-        return this._cachedWorldMatrix;
-      }
-    }, {
+    _createClass(TransformPreprocess, [{
       key: "worldPosition",
-      get: function get() {
+      get:
+      /**
+       * グローバル座標を取得する
+       */
+      function get() {
         var worldMatrix = this.worldMatrix;
-        return this._worldPositionVector.set(worldMatrix.m02, worldMatrix.m12);
+        return this._worldPosition.set(worldMatrix.m02, worldMatrix.m12);
       }
+      /**
+       * グローバル座標系での回転角度を取得する
+       * 注意: 計算簡略化のため回転は考慮されていない
+       */
     }, {
       key: "worldRotation",
       get: function get() {
@@ -1679,12 +2012,29 @@
         }
         return this.rotation;
       }
+      /**
+       * グローバル座標系でのスケールを取得する
+       */
+    }, {
+      key: "worldScale",
+      get: function get() {
+        var worldMatrix = this.worldMatrix;
+        return this._worldScale.set(worldMatrix.m00, worldMatrix.m11);
+      }
+      /**
+       * 子供を追加する
+       * @param child
+       */
     }, {
       key: "addChild",
       value: function addChild(child) {
         child.parent = this;
         this.children.push(child);
       }
+      /**
+       * 子供を削除する
+       * @param child
+       */
     }, {
       key: "removeChild",
       value: function removeChild(child) {
@@ -1694,286 +2044,65 @@
         }
       }
     }, {
-      key: "update",
-      value: function update() {
+      key: "process",
+      value: function process() {
+        if (!this.entry.enabled) return;
+        // 行列の更新
+        this.matrix.compose(this.position, this.rotation, this.scale);
+        if (this.parent) {
+          this.worldMatrix.copy(this.parent.worldMatrix);
+          this.worldMatrix.multiply(this.matrix);
+        } else {
+          this.worldMatrix.copy(this.matrix);
+        }
+        // 子供の更新
         this.children.forEach(function (child) {
-          child.update();
-        });
-      }
-    }, {
-      key: "onDestroy",
-      value: function onDestroy() {
-        var _this$parent;
-        (_this$parent = this.parent) === null || _this$parent === void 0 || _this$parent.removeChild(this);
-      }
-    }, {
-      key: "onDisable",
-      value: function onDisable() {
-        // no impl
-      }
-    }, {
-      key: "onEnable",
-      value: function onEnable() {
-        // no impl
-      }
-    }, {
-      key: "onInitialize",
-      value: function onInitialize() {
-        // no impl
-      }
-    }, {
-      key: "onStart",
-      value: function onStart() {
-        // no impl
-      }
-    }, {
-      key: "onUpdate",
-      value: function onUpdate() {
-        // no impl
-      }
-    }]);
-    return TransformComponent;
-  }(ComponentBase);
-
-  var wait = function wait(ms) {
-    return new Promise(function (resolve) {
-      setTimeout(resolve, ms);
-    });
-  };
-  var waitFrame = function waitFrame() {
-    return new Promise(function (resolve) {
-      requestAnimationFrame(resolve);
-    });
-  };
-
-  var Rect = /*#__PURE__*/function () {
-    function Rect() {
-      var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-      var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-      var height = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-      _classCallCheck(this, Rect);
-      _defineProperty(this, "x", void 0);
-      _defineProperty(this, "y", void 0);
-      _defineProperty(this, "width", void 0);
-      _defineProperty(this, "height", void 0);
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-    }
-    _createClass(Rect, [{
-      key: "set",
-      value: function set(x, y, width, height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-      }
-    }, {
-      key: "copy",
-      value: function copy(rect) {
-        this.x = rect.x;
-        this.y = rect.y;
-        this.width = rect.width;
-        this.height = rect.height;
-      }
-    }, {
-      key: "clone",
-      value: function clone() {
-        return new Rect(this.x, this.y, this.width, this.height);
-      }
-    }, {
-      key: "contains",
-      value: function contains(x, y) {
-        return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
-      }
-    }, {
-      key: "containsRect",
-      value: function containsRect(rect) {
-        return this.contains(rect.x, rect.y) && this.contains(rect.x + rect.width, rect.y + rect.height);
-      }
-    }, {
-      key: "intersects",
-      value: function intersects(rect) {
-        return this.x < rect.x + rect.width && this.x + this.width > rect.x && this.y < rect.y + rect.height && this.y + this.height > rect.y;
-      }
-    }, {
-      key: "merge",
-      value: function merge(rect) {
-        var left = Math.min(this.x, rect.x);
-        var top = Math.min(this.y, rect.y);
-        var right = Math.max(this.x + this.width, rect.x + rect.width);
-        var bottom = Math.max(this.y + this.height, rect.y + rect.height);
-        return new Rect(left, top, right - left, bottom - top);
-      }
-    }]);
-    return Rect;
-  }();
-
-  var GraphicComponent = /*#__PURE__*/function (_ComponentBase) {
-    _inherits(GraphicComponent, _ComponentBase);
-    var _super = _createSuper(GraphicComponent);
-    function GraphicComponent(layer, parts) {
-      var _this;
-      _classCallCheck(this, GraphicComponent);
-      _this = _super.call(this);
-      _defineProperty(_assertThisInitialized(_this), "parts", void 0);
-      _defineProperty(_assertThisInitialized(_this), "_layer", void 0);
-      _defineProperty(_assertThisInitialized(_this), "boundingRect", new Rect(0, 0, 0, 0));
-      _this._layer = layer;
-      _this.parts = parts;
-      return _this;
-    }
-    _createClass(GraphicComponent, [{
-      key: "onDestroy",
-      value: function onDestroy() {}
-    }, {
-      key: "onDisable",
-      value: function onDisable() {}
-    }, {
-      key: "onEnable",
-      value: function onEnable() {}
-    }, {
-      key: "onInitialize",
-      value: function onInitialize() {}
-    }, {
-      key: "onStart",
-      value: function onStart() {}
-    }, {
-      key: "onUpdate",
-      value: function onUpdate() {
-        var _this2 = this;
-        var worldMatrix = this.entry.transform.worldMatrix;
-        var ctx = this._layer.context;
-        ctx.save();
-        ctx.transform(worldMatrix.m00, worldMatrix.m01, worldMatrix.m10, worldMatrix.m11, worldMatrix.m02, worldMatrix.m12);
-        this.parts.forEach(function (part, index) {
-          var boundingBox = part.render(_this2._layer);
-          if (index === 0) _this2.boundingRect.copy(boundingBox);else _this2.boundingRect.merge(boundingBox);
-        });
-        ctx.restore();
-      }
-    }]);
-    return GraphicComponent;
-  }(ComponentBase);
-
-  /**
-   * ゲーム全体のライフタイムを管理
-   */
-  var GameManager = /*#__PURE__*/function () {
-    function GameManager() {
-      _classCallCheck(this, GameManager);
-      _defineProperty(this, "requestAnimationFrameId", -1);
-      GameManager._instance = this;
-    }
-    _createClass(GameManager, [{
-      key: "start",
-      value: function start() {
-        this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
-      }
-    }, {
-      key: "update",
-      value: function update() {
-        this.requestAnimationFrameId = requestAnimationFrame(this.update.bind(this));
-      }
-    }], [{
-      key: "instance",
-      get: function get() {
-        return GameManager._instance;
-      }
-    }]);
-    return GameManager;
-  }();
-  // eslint-disable-next-line no-use-before-define
-  _defineProperty(GameManager, "_instance", void 0);
-
-  var GraphicManager = /*#__PURE__*/function () {
-    function GraphicManager(layers, canvasWrapper) {
-      var _this = this;
-      _classCallCheck(this, GraphicManager);
-      _defineProperty(this, "_layerNames", void 0);
-      _defineProperty(this, "_layerTable", void 0);
-      _defineProperty(this, "_canvasWrapper", void 0);
-      _defineProperty(this, "_width", 0);
-      _defineProperty(this, "_height", 0);
-      this._layerNames = layers;
-      this._canvasWrapper = canvasWrapper;
-      this._layerTable = {};
-      layers.forEach(function (layerName) {
-        var canvas = document.createElement('canvas');
-        canvas.style.position = 'absolute';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvasWrapper.appendChild(canvas);
-        _this._layerTable[layerName] = {
-          canvas: canvas,
-          context: canvas.getContext('2d')
-        };
-      });
-      this.resetSize();
-      window.addEventListener('resize', this.resetSize.bind(this));
-    }
-    _createClass(GraphicManager, [{
-      key: "width",
-      get: function get() {
-        return this._width;
-      }
-    }, {
-      key: "height",
-      get: function get() {
-        return this._height;
-      }
-    }, {
-      key: "getLayer",
-      value: function getLayer(id) {
-        return this._layerTable[id];
-      }
-    }, {
-      key: "resetSize",
-      value: function resetSize() {
-        var _this2 = this;
-        var rect = this._canvasWrapper.getBoundingClientRect();
-        this._width = rect.width;
-        this._height = rect.height;
-        this._layerNames.forEach(function (layerName) {
-          var layer = _this2._layerTable[layerName];
-          layer.canvas.width = _this2._width;
-          layer.canvas.height = _this2._height;
+          child.process();
         });
       }
     }]);
-    return GraphicManager;
-  }();
+    return TransformPreprocess;
+  }(PreprocessBase);
 
-  var CanvasLayerInfo = /*#__PURE__*/_createClass(function CanvasLayerInfo(canvas) {
-    _classCallCheck(this, CanvasLayerInfo);
-    _defineProperty(this, "canvas", void 0);
-    _defineProperty(this, "context", void 0);
-    this.canvas = canvas;
-    var context = canvas.getContext('2d');
-    if (context === null) {
-      throw new Error('CanvasRenderingContext2D is not supported.');
-    } else {
-      this.context = context;
+  var CollisionPreprocess = /*#__PURE__*/function (_PreprocessBase) {
+    _inherits(CollisionPreprocess, _PreprocessBase);
+    var _super = _createSuper(CollisionPreprocess);
+    function CollisionPreprocess() {
+      _classCallCheck(this, CollisionPreprocess);
+      return _super.apply(this, arguments);
     }
-  });
-
-  var ManagerBase = /*#__PURE__*/_createClass(function ManagerBase() {
-    _classCallCheck(this, ManagerBase);
-  });
+    _createClass(CollisionPreprocess, [{
+      key: "process",
+      value: function process() {
+        if (!this.entry.enabled) return;
+        var collider = this.entry.getComponent(ColliderComponent);
+        if (collider && collider.enabled) {
+          collider.layer.registerCollider(collider);
+        }
+        var childrenCollision = this.entry.transform.children.map(function (childTransform) {
+          return childTransform.entry.collision;
+        });
+        childrenCollision.forEach(function (child) {
+          child.process();
+        });
+      }
+    }]);
+    return CollisionPreprocess;
+  }(PreprocessBase);
 
   var GameEntry = /*#__PURE__*/function () {
     function GameEntry() {
       _classCallCheck(this, GameEntry);
+      // プリプロセス系
+      _defineProperty(this, "transform", void 0);
+      _defineProperty(this, "graphic", void 0);
+      _defineProperty(this, "collision", void 0);
       _defineProperty(this, "_components", []);
       _defineProperty(this, "_destroyed", false);
       _defineProperty(this, "_enabled", true);
-      _defineProperty(this, "transform", void 0);
-      _defineProperty(this, "objectIndex", 0);
-      var transform = new TransformComponent();
-      this.addComponent(transform);
-      this.transform = transform;
+      this.transform = new TransformPreprocess(this);
+      this.graphic = new GraphicPreprocess(this);
+      this.collision = new CollisionPreprocess(this);
     }
     // region LifeCycle
     _createClass(GameEntry, [{
@@ -2001,21 +2130,18 @@
       }
     }, {
       key: "update",
-      value: function update(deltaTime) {
+      value: function update() {
         this._components = this._components.filter(function (component) {
           return !component.destroyed;
         });
         this._components.forEach(function (component) {
-          component.innerUpdate(deltaTime);
+          component.innerUpdate();
         });
         var childrenEntry = this.transform.children.map(function (childTransform) {
           return childTransform.entry;
         });
-        childrenEntry.sort(function (a, b) {
-          return a.objectIndex - b.objectIndex;
-        });
         childrenEntry.forEach(function (child) {
-          child.update(deltaTime);
+          child.update();
         });
       }
     }, {
@@ -2027,6 +2153,10 @@
       }
       // endregion
       // region Process Components
+      /**
+       * コンポーネントを追加する
+       * @param component
+       */
     }, {
       key: "addComponent",
       value: function addComponent(component) {
@@ -2034,6 +2164,10 @@
         component.innerAdded(this);
         return component;
       }
+      /**
+       * 自分のコンポーネントで最初に合致するものを取得する
+       * @param componentType
+       */
     }, {
       key: "getComponent",
       value: function getComponent(componentType) {
@@ -2045,6 +2179,10 @@
         }
         return null;
       }
+      /**
+       * 自分のコンポーネントで合致するものをすべて取得する
+       * @param componentType
+       */
     }, {
       key: "getComponents",
       value: function getComponents(componentType) {
@@ -2056,6 +2194,10 @@
         }
         return [];
       }
+      /**
+       * 自分を含む子孫のコンポーネントを探索して最初に合致するコンポーネントを取得
+       * @param componentType
+       */
     }, {
       key: "getComponentInChildren",
       value: function getComponentInChildren(componentType) {
@@ -2074,6 +2216,10 @@
         }
         return null;
       }
+      /**
+       * 自分を含む子孫のコンポーネントを探索してすべて取得する
+       * @param componentType
+       */
     }, {
       key: "getComponentsInChildren",
       value: function getComponentsInChildren(componentType) {
@@ -2087,6 +2233,10 @@
         }
         return allComponents;
       }
+      /**
+       * 指定したコンポーネントを削除する
+       * @param component
+       */
     }, {
       key: "removeComponent",
       value: function removeComponent(component) {
@@ -2098,6 +2248,9 @@
           entry.innerDestroy();
         }
       }
+      /**
+       * 属するコンポーネントをすべて削除する
+       */
     }, {
       key: "removeAllComponents",
       value: function removeAllComponents() {
@@ -2304,6 +2457,9 @@
     }
     if (style.stroke) {
       context.strokeStyle = style.stroke;
+    }
+    if (style.alpha) {
+      context.globalAlpha = style.alpha;
     }
   };
 
@@ -2675,12 +2831,22 @@
     LevelState[LevelState["GameOver"] = 2] = "GameOver";
     LevelState[LevelState["GameClear"] = 3] = "GameClear";
   })(exports.LevelState || (exports.LevelState = {}));
+  /**
+   * レベルに関する処理を管轄するクラス
+   */
   var LevelManager = /*#__PURE__*/function () {
     function LevelManager(levelManagerSettings) {
       _classCallCheck(this, LevelManager);
-      _defineProperty(this, "dependedEntries", void 0);
+      /**
+       * レベルにあるEntryのルート
+       */
+      _defineProperty(this, "rootEntry", void 0);
+      /**
+       * レベルの状態を表す
+       * @protected
+       */
       _defineProperty(this, "state", void 0);
-      this.dependedEntries = levelManagerSettings.dependedEntries;
+      this.rootEntry = levelManagerSettings.rootEntry;
       this.state = exports.LevelState.Playing;
     }
     _createClass(LevelManager, [{
@@ -2720,18 +2886,9 @@
         LevelEvent.listen(this.levelEventListener.bind(this));
       }
     }, {
-      key: "update",
-      value: function update(deltaTime) {
-        this.dependedEntries.forEach(function (entry) {
-          entry.update(deltaTime);
-        });
-      }
-    }, {
       key: "exit",
       value: function exit() {
-        this.dependedEntries.forEach(function (entry) {
-          entry.destroy();
-        });
+        this.rootEntry.destroy();
         LevelEvent.unlisten(this.levelEventListener.bind(this));
       }
     }, {
@@ -2826,34 +2983,35 @@
   }(LevelManager);
 
   var LevelSelector = /*#__PURE__*/function () {
-    function LevelSelector() {
+    function LevelSelector(levels, initialLevelKey) {
       _classCallCheck(this, LevelSelector);
+      _defineProperty(this, "_levelRecord", void 0);
+      _defineProperty(this, "_currentLevelKey", void 0);
+      this._levelRecord = levels;
+      this._currentLevelKey = initialLevelKey;
     }
-    _createClass(LevelSelector, null, [{
-      key: "init",
-      value: function init(levels) {
-        LevelSelector.levels = levels;
-        var _Object$keys = Object.keys(levels);
-        var _Object$keys2 = _slicedToArray(_Object$keys, 1);
-        LevelSelector.currentLevelKey = _Object$keys2[0];
-      }
-    }, {
+    /**
+     * レベルを移動
+     * @param levelName
+     */
+    _createClass(LevelSelector, [{
       key: "moveLevel",
       value: function moveLevel(levelName) {
-        LevelSelector.levels[this.currentLevelKey].exit();
-        this.currentLevelKey = levelName;
-        LevelSelector.levels[this.currentLevelKey].start();
+        this._levelRecord[this._currentLevelKey].exit();
+        this._currentLevelKey = levelName;
+        this._levelRecord[this._currentLevelKey].start();
       }
+      /**
+       * 現在のレベルのLevelManagerを取得
+       */
     }, {
       key: "currentLevel",
       value: function currentLevel() {
-        return LevelSelector.levels[LevelSelector.currentLevelKey];
+        return this._levelRecord[this._currentLevelKey];
       }
     }]);
     return LevelSelector;
   }();
-  _defineProperty(LevelSelector, "levels", void 0);
-  _defineProperty(LevelSelector, "currentLevelKey", '');
 
   var ImageLoader = function ImageLoader(path, progress) {
     var target = new Image();
@@ -3101,16 +3259,16 @@
   exports.AssetBase = AssetBase;
   exports.AudioLoader = AudioLoader;
   exports.BeginPath = BeginPath;
-  exports.CanvasLayerInfo = CanvasLayerInfo;
   exports.ClosePath = ClosePath;
+  exports.ColliderComponent = ColliderComponent;
   exports.Color = Color;
   exports.ComponentBase = ComponentBase;
   exports.DynamicFileLoader = DynamicFileLoader;
   exports.GameEntry = GameEntry;
   exports.GameManager = GameManager;
+  exports.GamePipeline = GamePipeline;
   exports.GraphicBase = GraphicBase;
   exports.GraphicComponent = GraphicComponent;
-  exports.GraphicManager = GraphicManager;
   exports.ImageLoader = ImageLoader;
   exports.InputManager = InputManager;
   exports.KeyBinder = KeyBinder;
@@ -3133,7 +3291,7 @@
   exports.SpriteSheetGraphic = SpriteSheetGraphic;
   exports.StaticFileLoader = StaticFileLoader;
   exports.TextGraphic = TextGraphic;
-  exports.TransformComponent = TransformComponent;
+  exports.Time = Time;
   exports.Vector2 = Vector2;
   exports.Vector2Provider = Vector2Provider;
   exports.Vector3 = Vector3;

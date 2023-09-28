@@ -1,7 +1,7 @@
 import { PathBase } from './path';
-import { CanvasLayerInfo } from '../core';
 import { GraphicStyle, LineStyle } from './util';
 import { GraphicBase } from './GraphicBase';
+import { CanvasLayerInfo } from '../preprocess';
 export declare class PathGraphic extends GraphicBase {
     path: PathBase[];
     readonly style: LineStyle & GraphicStyle;
