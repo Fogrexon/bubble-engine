@@ -47,7 +47,7 @@ export class UndirectedTable<TKeys extends string[], TValue> {
     callback: (row: TKeys[number], column: TKeys[number], value: TValue) => void
   ): void {
     this._keys.forEach((key: TKeys[number], index: number) => {
-      for (let i = 0; i < index; i += 1) {
+      for (let i = 0; i < index + 1; i += 1) {
         callback(key, this._keys[i], this.get(key, this._keys[i]));
       }
     });

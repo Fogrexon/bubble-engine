@@ -1,2 +1,1 @@
-export * from './ColliderBase';
-export * from './BoxCollider';
+export * from './BoxColliderComponent';
