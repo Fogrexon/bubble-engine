@@ -73,6 +73,13 @@ export class CollisionPreprocessManager<
         });
       });
     });
+
+    // 衝突情報を整理してイベントを発行
+    this._layerNames.forEach((layerName: LayerNames[number]) => {
+      this._layerTable[layerName].colliders.forEach((collider) => {
+        collider.processCollision();
+      });
+    });
   }
 
   private testAndRegister(collider1: ColliderComponent, collider2: ColliderComponent) {
