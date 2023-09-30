@@ -1,7 +1,11 @@
-import { BoxCollider } from '../collider';
+import { BoxColliderComponent } from '../collider';
 import { HitTest } from './HitTest';
 
-export const boxBoxHitTest: HitTest<BoxCollider, BoxCollider> = (box1, box2, hitPoint) => {
+export const boxBoxHitTest: HitTest<BoxColliderComponent, BoxColliderComponent> = (
+  box1,
+  box2,
+  hitPoint
+) => {
   const worldBox1 = box1.getWorldBox();
   const worldBox2 = box2.getWorldBox();
 

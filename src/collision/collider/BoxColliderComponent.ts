@@ -1,5 +1,6 @@
-import { ColliderBase } from './ColliderBase';
 import { Vector2 } from '../../math';
+import { ColliderComponent } from '../../component';
+import { CollisionLayerInfo } from '../../preprocess';
 
 export type SimpleAreaStruct = {
   left: number;
@@ -11,7 +12,7 @@ export type SimpleAreaStruct = {
 /**
  * 長方形形状のコライダー
  */
-export class BoxCollider extends ColliderBase {
+export class BoxColliderComponent extends ColliderComponent {
   /**
    * 長方形のサイズ
    * x = width
@@ -24,8 +25,14 @@ export class BoxCollider extends ColliderBase {
    */
   public readonly offset = new Vector2();
 
-  public constructor(offsetX: number, offsetY: number, width: number, height: number) {
-    super();
+  public constructor(
+    layer: CollisionLayerInfo,
+    offsetX: number,
+    offsetY: number,
+    width: number,
+    height: number
+  ) {
+    super(layer);
     this.offset.set(offsetX, offsetY);
     this.size.set(width, height);
   }

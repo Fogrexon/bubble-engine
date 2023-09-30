@@ -8,6 +8,7 @@ export class CollisionPreprocess extends PreprocessBase {
     const collider = this.entry.getComponent(ColliderComponent);
     if (collider && collider.enabled) {
       collider.layer.registerCollider(collider);
+      collider.resetCollision();
     }
 
     const childrenCollision = this.entry.transform.children.map(
