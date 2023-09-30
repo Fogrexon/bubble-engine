@@ -1,3 +1,3 @@
-import { BoxCollider } from '../collider';
+import { BoxColliderComponent } from '../collider';
 import { HitTest } from './HitTest';
-export declare const boxBoxHitTest: HitTest<BoxCollider, BoxCollider>;
+export declare const boxBoxHitTest: HitTest<BoxColliderComponent, BoxColliderComponent>;

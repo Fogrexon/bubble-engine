@@ -693,6 +693,102 @@
   }();
 
   /**
+   * 与えられた文字列のリストのうち重複のない二つをキーとするテーブル
+   */
+  var UndirectedTable = /*#__PURE__*/function () {
+    function UndirectedTable(keys, defaultValue) {
+      var _this = this;
+      _classCallCheck(this, UndirectedTable);
+      _defineProperty(this, "_keys", void 0);
+      _defineProperty(this, "_table", {});
+      this._keys = keys;
+      keys.forEach(function (key) {
+        _this._table[key] = {};
+        keys.forEach(function (column) {
+          _this._table[key][column] = defaultValue;
+        });
+      });
+    }
+    /**
+     * 2つの文字列をキーとする値の取り出し
+     * @param key1
+     * @param key2
+     */
+    _createClass(UndirectedTable, [{
+      key: "get",
+      value: function get(key1, key2) {
+        return this._table[key1][key2];
+      }
+      /**
+       * 2つの文字列をキーとする値の設定
+       * @param row
+       * @param column
+       * @param value
+       */
+    }, {
+      key: "set",
+      value: function set(row, column, value) {
+        this._table[row][column] = value;
+        this._table[column][row] = value;
+      }
+      /**
+       * テーブルの要素を重複無しで取り出す
+       * @param callback
+       */
+    }, {
+      key: "forEach",
+      value: function forEach(callback) {
+        var _this2 = this;
+        this._keys.forEach(function (key, index) {
+          for (var i = 0; i < index + 1; i += 1) {
+            callback(key, _this2._keys[i], _this2.get(key, _this2._keys[i]));
+          }
+        });
+      }
+    }]);
+    return UndirectedTable;
+  }();
+
+  var EventEmitter = /*#__PURE__*/function () {
+    function EventEmitter() {
+      _classCallCheck(this, EventEmitter);
+      _defineProperty(this, "listeners", void 0);
+      this.listeners = {};
+    }
+    _createClass(EventEmitter, [{
+      key: "on",
+      value: function on(event, listener) {
+        if (!this.listeners[event]) {
+          this.listeners[event] = [];
+        }
+        this.listeners[event].push(listener);
+      }
+    }, {
+      key: "emit",
+      value: function emit(event, value) {
+        var listeners = this.listeners[event];
+        if (listeners) {
+          listeners.forEach(function (listener) {
+            listener(value);
+          });
+        }
+      }
+    }, {
+      key: "off",
+      value: function off(event, listener) {
+        var listeners = this.listeners[event];
+        if (listeners) {
+          var index = listeners.indexOf(listener);
+          if (index >= 0) {
+            listeners.splice(index, 1);
+          }
+        }
+      }
+    }]);
+    return EventEmitter;
+  }();
+
+  /**
    * 描画系をつかさどるコンポーネント
    */
   var GraphicComponent = /*#__PURE__*/function (_ComponentBase) {
@@ -744,17 +840,62 @@
   var ColliderComponent = /*#__PURE__*/function (_ComponentBase) {
     _inherits(ColliderComponent, _ComponentBase);
     var _super = _createSuper(ColliderComponent);
-    function ColliderComponent(colliders, layer) {
+    function ColliderComponent(layer) {
       var _this;
       _classCallCheck(this, ColliderComponent);
       _this = _super.call(this);
-      _defineProperty(_assertThisInitialized(_this), "colliders", void 0);
       _defineProperty(_assertThisInitialized(_this), "layer", void 0);
-      _this.colliders = colliders;
+      _defineProperty(_assertThisInitialized(_this), "collisions", []);
+      _defineProperty(_assertThisInitialized(_this), "hitColliders", new Set());
+      _defineProperty(_assertThisInitialized(_this), "tempColliders", new Set());
+      _defineProperty(_assertThisInitialized(_this), "eventEmitter", new EventEmitter());
       _this.layer = layer;
       return _this;
     }
+    /**
+     * 衝突情報をリセット
+     */
     _createClass(ColliderComponent, [{
+      key: "resetCollision",
+      value: function resetCollision() {
+        this.collisions.length = 0;
+      }
+      /**
+       * 衝突情報を登録
+       * CollisionPreprocessManagerによって登録される
+       * @param collisionInfo
+       */
+    }, {
+      key: "registerCollision",
+      value: function registerCollision(collisionInfo) {
+        this.collisions.push(collisionInfo);
+      }
+      /**
+       * 登録された衝突情報を整理して衝突イベントを発行する
+       */
+    }, {
+      key: "processCollision",
+      value: function processCollision() {
+        var _this2 = this;
+        this.tempColliders.clear();
+        this.collisions.forEach(function (collisionInfo) {
+          _this2.tempColliders.add(collisionInfo.collider);
+          if (_this2.hitColliders.has(collisionInfo.collider)) {
+            _this2.emit('collisionStay', collisionInfo);
+          } else {
+            _this2.hitColliders.add(collisionInfo.collider);
+            _this2.emit('collisionStart', collisionInfo);
+          }
+        });
+        // 衝突終了処理
+        this.hitColliders.forEach(function (collider) {
+          if (!_this2.tempColliders.has(collider)) {
+            _this2.hitColliders["delete"](collider);
+            _this2.emit('collisionEnd', collider);
+          }
+        });
+      }
+    }, {
       key: "onDestroy",
       value: function onDestroy() {}
     }, {
@@ -772,6 +913,22 @@
     }, {
       key: "onUpdate",
       value: function onUpdate() {}
+      // region Event Emitter implements
+    }, {
+      key: "emit",
+      value: function emit(event, value) {
+        this.eventEmitter.emit(event, value);
+      }
+    }, {
+      key: "off",
+      value: function off(event, listener) {
+        this.eventEmitter.off(event, listener);
+      }
+    }, {
+      key: "on",
+      value: function on(event, listener) {
+        this.eventEmitter.on(event, listener);
+      }
     }]);
     return ColliderComponent;
   }(ComponentBase);
@@ -2078,6 +2235,7 @@
         var collider = this.entry.getComponent(ColliderComponent);
         if (collider && collider.enabled) {
           collider.layer.registerCollider(collider);
+          collider.resetCollision();
         }
         var childrenCollision = this.entry.transform.children.map(function (childTransform) {
           return childTransform.entry.collision;
@@ -3358,6 +3516,7 @@
   exports.Color = Color;
   exports.ComponentBase = ComponentBase;
   exports.DynamicFileLoader = DynamicFileLoader;
+  exports.EventEmitter = EventEmitter;
   exports.GameEntry = GameEntry;
   exports.GameManager = GameManager;
   exports.GamePipeline = GamePipeline;
@@ -3385,6 +3544,7 @@
   exports.SubSpriteAsset = SubSpriteAsset;
   exports.TextGraphic = TextGraphic;
   exports.Time = Time;
+  exports.UndirectedTable = UndirectedTable;
   exports.Vector2 = Vector2;
   exports.Vector2Provider = Vector2Provider;
   exports.Vector3 = Vector3;
