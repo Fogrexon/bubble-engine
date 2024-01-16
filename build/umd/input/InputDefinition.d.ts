@@ -23,5 +23,5 @@ export interface ScalarKey2InputType {
     negativeValue: InputableKey;
 }
 export type ScalarInputType = ScalarKey1InputType | ScalarKey2InputType;
-export type InputKeybind = Record<string, ScalarInputType[] | Vector2InputType[]>;
+export type InputKeybind = Record<string, (ScalarInputType | Vector2InputType)[]>;
 export type RawKeyValue = Record<InputableKey, number>;

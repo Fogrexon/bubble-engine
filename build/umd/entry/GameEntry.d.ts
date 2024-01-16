@@ -1,6 +1,6 @@
 import { ComponentBase } from '../component';
 import { CollisionPreprocess, GraphicPreprocess, TransformPreprocess } from '../preprocess';
-export declare abstract class GameEntry {
+export declare class GameEntry {
     readonly transform: TransformPreprocess;
     readonly graphic: GraphicPreprocess;
     readonly collision: CollisionPreprocess;

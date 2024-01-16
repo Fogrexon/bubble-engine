@@ -3377,6 +3377,8 @@
     var _super = _createSuper(AudioAsset);
     function AudioAsset(path, audioType) {
       var _this;
+      var loopStartTime = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var loopEndTime = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
       _classCallCheck(this, AudioAsset);
       _this = _super.call(this, path, 'audio');
       /**
@@ -3394,6 +3396,8 @@
        */
       _defineProperty(_assertThisInitialized(_this), "loopEndTime", 0);
       _this.audioType = audioType;
+      _this.loopStartTime = loopStartTime;
+      _this.loopEndTime = loopEndTime;
       return _this;
     }
     _createClass(AudioAsset, [{

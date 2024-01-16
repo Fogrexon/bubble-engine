@@ -19,5 +19,5 @@ export declare class AudioAsset extends AssetBase<HTMLAudioElement> {
      * 音声の長さ
      */
     get length(): number;
-    constructor(path: string, audioType: AudioAssetType);
+    constructor(path: string, audioType: AudioAssetType, loopStartTime?: number, loopEndTime?: number);
 }
