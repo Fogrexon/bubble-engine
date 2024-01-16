@@ -1,7 +1,7 @@
 import { ComponentBase } from '../component';
 import { CollisionPreprocess, GraphicPreprocess, TransformPreprocess } from '../preprocess';
 
-export abstract class GameEntry {
+export class GameEntry {
   // プリプロセス系
   public readonly transform: TransformPreprocess;
 
