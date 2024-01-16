@@ -27,8 +27,10 @@ export class AudioAsset extends AssetBase<HTMLAudioElement> {
     return this.data?.duration || 0;
   }
 
-  constructor(path: string, audioType: AudioAssetType) {
+  constructor(path: string, audioType: AudioAssetType, loopStartTime = 0, loopEndTime = 0) {
     super(path, 'audio');
     this.audioType = audioType;
+    this.loopStartTime = loopStartTime;
+    this.loopEndTime = loopEndTime;
   }
 }
