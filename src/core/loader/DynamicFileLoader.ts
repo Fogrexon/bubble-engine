@@ -34,6 +34,7 @@ export class DynamicFileLoader {
         loadFileProgresses[key] = rate;
         progress(sumRecord(loadFileProgresses) / fileCount);
       }));
+    await Promise.all(loadFilePromises);
   }
 
   /**
