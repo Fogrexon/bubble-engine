@@ -3235,6 +3235,20 @@
     return StaticFileLoader;
   }();
 
+  var mapRecord = function mapRecord(record, fn) {
+    return Object.fromEntries(Object.entries(record).map(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+        key = _ref2[0],
+        value = _ref2[1];
+      return [key, fn(key, value)];
+    }));
+  };
+  var sumRecord = function sumRecord(record) {
+    return Object.values(record).reduce(function (acc, current) {
+      return acc + current;
+    }, 0);
+  };
+
   /**
    * ゲーム開始後動的にファイルを読むためのクラス
    */
@@ -3245,7 +3259,14 @@
     }
     _createClass(DynamicFileLoader, [{
       key: "load",
-      value: function () {
+      value:
+      /**
+       * アセットの読み込み
+       * @param key
+       * @param asset
+       * @param progress
+       */
+      function () {
         var _load = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(key, asset, progress) {
           var loader;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -3274,12 +3295,62 @@
         }
         return load;
       }()
+      /**
+       * 複数アセットの読み込み
+       * @param fileTable
+       * @param progress
+       */
+    }, {
+      key: "loadAll",
+      value: function () {
+        var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(fileTable) {
+          var _this = this;
+          var progress,
+            loadFileProgresses,
+            fileCount,
+            _args2 = arguments;
+          return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+            while (1) switch (_context2.prev = _context2.next) {
+              case 0:
+                progress = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : function () {};
+                loadFileProgresses = mapRecord(fileTable, function () {
+                  return 0;
+                });
+                fileCount = Object.keys(fileTable).length;
+                Object.entries(fileTable).map(function (_ref) {
+                  var _ref2 = _slicedToArray(_ref, 2),
+                    key = _ref2[0],
+                    asset = _ref2[1];
+                  return _this.load(key, asset, function (rate) {
+                    loadFileProgresses[key] = rate;
+                    progress(sumRecord(loadFileProgresses) / fileCount);
+                  });
+                });
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }, _callee2);
+        }));
+        function loadAll(_x4) {
+          return _loadAll.apply(this, arguments);
+        }
+        return loadAll;
+      }()
+      /**
+       * アセットの取得
+       * @param id
+       */
     }, {
       key: "get",
       value: function get(id) {
         if (!this._registeredAssetTable[id]) throw new Error("DynamicFileLoader: Asset(".concat(String(id), ") is not registered"));
         return this._registeredAssetTable[id];
       }
+      /**
+       * アセットのメモリ開放
+       * @param id
+       */
     }, {
       key: "dispose",
       value: function dispose(id) {

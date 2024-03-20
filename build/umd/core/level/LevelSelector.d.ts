@@ -1,5 +1,5 @@
-import { LevelManager } from '../../levelControl/LevelManager';
-type LevelRecord = Record<string, LevelManager>;
+import { GameEntry } from '../../entry';
+type LevelRecord = Record<string, GameEntry>;
 export declare class LevelSelector<T extends LevelRecord = LevelRecord> {
     private readonly _levelRecord;
     private _currentLevelKey;
