@@ -1,5 +1,5 @@
 import { PreprocessBase } from './PreprocessBase';
-import { ColliderComponent } from '../component';
+import { ColliderComponent } from '../../component';
 
 export class CollisionPreprocess extends PreprocessBase {
   public process(): void {

@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { ComponentBase } from './ComponentBase';
-import { CollisionLayerInfo } from '../preprocess';
+import { CollisionLayerInfo } from '../core/preprocess';
 import { CollisionInfo } from '../collision/CollisionInfo';
 import { EventEmitter, IEventEmittable } from '../util';
 

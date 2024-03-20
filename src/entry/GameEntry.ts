@@ -1,5 +1,5 @@
 import { ComponentBase } from '../component';
-import { CollisionPreprocess, GraphicPreprocess, TransformPreprocess } from '../preprocess';
+import { CollisionPreprocess, GraphicPreprocess, TransformPreprocess } from '../core/preprocess';
 
 export class GameEntry {
   // プリプロセス系

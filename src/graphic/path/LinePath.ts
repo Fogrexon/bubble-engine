@@ -1,6 +1,6 @@
 import { PathBase } from './PathBase';
 import { Vector2 } from '../../math';
-import { CanvasLayerInfo } from '../../preprocess';
+import { GraphicLayerInfo } from '../../core/preprocess';
 
 export class LinePath extends PathBase {
   public readonly position: Vector2 = new Vector2();
@@ -10,7 +10,7 @@ export class LinePath extends PathBase {
     this.position.set(x, y);
   }
 
-  public render(layer: CanvasLayerInfo, prevPos: Vector2) {
+  public render(layer: GraphicLayerInfo, prevPos: Vector2) {
     layer.context.lineTo(this.position.x, this.position.y);
     prevPos.set(this.position.x, this.position.y);
 

@@ -1,8 +1,8 @@
 import { GraphicBase } from './GraphicBase';
 import { Rect } from '../util';
-import { SpriteAsset } from '../loader';
+import { SpriteAsset } from '../core/loader';
 import { Vector2 } from '../math';
-import { CanvasLayerInfo } from '../preprocess';
+import { GraphicLayerInfo } from '../core/preprocess';
 
 export class SpriteGraphic extends GraphicBase {
   public readonly position = new Vector2();
@@ -21,7 +21,7 @@ export class SpriteGraphic extends GraphicBase {
     this.size.set(sprite.width, sprite.height);
   }
 
-  public render(layer: CanvasLayerInfo): Rect {
+  public render(layer: GraphicLayerInfo): Rect {
     const left = this.position.x - this.anchor.x * this.size.x;
     const top = this.position.y - this.anchor.y * this.size.y;
 

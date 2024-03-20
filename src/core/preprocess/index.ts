@@ -2,7 +2,7 @@ export * from './PreprocessBase';
 export * from './PreprocessManager';
 export * from './GraphicPreprocess';
 export * from './GraphicPreprocessManager';
-export * from './CanvasLayerInfo';
+export * from './GraphicLayerInfo';
 export * from './TransformPreprocess';
 export * from './CollisionPreprocess';
 export * from './CollisionPreprocessManager';

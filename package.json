@@ -62,5 +62,9 @@
   },
   "dependencies": {
     "uuid": "^9.0.1"
+  },
+  "volta": {
+    "node": "20.11.1",
+    "yarn": "4.1.1"
   }
 }

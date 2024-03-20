@@ -1,7 +1,7 @@
-import { CollisionPreprocessManager, GraphicPreprocessManager } from '../preprocess';
+import { CollisionPreprocessManager, GraphicPreprocessManager } from '../core/preprocess';
 import { LevelManager } from '../levelControl';
 import { Time } from './Time';
-import { InputManager } from '../input';
+import { InputManager } from '../core/input';
 
 export class GamePipeline {
   private readonly _time: Time;

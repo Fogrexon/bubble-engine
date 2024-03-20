@@ -1,4 +1,4 @@
-import { ColliderComponent } from '../component';
+import { ColliderComponent } from '../../component';
 
 export class CollisionLayerInfo {
   public colliders: ColliderComponent[] = [];
