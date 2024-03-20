@@ -1,7 +1,13 @@
-import { PreprocessBase } from './PreprocessBase';
 import { ColliderComponent } from '../../component';
+import {GameEntry} from '../../entry';
 
-export class CollisionPreprocess extends PreprocessBase {
+export class CollisionPreprocess {
+  public readonly entry: GameEntry;
+  
+  constructor(entry: GameEntry) {
+    this.entry = entry;
+  }
+  
   public process(): void {
     if (!this.entry.enabled) return;
 

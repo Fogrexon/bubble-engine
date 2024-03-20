@@ -1,13 +1,12 @@
 import { CollisionLayerInfo } from './CollisionLayerInfo';
-import { PreprocessManager } from './PreprocessManager';
 import { Vector2 } from '../../math';
 import { boxBoxHitTest, BoxColliderComponent } from '../../collision';
 import { ColliderComponent } from '../../component';
 
-export class CollisionPreprocessManager<
+export class CollisionManager<
   LayerNames extends string[] = [],
   CollisionPairs extends [LayerNames[number], LayerNames[number]][] = [LayerNames[number], LayerNames[number]][]
-> extends PreprocessManager {
+> {
   private readonly _layerNames: LayerNames;
 
   private readonly _layerTable: Record<LayerNames[number], CollisionLayerInfo> = {} as Record<
@@ -20,7 +19,6 @@ export class CollisionPreprocessManager<
   private readonly _tempHitPoint: Vector2 = new Vector2();
 
   constructor(layers: LayerNames, collisionPairs?: CollisionPairs) {
-    super();
     this._layerNames = layers;
     layers.forEach((layerName: LayerNames[number]) => {
       this._layerTable[layerName] = new CollisionLayerInfo();

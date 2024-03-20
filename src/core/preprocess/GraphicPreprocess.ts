@@ -1,15 +1,21 @@
-import { PreprocessBase } from './PreprocessBase';
 import { GraphicComponent } from '../../component';
+import {GameEntry} from '../../entry';
 
 /**
  * 描画系をつかさどるコンポーネント
  */
-export class GraphicPreprocess extends PreprocessBase {
+export class GraphicPreprocess {
+  private readonly entry: GameEntry;
+
   /**
    * 描画順
    */
   public index: number = 0;
 
+  constructor(entry: GameEntry) {
+    this.entry = entry;
+  }
+  
   public process(): void {
     if (!this.entry.enabled) return;
 
