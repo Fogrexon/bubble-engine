@@ -1,4 +1,4 @@
-import { CanvasLayerInfo } from './CanvasLayerInfo';
+import { GraphicLayerInfo } from './GraphicLayerInfo';
 import { PreprocessManager } from './PreprocessManager';
 
 export class GraphicPreprocessManager<
@@ -6,7 +6,7 @@ export class GraphicPreprocessManager<
 > extends PreprocessManager {
   private _layerNames: LayerNames;
 
-  private _layerTable: Record<LayerNames[number], CanvasLayerInfo>;
+  private _layerTable: Record<LayerNames[number], GraphicLayerInfo>;
 
   private _screenshotCanvas: HTMLCanvasElement;
 
@@ -29,7 +29,7 @@ export class GraphicPreprocessManager<
     this._layerNames = layers;
     this._canvasWrapper = null;
 
-    this._layerTable = {} as Record<LayerNames[number], CanvasLayerInfo>;
+    this._layerTable = {} as Record<LayerNames[number], GraphicLayerInfo>;
 
     layers.forEach((layerName: LayerNames[number]) => {
       const canvas = document.createElement('canvas');
@@ -61,7 +61,7 @@ export class GraphicPreprocessManager<
     this.resetSize();
   }
 
-  public getLayer(id: LayerNames[number]): CanvasLayerInfo {
+  public getLayer(id: LayerNames[number]): GraphicLayerInfo {
     return this._layerTable[id];
   }
 

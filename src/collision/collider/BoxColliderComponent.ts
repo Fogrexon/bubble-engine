@@ -1,6 +1,6 @@
 import { Vector2 } from '../../math';
 import { ColliderComponent } from '../../component';
-import { CollisionLayerInfo } from '../../preprocess';
+import { CollisionLayerInfo } from '../../core/preprocess';
 
 export type SimpleAreaStruct = {
   left: number;

@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { Matrix3, Vector2 } from '../math';
+import { Matrix3, Vector2 } from '../../math';
 import { PreprocessBase } from './PreprocessBase';
 
 /**

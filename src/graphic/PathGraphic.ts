@@ -2,7 +2,7 @@ import { PathBase } from './path';
 import { GraphicStyle, LineStyle } from './util';
 import { Vector2 } from '../math';
 import { GraphicBase } from './GraphicBase';
-import { CanvasLayerInfo } from '../preprocess';
+import { GraphicLayerInfo } from '../core/preprocess';
 
 export class PathGraphic extends GraphicBase {
   public path: PathBase[];
@@ -17,7 +17,7 @@ export class PathGraphic extends GraphicBase {
     this.style = style;
   }
 
-  public render(layer: CanvasLayerInfo) {
+  public render(layer: GraphicLayerInfo) {
     this._tempVector.set(0, 0);
 
     this.path.forEach((path, index) => {

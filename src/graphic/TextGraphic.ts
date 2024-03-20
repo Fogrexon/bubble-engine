@@ -9,7 +9,7 @@ import {
   setTextStyle,
   TextStyle,
 } from './util';
-import { CanvasLayerInfo } from '../preprocess';
+import { GraphicLayerInfo } from '../core/preprocess';
 
 export class TextGraphic extends GraphicBase {
   public readonly position = new Vector2();
@@ -27,7 +27,7 @@ export class TextGraphic extends GraphicBase {
     this.style = style;
   }
 
-  public render(layer: CanvasLayerInfo): Rect {
+  public render(layer: GraphicLayerInfo): Rect {
     const { context } = layer;
     context.font = this.font;
     setLineStyle(context, this.style);

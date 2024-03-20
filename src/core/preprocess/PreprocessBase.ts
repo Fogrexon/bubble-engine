@@ -1,4 +1,4 @@
-import { GameEntry } from '../entry';
+import { GameEntry } from '../../entry';
 
 /**
  * 基本的なコンポーネント更新前に実行される事前処理用のコンポーネント

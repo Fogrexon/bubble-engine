@@ -1,8 +1,8 @@
 import { GraphicBase } from './GraphicBase';
 import { Rect } from '../util';
-import { SpriteSheetAsset } from '../loader';
+import { SpriteSheetAsset } from '../core/loader';
 import { Vector2 } from '../math';
-import { CanvasLayerInfo } from '../preprocess';
+import { GraphicLayerInfo } from '../core/preprocess';
 
 export class SpriteSheetGraphic extends GraphicBase {
   public readonly position = new Vector2();
@@ -20,7 +20,7 @@ export class SpriteSheetGraphic extends GraphicBase {
     this.spriteIndex = 0;
   }
 
-  public render(layer: CanvasLayerInfo): Rect {
+  public render(layer: GraphicLayerInfo): Rect {
     if (this.sprite.data) {
       layer.context.drawImage(
         this.sprite.data,

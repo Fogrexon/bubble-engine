@@ -1,5 +1,5 @@
 import { PreprocessBase } from './PreprocessBase';
-import { GraphicComponent } from '../component';
+import { GraphicComponent } from '../../component';
 
 /**
  * 描画系をつかさどるコンポーネント

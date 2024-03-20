@@ -1,4 +1,4 @@
-export class CanvasLayerInfo {
+export class GraphicLayerInfo {
   public readonly canvas: HTMLCanvasElement;
 
   public readonly context: CanvasRenderingContext2D;
