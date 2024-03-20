@@ -1,6 +1,6 @@
-import { LevelManager } from '../../levelControl/LevelManager';
+import {GameEntry} from '../../entry';
 
-type LevelRecord = Record<string, LevelManager>;
+type LevelRecord = Record<string, GameEntry>;
 
 export class LevelSelector<T extends LevelRecord = LevelRecord> {
   private readonly _levelRecord: T;
@@ -17,9 +17,8 @@ export class LevelSelector<T extends LevelRecord = LevelRecord> {
    * @param levelName
    */
   public moveLevel(levelName: keyof LevelRecord) {
-    this._levelRecord[this._currentLevelKey].exit();
+    this._levelRecord[this._currentLevelKey].destroy();
     this._currentLevelKey = levelName;
-    this._levelRecord[this._currentLevelKey].start();
   }
 
   /**
