@@ -2,6 +2,7 @@ import { CollisionLayerInfo } from './CollisionLayerInfo';
 import { Vector2 } from '../../math';
 import { boxBoxHitTest, BoxColliderComponent } from '../../collision';
 import { ColliderComponent } from '../../component';
+import {testerTable} from '../../collision/tester/testerTable';
 
 export class CollisionManager<
   LayerNames extends string[] = [],
@@ -82,15 +83,16 @@ export class CollisionManager<
   }
 
   private testAndRegister(collider1: ColliderComponent, collider2: ColliderComponent) {
-    // 現状衝突判定はBox同士のみなので、決め打ちで判定を行う
-    if (!(collider1 instanceof BoxColliderComponent && collider2 instanceof BoxColliderComponent)) {
-      throw new Error('CollisionPreprocessManager: BoxCollider is only allowed.');
+    const tester = testerTable.get(collider1.colliderId, collider2.colliderId);
+
+    if (!tester) {
+      throw new Error(`CollisionPreprocessManager: Collision(${collider1.colliderId}, ${collider2.colliderId}) is only allowed.`);
     }
 
     if (
-      boxBoxHitTest(
-        collider1 as BoxColliderComponent,
-        collider2 as BoxColliderComponent,
+      tester(
+        collider1,
+        collider2,
         this._tempHitPoint
       )
     ) {

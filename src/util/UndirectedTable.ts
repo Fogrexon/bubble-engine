@@ -1,7 +1,7 @@
 /**
  * 与えられた文字列のリストのうち重複のない二つをキーとするテーブル
  */
-export class UndirectedTable<TKeys extends string[], TValue> {
+export class UndirectedTable<TKeys extends readonly string[], TValue> {
   private readonly _keys: TKeys;
 
   private readonly _table: Record<TKeys[number], Record<TKeys[number], TValue>> = {} as Record<

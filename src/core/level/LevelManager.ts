@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import { GameEntry } from '../entry';
-import { LevelEvent, LevelEventType } from '../event';
+import { GameEntry } from '../../entry';
+import { LevelEvent, LevelEventType } from '../../event';
 
 // このLevelStateが二重定義されているというエラーが出るが、どこで定義されているのかわからないので暫定的に無視
 // eslint-disable-next-line no-shadow

@@ -13,6 +13,8 @@ export type SimpleAreaStruct = {
  * 長方形形状のコライダー
  */
 export class BoxColliderComponent extends ColliderComponent {
+  public readonly colliderId = 'box';
+
   /**
    * 長方形のサイズ
    * x = width

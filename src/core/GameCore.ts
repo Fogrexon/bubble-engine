@@ -3,9 +3,8 @@ import {AssetBase, DynamicFileLoader, FileType, StaticFileLoader} from './loader
 import {AchievementBlueprintTable, AchievementManager, AchievementStatusBlueprintTable} from './achievement';
 import {CollisionManager, GraphicManager} from './preprocess';
 import {GlobalStore} from './store';
-import {LevelManager} from '../levelControl';
 import {GameEntry} from '../entry';
-import {LevelSelector} from './level';
+import {LevelManager, LevelSelector} from './level';
 import {Time} from './time';
 
 export type GameCoreSettings<
@@ -48,6 +47,8 @@ export type GameApi<T extends GameCoreSettings = GameCoreSettings> = {
   readonly levelSelector: LevelSelector<T['levelTable']>
   readonly time: Time
 }
+
+export type CreateEntryFunc<T extends GameCoreSettings> = (api: GameApi<T>) => GameEntry;
 
 export class GameCore<T extends GameCoreSettings = GameCoreSettings> {
 

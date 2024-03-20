@@ -1,7 +1,7 @@
 import { LevelManager, LevelManagerSettings } from '../LevelManager';
-import { RespawnPoint } from '../../entry';
-import { LevelEvent, LevelEventType } from '../../event';
-import { wait } from '../../util';
+import { RespawnPoint } from '../../../entry';
+import { LevelEvent, LevelEventType } from '../../../event';
+import { wait } from '../../../util';
 
 export type ActionLevelManagerSettings = {
   respawnPoint: RespawnPoint;
