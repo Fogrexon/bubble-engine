@@ -1,4 +1,4 @@
-import { LevelManager } from './LevelManager';
+import { LevelManager } from '../../levelControl/LevelManager';
 type LevelRecord = Record<string, LevelManager>;
 export declare class LevelSelector<T extends LevelRecord = LevelRecord> {
     private readonly _levelRecord;

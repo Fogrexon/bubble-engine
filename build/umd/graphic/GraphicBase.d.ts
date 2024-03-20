@@ -1,6 +1,6 @@
 import { Rect } from '../util';
-import { CanvasLayerInfo } from '../preprocess';
+import { GraphicLayerInfo } from '../core/preprocess';
 export declare abstract class GraphicBase {
     protected _boundingBox: Rect;
-    abstract render(layer: CanvasLayerInfo): Rect;
+    abstract render(layer: GraphicLayerInfo): Rect;
 }

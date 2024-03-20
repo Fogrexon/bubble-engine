@@ -1,8 +1,8 @@
 import { GraphicBase } from './GraphicBase';
 import { Rect } from '../util';
-import { SpriteAsset } from '../loader';
+import { SpriteAsset } from '../core/loader';
 import { Vector2 } from '../math';
-import { CanvasLayerInfo } from '../preprocess';
+import { GraphicLayerInfo } from '../core/preprocess';
 export declare class SpriteGraphic extends GraphicBase {
     readonly position: Vector2;
     readonly anchor: Vector2;
@@ -10,5 +10,5 @@ export declare class SpriteGraphic extends GraphicBase {
     alpha: number;
     sprite: SpriteAsset;
     constructor(sprite: SpriteAsset);
-    render(layer: CanvasLayerInfo): Rect;
+    render(layer: GraphicLayerInfo): Rect;
 }

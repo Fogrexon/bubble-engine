@@ -1,4 +1,4 @@
-import { Matrix3, Vector2 } from '../math';
+import { Matrix3, Vector2 } from '../../math';
 import { PreprocessBase } from './PreprocessBase';
 /**
  * GameEntryの場所を管理するコンポーネント

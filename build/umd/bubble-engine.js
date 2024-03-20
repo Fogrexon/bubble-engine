@@ -3144,37 +3144,6 @@
     return ActionLevelManager;
   }(LevelManager);
 
-  var LevelSelector = /*#__PURE__*/function () {
-    function LevelSelector(levels, initialLevelKey) {
-      _classCallCheck(this, LevelSelector);
-      _defineProperty(this, "_levelRecord", void 0);
-      _defineProperty(this, "_currentLevelKey", void 0);
-      this._levelRecord = levels;
-      this._currentLevelKey = initialLevelKey;
-    }
-    /**
-     * レベルを移動
-     * @param levelName
-     */
-    _createClass(LevelSelector, [{
-      key: "moveLevel",
-      value: function moveLevel(levelName) {
-        this._levelRecord[this._currentLevelKey].exit();
-        this._currentLevelKey = levelName;
-        this._levelRecord[this._currentLevelKey].start();
-      }
-      /**
-       * 現在のレベルのLevelManagerを取得
-       */
-    }, {
-      key: "currentLevel",
-      value: function currentLevel() {
-        return this._levelRecord[this._currentLevelKey];
-      }
-    }]);
-    return LevelSelector;
-  }();
-
   var imageFileLoader = function imageFileLoader(path, progress) {
     var target = new Image();
     target.src = path;
@@ -3530,7 +3499,6 @@
   exports.KeyBinder = KeyBinder;
   exports.LevelEvent = LevelEvent;
   exports.LevelManager = LevelManager;
-  exports.LevelSelector = LevelSelector;
   exports.LinePath = LinePath;
   exports.ManagerBase = ManagerBase;
   exports.Matrix2 = Matrix2;

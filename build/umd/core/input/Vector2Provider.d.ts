@@ -1,5 +1,5 @@
 import { IInputStateProvidable } from './IInputStateProvidable';
-import { Vector2 } from '../math';
+import { Vector2 } from '../../math';
 export declare class Vector2Provider implements IInputStateProvidable {
     xValue: number;
     yValue: number;

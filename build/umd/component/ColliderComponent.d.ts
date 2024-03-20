@@ -1,5 +1,5 @@
 import { ComponentBase } from './ComponentBase';
-import { CollisionLayerInfo } from '../preprocess';
+import { CollisionLayerInfo } from '../core/preprocess';
 import { CollisionInfo } from '../collision/CollisionInfo';
 import { IEventEmittable } from '../util';
 export type CollisionEvent = {

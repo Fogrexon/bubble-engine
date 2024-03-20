@@ -1,7 +1,7 @@
 import { GraphicBase } from '../graphic';
 import { Rect } from '../util';
 import { ComponentBase } from './ComponentBase';
-import { CanvasLayerInfo } from '../preprocess/CanvasLayerInfo';
+import { GraphicLayerInfo } from '../core/preprocess/GraphicLayerInfo';
 /**
  * 描画系をつかさどるコンポーネント
  */
@@ -15,8 +15,8 @@ export declare class GraphicComponent extends ComponentBase {
      */
     readonly boundingRect: Rect;
     readonly parts: GraphicBase[];
-    readonly layer: CanvasLayerInfo;
-    constructor(layer: CanvasLayerInfo, parts: GraphicBase[]);
+    readonly layer: GraphicLayerInfo;
+    constructor(layer: GraphicLayerInfo, parts: GraphicBase[]);
     protected onDestroy(): void;
     protected onDisable(): void;
     protected onEnable(): void;

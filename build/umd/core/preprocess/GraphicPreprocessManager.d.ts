@@ -1,4 +1,4 @@
-import { CanvasLayerInfo } from './CanvasLayerInfo';
+import { GraphicLayerInfo } from './GraphicLayerInfo';
 import { PreprocessManager } from './PreprocessManager';
 export declare class GraphicPreprocessManager<LayerNames extends string[] = string[]> extends PreprocessManager {
     private _layerNames;
@@ -11,7 +11,7 @@ export declare class GraphicPreprocessManager<LayerNames extends string[] = stri
     get height(): number;
     constructor(layers: LayerNames);
     setCanvasWrapper(canvasWrapper: HTMLElement): void;
-    getLayer(id: LayerNames[number]): CanvasLayerInfo;
+    getLayer(id: LayerNames[number]): GraphicLayerInfo;
     private resetSize;
     beforeProcess(): void;
     afterProcess(): void;
