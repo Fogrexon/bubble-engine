@@ -17,9 +17,8 @@ export type GameCoreSettings<
   T7 extends AchievementBlueprintTable<T6> = AchievementBlueprintTable<T6>,
   T8 extends Record<string, unknown> = Record<string, unknown>,
   T9 extends LevelManager = LevelManager,
-  // eslint-disable-next-line no-use-before-define
-  T10 extends Record<string, (api: GameApi) => GameEntry> = Record<string, () => GameEntry>,
-  T11 extends keyof T10 = keyof T10,
+  T10 extends string[] = string[],
+  T11 extends T10[number] = T10[number],
 > = {
   keybind: T1;
   staticLoadAssets: T2;
@@ -30,10 +29,11 @@ export type GameCoreSettings<
   achievementBlueprint: T7;
   initialGlobalStore: T8;
   levelManager: T9;
-  levelTable: T10;
+  levelIds: T10;
   initialLevel: T11;
   wrapper: HTMLElement;
 }
+
 
 export type GameApi<T extends GameCoreSettings = GameCoreSettings> = {
   readonly inputManager: InputManager<T['keybind']>
@@ -44,9 +44,11 @@ export type GameApi<T extends GameCoreSettings = GameCoreSettings> = {
   readonly achievementManager: AchievementManager<T['achievementStatusBlueprint'], T['achievementBlueprint']>
   readonly globalStore: GlobalStore<T['initialGlobalStore']>
   readonly levelManager: T['levelManager']
-  readonly levelSelector: LevelSelector<T['levelTable']>
+  readonly levelSelector: LevelSelector<T['levelIds'][number]>
   readonly time: Time
 }
+
+export type LevelTable<T extends GameCoreSettings = GameCoreSettings> = Record<string, (api: GameApi<T>) => GameEntry>;
 
 export type CreateEntryFunc<T extends GameCoreSettings> = (api: GameApi<T>) => GameEntry;
 
@@ -58,7 +60,7 @@ export class GameCore<T extends GameCoreSettings = GameCoreSettings> {
 
   private _requestAnimationFrameId: number = -1;
 
-  constructor(settings: T) {
+  constructor(settings: T, levelTable: Record<T['levelIds'][number], (api: GameApi<T>) => GameEntry>) {
     this._originalSettings = settings;
     this._api = {
       inputManager: new InputManager(window, settings.keybind),
@@ -69,11 +71,11 @@ export class GameCore<T extends GameCoreSettings = GameCoreSettings> {
       achievementManager: new AchievementManager(settings.achievementStatusBlueprint, settings.achievementBlueprint),
       globalStore: new GlobalStore(settings.initialGlobalStore),
       levelManager: settings.levelManager,
-      levelSelector: new LevelSelector(settings.levelTable, settings.initialLevel),
+      levelSelector: new LevelSelector(),
       time: new Time()
     };
 
-    this._api.levelSelector.initializeLevels(this._api);
+    this._api.levelSelector.initializeLevels(this._api, levelTable, settings.initialLevel);
   }
 
   private gameLoop(deltaTime: number) {
@@ -95,9 +97,9 @@ export class GameCore<T extends GameCoreSettings = GameCoreSettings> {
     root.graphic.process();
     this._api.graphicManager.afterProcess();
 
-    this._api.levelSelector.postProcess();
-
     root.update();
+
+    this._api.levelSelector.postProcess();
   }
 
   /**

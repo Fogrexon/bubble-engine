@@ -1,6 +1,5 @@
 import { CollisionLayerInfo } from './CollisionLayerInfo';
 import { Vector2 } from '../../math';
-import { boxBoxHitTest, BoxColliderComponent } from '../../collision';
 import { ColliderComponent } from '../../component';
 import {testerTable} from '../../collision/tester/testerTable';
 

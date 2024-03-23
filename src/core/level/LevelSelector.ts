@@ -2,32 +2,30 @@ import {GameEntry} from '../../entry';
 import {GameApi} from '../GameCore';
 import {mapRecord} from '../../util/objutil';
 
-type LevelRecord = Record<string, (api: GameApi) => GameEntry>;
 
-export class LevelSelector<T extends LevelRecord = LevelRecord> {
-  private _levelTable: T;
+export class LevelSelector<T extends string> {
+  private _levelRecord: Record<T, GameEntry>;
 
-  private _levelRecord: Record<keyof T, GameEntry>;
+  private _currentLevelKey: T | null = null;
 
-  private _currentLevelKey: keyof T;
+  private _nextLevelKey: T | null = null;
 
-  private _nextLevelKey: keyof T | null = null;
-
-  constructor(levelTable: T, initialLevelKey: keyof T) {
-    this._levelTable = levelTable;
-    this._levelRecord = {} as Record<keyof T, GameEntry>;
-    this._currentLevelKey = initialLevelKey;
+  constructor() {
+    this._levelRecord = {} as Record<T, GameEntry>;
   }
 
   /**
    * APIでレベルを初期化
    * APIにLevelSelector自体が含まれるため、コンストラクタ外で指定
    * @param gameApi
+   * @param levelTable
+   * @param initialLevel
    */
-  public initializeLevels<U extends GameApi>(gameApi: U) {
-    mapRecord(this._levelTable, (key, createRoot: (api: U) => GameEntry) => {
-      createRoot(gameApi);
+  public initializeLevels(gameApi: GameApi, levelTable: Record<T, (api: GameApi) => GameEntry>, initialLevel: T) {
+    mapRecord(levelTable, (key, createRoot: (api: GameApi) => GameEntry) => {
+      this._levelRecord[key] = createRoot(gameApi);
     });
+    this._currentLevelKey = initialLevel;
   }
 
   /**
@@ -35,8 +33,9 @@ export class LevelSelector<T extends LevelRecord = LevelRecord> {
    * ※注意 レベルの移動処理はGameEntryのupdate処理が全部終わってから行われるので、実行順に注意
    * @param levelName
    */
-  public moveLevel(levelName: keyof LevelRecord) {
+  public moveLevel(levelName: T) {
     if (this._nextLevelKey !== null) return;
+    if (this._currentLevelKey === null) throw new Error('currentLevelKey is null');
     this._nextLevelKey = levelName;
     this._levelRecord[this._currentLevelKey].destroy();
     this._currentLevelKey = levelName;
@@ -46,6 +45,7 @@ export class LevelSelector<T extends LevelRecord = LevelRecord> {
    * 現在のレベルのLevelManagerを取得
    */
   public currentLevel() {
+    if (this._currentLevelKey === null) throw new Error('currentLevelKey is null');
     return this._levelRecord[this._currentLevelKey];
   }
 
@@ -53,6 +53,7 @@ export class LevelSelector<T extends LevelRecord = LevelRecord> {
    * GameCoreによってupdate処理の後に呼ばれる
    */
   public postProcess() {
+    if (this._currentLevelKey === null) throw new Error('currentLevelKey is null');
     if (this._nextLevelKey !== null) {
       this._levelRecord[this._currentLevelKey].destroy();
       this._currentLevelKey = this._nextLevelKey;
