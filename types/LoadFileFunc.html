@@ -37,7 +37,7 @@
 <h5><span class="tsd-kind-parameter">progress</span>: <a href="ProgressFunc.html" class="tsd-signature-type tsd-kind-type-alias">ProgressFunc</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type tsd-kind-type-parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/8ba4875/src/loader/fileLoaders.ts#L2">loader/fileLoaders.ts:2</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/Fogrexon/bubble-engine/blob/3ee6ac0/src/core/loader/fileLoaders.ts#L2">core/loader/fileLoaders.ts:2</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -69,9 +69,9 @@
 <li><a href="../classes/ComponentBase.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Component<wbr/>Base</span></a></li>
 <li><a href="../classes/DynamicFileLoader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Dynamic<wbr/>File<wbr/>Loader</span></a></li>
 <li><a href="../classes/EventEmitter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Event<wbr/>Emitter</span></a></li>
+<li><a href="../classes/GameCore.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Game<wbr/>Core</span></a></li>
 <li><a href="../classes/GameEntry.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Game<wbr/>Entry</span></a></li>
-<li><a href="../classes/GameManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Game<wbr/>Manager</span></a></li>
-<li><a href="../classes/GamePipeline.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Game<wbr/>Pipeline</span></a></li>
+<li><a href="../classes/GlobalStore.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Global<wbr/>Store</span></a></li>
 <li><a href="../classes/GraphicBase.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Graphic<wbr/>Base</span></a></li>
 <li><a href="../classes/GraphicComponent.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Graphic<wbr/>Component</span></a></li>
 <li><a href="../classes/InputManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Input<wbr/>Manager</span></a></li>
@@ -79,7 +79,6 @@
 <li><a href="../classes/LevelManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Level<wbr/>Manager</span></a></li>
 <li><a href="../classes/LevelSelector.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Level<wbr/>Selector</span></a></li>
 <li><a href="../classes/LinePath.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Line<wbr/>Path</span></a></li>
-<li><a href="../classes/ManagerBase.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Manager<wbr/>Base</span></a></li>
 <li><a href="../classes/Matrix2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Matrix2</span></a></li>
 <li><a href="../classes/Matrix3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Matrix3</span></a></li>
 <li><a href="../classes/PathBase.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Path<wbr/>Base</span></a></li>
@@ -94,7 +93,6 @@
 <li><a href="../classes/StaticFileLoader.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Static<wbr/>File<wbr/>Loader</span></a></li>
 <li><a href="../classes/SubSpriteAsset.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Sub<wbr/>Sprite<wbr/>Asset</span></a></li>
 <li><a href="../classes/TextGraphic.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Text<wbr/>Graphic</span></a></li>
-<li><a href="../classes/Time.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Time</span></a></li>
 <li><a href="../classes/UndirectedTable.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Undirected<wbr/>Table</span></a></li>
 <li><a href="../classes/Vector2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Vector2</span></a></li>
 <li><a href="../classes/Vector2Provider.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg><span>Vector2<wbr/>Provider</span></a></li>
@@ -111,12 +109,17 @@
 <li><a href="ActionLevelManagerSettings.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4194304"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-type-alias)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)"></path></g></svg><span>Action<wbr/>Level<wbr/>Manager<wbr/>Settings</span></a></li>
 <li><a href="AudioAssetType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Audio<wbr/>Asset<wbr/>Type</span></a></li>
 <li><a href="CollisionEvent.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Collision<wbr/>Event</span></a></li>
+<li><a href="CreateEntryFunc.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Create<wbr/>Entry<wbr/>Func</span></a></li>
 <li><a href="FileLoaderType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>File<wbr/>Loader<wbr/>Type</span></a></li>
 <li><a href="FileType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>File<wbr/>Type</span></a></li>
+<li><a href="GameApi.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Game<wbr/>Api</span></a></li>
+<li><a href="GameCoreSettings.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Game<wbr/>Core<wbr/>Settings</span></a></li>
+<li><a href="GameEntryFunc.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Game<wbr/>Entry<wbr/>Func</span></a></li>
 <li><a href="GameEvent.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Game<wbr/>Event</span></a></li>
 <li><a href="GraphicStyle.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Graphic<wbr/>Style</span></a></li>
 <li><a href="InputKeybind.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Input<wbr/>Keybind</span></a></li>
 <li><a href="InputableKey.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Inputable<wbr/>Key</span></a></li>
+<li><a href="LevelTable.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Level<wbr/>Table</span></a></li>
 <li><a href="LineStyle.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Line<wbr/>Style</span></a></li>
 <li><a href="LoadFileFunc.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Load<wbr/>File<wbr/>Func</span></a></li>
 <li><a href="LoaderTableType.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4194304"></use></svg><span>Loader<wbr/>Table<wbr/>Type</span></a></li>
