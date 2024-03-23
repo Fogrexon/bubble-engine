@@ -11,6 +11,7 @@ export type CollisionEvent = {
  * コライダーを格納するコンポーネント
  */
 export declare class ColliderComponent extends ComponentBase implements IEventEmittable<CollisionEvent> {
+    readonly colliderId: string;
     readonly layer: CollisionLayerInfo;
     readonly collisions: CollisionInfo[];
     private readonly hitColliders;

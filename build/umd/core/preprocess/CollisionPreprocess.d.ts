@@ -1,4 +1,6 @@
-import { PreprocessBase } from './PreprocessBase';
-export declare class CollisionPreprocess extends PreprocessBase {
+import { GameEntry } from '../../entry';
+export declare class CollisionPreprocess {
+    readonly entry: GameEntry;
+    constructor(entry: GameEntry);
     process(): void;
 }

@@ -5,7 +5,7 @@
   "main": "build/commonjs/index.js",
   "module": "build/es/index.js",
   "scripts": {
-    "build": "rm -r -f build && rollup --config",
+    "build": "rimraf build && rollup --config",
     "start": "rollup --config --watch",
     "start:example": "http-server",
     "lint:prettier": "prettier \"./src/**/*.ts\"",

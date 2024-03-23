@@ -1,6 +1,5 @@
 import { GraphicLayerInfo } from './GraphicLayerInfo';
-import { PreprocessManager } from './PreprocessManager';
-export declare class GraphicPreprocessManager<LayerNames extends string[] = string[]> extends PreprocessManager {
+export declare class GraphicManager<LayerNames extends string[] = string[]> {
     private _layerNames;
     private _layerTable;
     private _screenshotCanvas;
@@ -9,10 +8,16 @@ export declare class GraphicPreprocessManager<LayerNames extends string[] = stri
     private _height;
     get width(): number;
     get height(): number;
-    constructor(layers: LayerNames);
-    setCanvasWrapper(canvasWrapper: HTMLElement): void;
-    getLayer(id: LayerNames[number]): GraphicLayerInfo;
+    constructor(layers: LayerNames, wrapper: HTMLElement);
     private resetSize;
+    /**
+     * レイヤーの取得
+     * @param id
+     */
+    getLayer(id: LayerNames[number]): GraphicLayerInfo;
+    /**
+     *
+     */
     beforeProcess(): void;
     afterProcess(): void;
     getScreenshot(): HTMLCanvasElement;

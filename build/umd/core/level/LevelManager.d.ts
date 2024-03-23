@@ -1,5 +1,5 @@
-import { GameEntry } from '../entry';
-import { LevelEventType } from '../event';
+import { GameEntry } from '../../entry';
+import { LevelEventType } from '../../event';
 export declare enum LevelState {
     Playing = 0,
     Paused = 1,

@@ -1,5 +1,5 @@
 export * from './component';
-export * from './core-legacy';
+export * from './core';
 export * from './entry';
 export * from './event';
 export * from './graphic';

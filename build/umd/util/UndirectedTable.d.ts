@@ -1,7 +1,7 @@
 /**
  * 与えられた文字列のリストのうち重複のない二つをキーとするテーブル
  */
-export declare class UndirectedTable<TKeys extends string[], TValue> {
+export declare class UndirectedTable<TKeys extends readonly string[], TValue> {
     private readonly _keys;
     private readonly _table;
     constructor(keys: TKeys, defaultValue: TValue);

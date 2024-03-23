@@ -31,6 +31,27 @@
       return a;
     }
   }
+  function ownKeys(e, r) {
+    var t = Object.keys(e);
+    if (Object.getOwnPropertySymbols) {
+      var o = Object.getOwnPropertySymbols(e);
+      r && (o = o.filter(function (r) {
+        return Object.getOwnPropertyDescriptor(e, r).enumerable;
+      })), t.push.apply(t, o);
+    }
+    return t;
+  }
+  function _objectSpread2(e) {
+    for (var r = 1; r < arguments.length; r++) {
+      var t = null != arguments[r] ? arguments[r] : {};
+      r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+        _defineProperty(e, r, t[r]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+        Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+      });
+    }
+    return e;
+  }
   function _regeneratorRuntime() {
     _regeneratorRuntime = function () {
       return e;
@@ -844,6 +865,7 @@
       var _this;
       _classCallCheck(this, ColliderComponent);
       _this = _super.call(this);
+      _defineProperty(_assertThisInitialized(_this), "colliderId", '');
       _defineProperty(_assertThisInitialized(_this), "layer", void 0);
       _defineProperty(_assertThisInitialized(_this), "collisions", []);
       _defineProperty(_assertThisInitialized(_this), "hitColliders", new Set());
@@ -933,177 +955,7 @@
     return ColliderComponent;
   }(ComponentBase);
 
-  /**
-   * ゲーム全体のライフタイムを管理
-   */
-  var GameManager = /*#__PURE__*/function () {
-    function GameManager(gamePipeline, levelSelector) {
-      _classCallCheck(this, GameManager);
-      _defineProperty(this, "_requestAnimationFrameId", -1);
-      _defineProperty(this, "_gamePipeline", void 0);
-      _defineProperty(this, "_levelSelector", void 0);
-      this._gamePipeline = gamePipeline;
-      this._levelSelector = levelSelector;
-    }
-    /**
-     * ゲームの開始
-     */
-    _createClass(GameManager, [{
-      key: "start",
-      value: function start() {
-        this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
-      }
-      /**
-       * ゲームのメインループ
-       */
-    }, {
-      key: "gameLoop",
-      value: function gameLoop() {
-        this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
-        var currentLevelManager = this._levelSelector.currentLevel();
-        this._gamePipeline.process(currentLevelManager);
-      }
-    }]);
-    return GameManager;
-  }();
-
-  var ManagerBase = /*#__PURE__*/_createClass(function ManagerBase() {
-    _classCallCheck(this, ManagerBase);
-  });
-
-  var GamePipeline = /*#__PURE__*/function () {
-    function GamePipeline(time, inputManager, graphicManager, collisionManager) {
-      _classCallCheck(this, GamePipeline);
-      _defineProperty(this, "_time", void 0);
-      _defineProperty(this, "_inputManager", void 0);
-      _defineProperty(this, "_graphicManager", void 0);
-      _defineProperty(this, "_collisionManager", void 0);
-      this._time = time;
-      this._inputManager = inputManager;
-      this._graphicManager = graphicManager;
-      this._collisionManager = collisionManager;
-    }
-    _createClass(GamePipeline, [{
-      key: "process",
-      value: function process(levelManager) {
-        var root = levelManager.rootEntry;
-        this._time.calcDeltaTime();
-        this._inputManager.updateKeyBinds();
-        // preprocess
-        root.transform.process();
-        this._collisionManager.beforeProcess();
-        root.collision.process();
-        this._collisionManager.afterProcess();
-        this._graphicManager.beforeProcess();
-        root.graphic.process();
-        this._graphicManager.afterProcess();
-        // normal components
-        root.update();
-      }
-    }]);
-    return GamePipeline;
-  }();
-
-  var Time = /*#__PURE__*/function () {
-    function Time() {
-      _classCallCheck(this, Time);
-      _defineProperty(this, "timeScale", 1);
-      _defineProperty(this, "_gameTime", 0);
-      _defineProperty(this, "_deltaTime", 0);
-      _defineProperty(this, "_prevSystemTime", 0);
-    }
-    _createClass(Time, [{
-      key: "gameTime",
-      get: function get() {
-        return this._gameTime;
-      }
-    }, {
-      key: "deltaTime",
-      get: function get() {
-        return this._deltaTime;
-      }
-    }, {
-      key: "unscaledDeltaTime",
-      get: function get() {
-        return this._deltaTime / this.timeScale;
-      }
-    }, {
-      key: "calcDeltaTime",
-      value: function calcDeltaTime() {
-        var systemTime = performance.now();
-        this._deltaTime = systemTime - this._prevSystemTime;
-        this._deltaTime *= 0.001;
-        this._deltaTime *= this.timeScale;
-        this._prevSystemTime = systemTime;
-        this._gameTime += this._deltaTime;
-      }
-    }]);
-    return Time;
-  }();
-
-  /**
-   * 基本的なコンポーネント更新前に実行される事前処理用のコンポーネント
-   */
-  var PreprocessBase = /*#__PURE__*/_createClass(function PreprocessBase(entry) {
-    _classCallCheck(this, PreprocessBase);
-    _defineProperty(this, "entry", void 0);
-    this.entry = entry;
-  });
-
-  /**
-   * 描画系をつかさどるコンポーネント
-   */
-  var GraphicPreprocess = /*#__PURE__*/function (_PreprocessBase) {
-    _inherits(GraphicPreprocess, _PreprocessBase);
-    var _super = _createSuper(GraphicPreprocess);
-    function GraphicPreprocess() {
-      var _this;
-      _classCallCheck(this, GraphicPreprocess);
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-      _this = _super.call.apply(_super, [this].concat(args));
-      /**
-       * 描画順
-       */
-      _defineProperty(_assertThisInitialized(_this), "index", 0);
-      return _this;
-    }
-    _createClass(GraphicPreprocess, [{
-      key: "process",
-      value: function process() {
-        if (!this.entry.enabled) return;
-        var comp = this.entry.getComponent(GraphicComponent);
-        if (comp && comp.enabled) {
-          this.draw(comp);
-        }
-        var childrenGraphic = this.entry.transform.children.map(function (childTransform) {
-          return childTransform.entry.graphic;
-        });
-        childrenGraphic.sort(function (a, b) {
-          return a.index - b.index;
-        });
-        childrenGraphic.forEach(function (child) {
-          child.process();
-        });
-      }
-    }, {
-      key: "draw",
-      value: function draw(comp) {
-        var worldMatrix = this.entry.transform.worldMatrix;
-        var ctx = comp.layer.context;
-        ctx.save();
-        ctx.transform(worldMatrix.m00, worldMatrix.m01, worldMatrix.m10, worldMatrix.m11, worldMatrix.m02, worldMatrix.m12);
-        ctx.rotate(comp.rotation);
-        comp.parts.forEach(function (part, index) {
-          var boundingBox = part.render(comp.layer);
-          if (index === 0) comp.boundingRect.copy(boundingBox);else comp.boundingRect.merge(boundingBox);
-        });
-        ctx.restore();
-      }
-    }]);
-    return GraphicPreprocess;
-  }(PreprocessBase);
+  var inputableKeyList = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', 'Enter', 'Shift', 'Control', 'Alt', 'Tab', 'Escape', 'Backspace', 'CapsLock', 'Delete', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'MouseLeft', 'MouseRight', 'MouseMiddle', 'MouseX', 'MouseY', 'MouseWheel', 'GamepadA', 'GamepadB', 'GamepadX', 'GamepadY', 'GamepadL1', 'GamepadL2', 'GamepadL3', 'GamepadR1', 'GamepadR2', 'GamepadR3', 'GamepadStart', 'GamepadSelect', 'GamepadUp', 'GamepadDown', 'GamepadLeft', 'GamepadRight', 'GamepadAxisLeftX', 'GamepadAxisLeftY', 'GamepadAxisRightX', 'GamepadAxisRightY', 'GamepadAxisL2', 'GamepadAxisR2', 'GamepadAxisL3', 'GamepadAxisR3'];
 
   var Matrix2 = /*#__PURE__*/function () {
     function Matrix2() {
@@ -2105,6 +1957,1139 @@
     return Color;
   }();
 
+  var Vector2Provider = /*#__PURE__*/function () {
+    function Vector2Provider() {
+      _classCallCheck(this, Vector2Provider);
+      _defineProperty(this, "xValue", 0);
+      _defineProperty(this, "yValue", 0);
+      _defineProperty(this, "prevXValue", 0);
+      _defineProperty(this, "prevYValue", 0);
+    }
+    _createClass(Vector2Provider, [{
+      key: "length",
+      get: function get() {
+        return Math.sqrt(this.xValue * this.xValue + this.yValue * this.yValue);
+      }
+    }, {
+      key: "length2",
+      get: function get() {
+        return this.xValue * this.xValue + this.yValue * this.yValue;
+      }
+    }, {
+      key: "startPressed",
+      get: function get() {
+        return Math.pow(this.prevXValue, 2) + Math.pow(this.prevYValue, 2) === 0 && this.length2 > 0;
+      }
+    }, {
+      key: "endPressed",
+      get: function get() {
+        return Math.pow(this.prevXValue, 2) + Math.pow(this.prevYValue, 2) > 0 && this.length2 === 0;
+      }
+    }, {
+      key: "pressed",
+      get: function get() {
+        return this.length2 > 0;
+      }
+    }, {
+      key: "value",
+      get: function get() {
+        return new Vector2(this.xValue, this.yValue);
+      }
+    }, {
+      key: "update",
+      value: function update(x, y) {
+        this.prevXValue = this.xValue;
+        this.prevYValue = this.yValue;
+        this.xValue = x;
+        this.yValue = y;
+      }
+    }]);
+    return Vector2Provider;
+  }();
+
+  var ScalarProvider = /*#__PURE__*/function () {
+    function ScalarProvider() {
+      _classCallCheck(this, ScalarProvider);
+      _defineProperty(this, "rawValue", 0);
+      _defineProperty(this, "prevValue", 0);
+    }
+    _createClass(ScalarProvider, [{
+      key: "startPressed",
+      get: function get() {
+        return this.prevValue === 0 && this.rawValue !== 0;
+      }
+    }, {
+      key: "endPressed",
+      get: function get() {
+        return this.prevValue !== 0 && this.rawValue === 0;
+      }
+    }, {
+      key: "pressed",
+      get: function get() {
+        return this.rawValue !== 0;
+      }
+    }, {
+      key: "value",
+      get: function get() {
+        return this.rawValue;
+      }
+    }, {
+      key: "update",
+      value: function update(value) {
+        this.prevValue = this.rawValue;
+        this.rawValue = value;
+      }
+    }]);
+    return ScalarProvider;
+  }();
+
+  var KeyBinder = /*#__PURE__*/function () {
+    function KeyBinder(keybind) {
+      _classCallCheck(this, KeyBinder);
+      _defineProperty(this, "keybind", void 0);
+      _defineProperty(this, "keyContainer", void 0);
+      this.keybind = keybind;
+      // create key containers
+      var keyContainer = {};
+      Object.keys(keybind).forEach(function (key) {
+        if (!keybind[key]) throw new Error("KeyBinder: Invalid keybind(".concat(key, ")"));
+        var value = keybind[key][0];
+        switch (value.type) {
+          case 'scalarkey1':
+          case 'scalarkey2':
+            keyContainer[key] = new ScalarProvider();
+            break;
+          case 'vector2key2':
+          case 'vector2key4':
+            keyContainer[key] = new Vector2Provider();
+            break;
+          default:
+            throw new Error("KeyBinder: Invalid type of keybind(".concat(value, ")"));
+        }
+      });
+      this.keyContainer = keyContainer;
+    }
+    _createClass(KeyBinder, [{
+      key: "getValue",
+      value: function getValue(id) {
+        return this.keyContainer[id].value;
+      }
+    }, {
+      key: "getStartPressed",
+      value: function getStartPressed(id) {
+        return this.keyContainer[id].startPressed;
+      }
+    }, {
+      key: "getEndPressed",
+      value: function getEndPressed(id) {
+        return this.keyContainer[id].endPressed;
+      }
+    }, {
+      key: "getPressed",
+      value: function getPressed(id) {
+        return this.keyContainer[id].pressed;
+      }
+    }, {
+      key: "update",
+      value: function update(keyValues) {
+        var _this = this;
+        Object.keys(this.keybind).forEach(function (key) {
+          var keyBinds = _this.keybind[key];
+          keyBinds.forEach(function (keyBind) {
+            switch (keyBind.type) {
+              case 'scalarkey1':
+                {
+                  _this.keyContainer[key].update(keyValues[keyBind.value]);
+                  break;
+                }
+              case 'scalarkey2':
+                {
+                  var positiveValue = keyValues[keyBind.positiveValue];
+                  var negativeValue = keyValues[keyBind.negativeValue];
+                  _this.keyContainer[key].update(positiveValue - negativeValue);
+                  break;
+                }
+              case 'vector2key2':
+                {
+                  var xValue = keyValues[keyBind.xValue];
+                  var yValue = keyValues[keyBind.yValue];
+                  _this.keyContainer[key].update(xValue, yValue);
+                  break;
+                }
+              case 'vector2key4':
+                {
+                  var xPositiveValue = keyValues[keyBind.xPositiveValue];
+                  var xNegativeValue = keyValues[keyBind.xNegativeValue];
+                  var yPositiveValue = keyValues[keyBind.yPositiveValue];
+                  var yNegativeValue = keyValues[keyBind.yNegativeValue];
+                  _this.keyContainer[key].update(xPositiveValue - xNegativeValue, yPositiveValue - yNegativeValue);
+                  break;
+                }
+              default:
+                {
+                  throw new Error("KeyBinder: Invalid type of keybind(".concat(keyBinds, ")"));
+                }
+            }
+          });
+        });
+      }
+    }]);
+    return KeyBinder;
+  }();
+
+  var InputManager = /*#__PURE__*/function () {
+    function InputManager(window, keybinds) {
+      var _this = this;
+      _classCallCheck(this, InputManager);
+      _defineProperty(this, "keybinds", void 0);
+      _defineProperty(this, "keybinders", void 0);
+      _defineProperty(this, "rawKeyValues", void 0);
+      this.keybinds = keybinds;
+      this.keybinders = Object.keys(keybinds).reduce(function (acc, key) {
+        acc[key] = new KeyBinder(keybinds[key]);
+        return acc;
+      }, {});
+      this.rawKeyValues = inputableKeyList.reduce(function (acc, key) {
+        acc[key] = 0;
+        return acc;
+      }, {});
+      window.addEventListener('keydown', function (e) {
+        _this.rawKeyValues[e.key] = 1;
+      });
+      window.addEventListener('keyup', function (e) {
+        _this.rawKeyValues[e.key] = 0;
+      });
+    }
+    _createClass(InputManager, [{
+      key: "getKeybinder",
+      value: function getKeybinder(key) {
+        return this.keybinders[key];
+      }
+    }, {
+      key: "updateKeyBinds",
+      value: function updateKeyBinds() {
+        var _this2 = this;
+        Object.keys(this.keybinds).forEach(function (key) {
+          _this2.keybinders[key].update(_this2.rawKeyValues);
+        });
+      }
+    }]);
+    return InputManager;
+  }();
+
+  var imageFileLoader = function imageFileLoader(path, progress) {
+    var target = new Image();
+    target.src = path;
+    progress === null || progress === void 0 || progress.bind(target)(0);
+    return new Promise(function (resolve, reject) {
+      target.addEventListener('load', function () {
+        progress === null || progress === void 0 || progress.bind(target)(1);
+        resolve(target);
+      });
+      target.addEventListener('error', function () {
+        reject();
+      });
+    });
+  };
+  var audioFileLoader = function audioFileLoader(path, progress) {
+    var target = new Audio();
+    target.src = path;
+    progress === null || progress === void 0 || progress.bind(target)(0);
+    return new Promise(function (resolve, reject) {
+      target.addEventListener('load', function () {
+        progress === null || progress === void 0 || progress.bind(target)(1);
+        resolve(target);
+      });
+      target.addEventListener('error', function () {
+        reject();
+      });
+    });
+  };
+  var fileLoaderTable = {
+    image: imageFileLoader,
+    audio: audioFileLoader
+  };
+
+  /**
+   * ゲームに必要なファイルを読み取るクラス
+   * 型安全にするために、ファイルのリストをコンストラクタで渡す
+   */
+  var StaticFileLoader = /*#__PURE__*/function () {
+    function StaticFileLoader(fileList) {
+      _classCallCheck(this, StaticFileLoader);
+      _defineProperty(this, "_fileList", void 0);
+      this._fileList = fileList;
+    }
+    /**
+     * ファイルをすべて読み込む
+     * @param progress
+     */
+    _createClass(StaticFileLoader, [{
+      key: "loadAll",
+      value: function () {
+        var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(progress) {
+          var _this = this;
+          var loadedCount, loadFilePromises;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                loadedCount = 0;
+                loadFilePromises = Object.entries(this._fileList).map(function (_ref) {
+                  var _ref2 = _slicedToArray(_ref, 2),
+                    key = _ref2[0],
+                    asset = _ref2[1];
+                  var loader = fileLoaderTable[asset.fileType];
+                  return loader(asset.path, null).then(function (data) {
+                    loadedCount += 1;
+                    progress(loadedCount / Object.keys(_this._fileList).length);
+                    asset.data = data;
+                    return [key, data];
+                  });
+                });
+                _context.next = 4;
+                return Promise.all(loadFilePromises);
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee, this);
+        }));
+        function loadAll(_x) {
+          return _loadAll.apply(this, arguments);
+        }
+        return loadAll;
+      }()
+    }, {
+      key: "get",
+      value: function get(id) {
+        return this._fileList[id];
+      }
+    }]);
+    return StaticFileLoader;
+  }();
+
+  var mapRecord = function mapRecord(record, fn) {
+    return Object.fromEntries(Object.entries(record).map(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+        key = _ref2[0],
+        value = _ref2[1];
+      return [key, fn(key, value)];
+    }));
+  };
+  var sumRecord = function sumRecord(record) {
+    return Object.values(record).reduce(function (acc, current) {
+      return acc + current;
+    }, 0);
+  };
+
+  /**
+   * ゲーム開始後動的にファイルを読むためのクラス
+   */
+  var DynamicFileLoader = /*#__PURE__*/function () {
+    function DynamicFileLoader() {
+      _classCallCheck(this, DynamicFileLoader);
+      _defineProperty(this, "_registeredAssetTable", {});
+    }
+    _createClass(DynamicFileLoader, [{
+      key: "load",
+      value:
+      /**
+       * アセットの読み込み
+       * @param key
+       * @param asset
+       * @param progress
+       */
+      function () {
+        var _load = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(key, asset, progress) {
+          var loader;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                if (!(this._registeredAssetTable[key] !== undefined)) {
+                  _context.next = 2;
+                  break;
+                }
+                throw new Error("DynamicFileLoader: Asset(".concat(String(key), ") is already registered"));
+              case 2:
+                loader = fileLoaderTable[asset.fileType];
+                this._registeredAssetTable[key] = asset;
+                _context.next = 6;
+                return loader(asset.path, progress);
+              case 6:
+                this._registeredAssetTable[key].data = _context.sent;
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee, this);
+        }));
+        function load(_x, _x2, _x3) {
+          return _load.apply(this, arguments);
+        }
+        return load;
+      }()
+      /**
+       * 複数アセットの読み込み
+       * @param fileTable
+       * @param progress
+       */
+    }, {
+      key: "loadAll",
+      value: function () {
+        var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(fileTable) {
+          var _this = this;
+          var progress,
+            loadFileProgresses,
+            fileCount,
+            loadFilePromises,
+            _args2 = arguments;
+          return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+            while (1) switch (_context2.prev = _context2.next) {
+              case 0:
+                progress = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : function () {};
+                loadFileProgresses = mapRecord(fileTable, function () {
+                  return 0;
+                });
+                fileCount = Object.keys(fileTable).length;
+                loadFilePromises = Object.entries(fileTable).map(function (_ref) {
+                  var _ref2 = _slicedToArray(_ref, 2),
+                    key = _ref2[0],
+                    asset = _ref2[1];
+                  return _this.load(key, asset, function (rate) {
+                    loadFileProgresses[key] = rate;
+                    progress(sumRecord(loadFileProgresses) / fileCount);
+                  });
+                });
+                _context2.next = 6;
+                return Promise.all(loadFilePromises);
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }, _callee2);
+        }));
+        function loadAll(_x4) {
+          return _loadAll.apply(this, arguments);
+        }
+        return loadAll;
+      }()
+      /**
+       * アセットの取得
+       * @param id
+       */
+    }, {
+      key: "get",
+      value: function get(id) {
+        if (!this._registeredAssetTable[id]) throw new Error("DynamicFileLoader: Asset(".concat(String(id), ") is not registered"));
+        return this._registeredAssetTable[id];
+      }
+      /**
+       * アセットのメモリ開放
+       * @param id
+       */
+    }, {
+      key: "dispose",
+      value: function dispose(id) {
+        if (!this._registeredAssetTable[id]) throw new Error("DynamicFileLoader: Asset(".concat(String(id), ") is not registered"));
+        delete this._registeredAssetTable[id];
+      }
+    }]);
+    return DynamicFileLoader;
+  }();
+
+  var AssetBase = /*#__PURE__*/function () {
+    function AssetBase(path, fileType) {
+      _classCallCheck(this, AssetBase);
+      _defineProperty(this, "_path", void 0);
+      _defineProperty(this, "_fileType", void 0);
+      _defineProperty(this, "_data", void 0);
+      _defineProperty(this, "_isLoaded", void 0);
+      this._path = path;
+      this._fileType = fileType;
+      this._isLoaded = false;
+    }
+    _createClass(AssetBase, [{
+      key: "path",
+      get:
+      /**
+       * ファイルのあるパス
+       */
+      function get() {
+        return this._path;
+      }
+    }, {
+      key: "fileType",
+      get: function get() {
+        return this._fileType;
+      }
+    }, {
+      key: "data",
+      get:
+      /**
+       * ファイルのデータ本体
+       */
+      function get() {
+        return this._data;
+      },
+      set: function set(data) {
+        this._data = data;
+        this._isLoaded = true;
+      }
+    }, {
+      key: "isLoaded",
+      get:
+      /**
+       * ファイルがロード済みかどうか
+       */
+      function get() {
+        return this._isLoaded;
+      }
+    }]);
+    return AssetBase;
+  }();
+
+  var AudioAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(AudioAsset, _AssetBase);
+    var _super = _createSuper(AudioAsset);
+    function AudioAsset(path, audioType) {
+      var _this;
+      var loopStartTime = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      var loopEndTime = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      _classCallCheck(this, AudioAsset);
+      _this = _super.call(this, path, 'audio');
+      /**
+       * 音声アセットのタイプ
+       */
+      _defineProperty(_assertThisInitialized(_this), "audioType", void 0);
+      /**
+       * ループ開始時間
+       * bgm以外では効果なし
+       */
+      _defineProperty(_assertThisInitialized(_this), "loopStartTime", 0);
+      /**
+       * ループ終了時間
+       * bgm以外では効果なし
+       */
+      _defineProperty(_assertThisInitialized(_this), "loopEndTime", 0);
+      _this.audioType = audioType;
+      _this.loopStartTime = loopStartTime;
+      _this.loopEndTime = loopEndTime;
+      return _this;
+    }
+    _createClass(AudioAsset, [{
+      key: "length",
+      get:
+      /**
+       * 音声の長さ
+       */
+      function get() {
+        var _this$data;
+        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.duration) || 0;
+      }
+    }]);
+    return AudioAsset;
+  }(AssetBase);
+
+  /**
+   * 画像を表すクラス
+   */
+  var SpriteAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SpriteAsset, _AssetBase);
+    var _super = _createSuper(SpriteAsset);
+    function SpriteAsset(path) {
+      _classCallCheck(this, SpriteAsset);
+      return _super.call(this, path, 'image');
+    }
+    _createClass(SpriteAsset, [{
+      key: "width",
+      get: function get() {
+        var _this$data;
+        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.width) || 0;
+      }
+    }, {
+      key: "height",
+      get: function get() {
+        var _this$data2;
+        return ((_this$data2 = this.data) === null || _this$data2 === void 0 ? void 0 : _this$data2.height) || 0;
+      }
+    }]);
+    return SpriteAsset;
+  }(AssetBase);
+
+  /**
+   * スプライトシートの画像を表すクラス
+   */
+  var SpriteSheetAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SpriteSheetAsset, _AssetBase);
+    var _super = _createSuper(SpriteSheetAsset);
+    function SpriteSheetAsset(path, columns, rows) {
+      var _this;
+      _classCallCheck(this, SpriteSheetAsset);
+      _this = _super.call(this, path, 'image');
+      _defineProperty(_assertThisInitialized(_this), "columns", void 0);
+      _defineProperty(_assertThisInitialized(_this), "rows", void 0);
+      _this.columns = columns;
+      _this.rows = rows;
+      return _this;
+    }
+    _createClass(SpriteSheetAsset, [{
+      key: "width",
+      get: function get() {
+        var _this$data;
+        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.width) || 0;
+      }
+    }, {
+      key: "height",
+      get: function get() {
+        var _this$data2;
+        return ((_this$data2 = this.data) === null || _this$data2 === void 0 ? void 0 : _this$data2.height) || 0;
+      }
+      /**
+       * スプライトシートの各画像の幅
+       */
+    }, {
+      key: "segmentWidth",
+      get: function get() {
+        return this.width / this.columns;
+      }
+      /**
+       * スプライトシートの各画像の高さ
+       */
+    }, {
+      key: "segmentHeight",
+      get: function get() {
+        return this.height / this.rows;
+      }
+    }]);
+    return SpriteSheetAsset;
+  }(AssetBase);
+
+  /**
+   * 画像の一部を切り出した画像を表すクラス
+   */
+  var SubSpriteAsset = /*#__PURE__*/function (_AssetBase) {
+    _inherits(SubSpriteAsset, _AssetBase);
+    var _super = _createSuper(SubSpriteAsset);
+    function SubSpriteAsset(path, left, top, right, bottom) {
+      var _this;
+      _classCallCheck(this, SubSpriteAsset);
+      _this = _super.call(this, path, 'image');
+      _defineProperty(_assertThisInitialized(_this), "left", void 0);
+      _defineProperty(_assertThisInitialized(_this), "top", void 0);
+      _defineProperty(_assertThisInitialized(_this), "right", void 0);
+      _defineProperty(_assertThisInitialized(_this), "bottom", void 0);
+      _this.left = left;
+      _this.top = top;
+      _this.right = right;
+      _this.bottom = bottom;
+      return _this;
+    }
+    return _createClass(SubSpriteAsset);
+  }(AssetBase);
+
+  var LevelSelector = /*#__PURE__*/function () {
+    function LevelSelector() {
+      _classCallCheck(this, LevelSelector);
+      _defineProperty(this, "_levelRecord", void 0);
+      _defineProperty(this, "_currentLevelKey", null);
+      _defineProperty(this, "_nextLevelKey", null);
+      this._levelRecord = {};
+    }
+    /**
+     * APIでレベルを初期化
+     * APIにLevelSelector自体が含まれるため、コンストラクタ外で指定
+     * @param gameApi
+     * @param levelTable
+     * @param initialLevel
+     */
+    _createClass(LevelSelector, [{
+      key: "initializeLevels",
+      value: function initializeLevels(gameApi, levelTable, initialLevel) {
+        var _this = this;
+        mapRecord(levelTable, function (key, createRoot) {
+          _this._levelRecord[key] = createRoot(gameApi);
+        });
+        this._currentLevelKey = initialLevel;
+      }
+      /**
+       * レベルを移動
+       * ※注意 レベルの移動処理はGameEntryのupdate処理が全部終わってから行われるので、実行順に注意
+       * @param levelName
+       */
+    }, {
+      key: "moveLevel",
+      value: function moveLevel(levelName) {
+        if (this._nextLevelKey !== null) return;
+        if (this._currentLevelKey === null) throw new Error('currentLevelKey is null');
+        this._nextLevelKey = levelName;
+        this._levelRecord[this._currentLevelKey].destroy();
+        this._currentLevelKey = levelName;
+      }
+      /**
+       * 現在のレベルのLevelManagerを取得
+       */
+    }, {
+      key: "currentLevel",
+      value: function currentLevel() {
+        if (this._currentLevelKey === null) throw new Error('currentLevelKey is null');
+        return this._levelRecord[this._currentLevelKey];
+      }
+      /**
+       * GameCoreによってupdate処理の後に呼ばれる
+       */
+    }, {
+      key: "postProcess",
+      value: function postProcess() {
+        if (this._currentLevelKey === null) throw new Error('currentLevelKey is null');
+        if (this._nextLevelKey !== null) {
+          this._levelRecord[this._currentLevelKey].destroy();
+          this._currentLevelKey = this._nextLevelKey;
+          this._nextLevelKey = null;
+        }
+      }
+    }]);
+    return LevelSelector;
+  }();
+
+  var createGameEvent = function createGameEvent() {
+    var event = {
+      listeners: [],
+      listen: function listen(listener) {
+        this.listeners.push(listener);
+      },
+      unlisten: function unlisten(listener) {
+        this.listeners = this.listeners.filter(function (l) {
+          return l !== listener;
+        });
+      },
+      call: function call(data) {
+        this.listeners.forEach(function (l) {
+          return l(data);
+        });
+      }
+    };
+    return event;
+  };
+
+  // eslint-disable-next-line no-shadow
+  exports.LevelEventType = void 0;
+  (function (LevelEventType) {
+    LevelEventType[LevelEventType["LevelStart"] = 0] = "LevelStart";
+    LevelEventType[LevelEventType["Pause"] = 1] = "Pause";
+    LevelEventType[LevelEventType["Resume"] = 2] = "Resume";
+    LevelEventType[LevelEventType["PlayerDeath"] = 3] = "PlayerDeath";
+    LevelEventType[LevelEventType["GameOver"] = 4] = "GameOver";
+    LevelEventType[LevelEventType["GameClear"] = 5] = "GameClear";
+  })(exports.LevelEventType || (exports.LevelEventType = {}));
+  var LevelEvent = createGameEvent();
+
+  // このLevelStateが二重定義されているというエラーが出るが、どこで定義されているのかわからないので暫定的に無視
+  // eslint-disable-next-line no-shadow
+  exports.LevelState = void 0;
+  (function (LevelState) {
+    LevelState[LevelState["Playing"] = 0] = "Playing";
+    LevelState[LevelState["Paused"] = 1] = "Paused";
+    LevelState[LevelState["GameOver"] = 2] = "GameOver";
+    LevelState[LevelState["GameClear"] = 3] = "GameClear";
+  })(exports.LevelState || (exports.LevelState = {}));
+  /**
+   * レベルに関する処理を管轄するクラス
+   */
+  var LevelManager = /*#__PURE__*/function () {
+    function LevelManager(levelManagerSettings) {
+      _classCallCheck(this, LevelManager);
+      /**
+       * レベルにあるEntryのルート
+       */
+      _defineProperty(this, "rootEntry", void 0);
+      /**
+       * レベルの状態を表す
+       * @protected
+       */
+      _defineProperty(this, "state", void 0);
+      this.rootEntry = levelManagerSettings.rootEntry;
+      this.state = exports.LevelState.Playing;
+    }
+    _createClass(LevelManager, [{
+      key: "levelEventListener",
+      value: function levelEventListener(levelEventType) {
+        switch (levelEventType) {
+          case exports.LevelEventType.LevelStart:
+            // do nothing
+            break;
+          case exports.LevelEventType.Pause:
+            this.state = exports.LevelState.Paused;
+            this.pause();
+            break;
+          case exports.LevelEventType.Resume:
+            this.state = exports.LevelState.Playing;
+            this.resume();
+            break;
+          case exports.LevelEventType.PlayerDeath:
+            this.playerDeath();
+            break;
+          case exports.LevelEventType.GameClear:
+            this.state = exports.LevelState.GameClear;
+            this.gameClear();
+            break;
+          case exports.LevelEventType.GameOver:
+            this.state = exports.LevelState.GameOver;
+            this.gameOver();
+            break;
+          default:
+            throw new Error("LevelManager: Invalid LevelEventType (".concat(levelEventType, ")"));
+        }
+      }
+    }, {
+      key: "start",
+      value: function start() {
+        this.state = exports.LevelState.Playing;
+        LevelEvent.listen(this.levelEventListener.bind(this));
+      }
+    }, {
+      key: "exit",
+      value: function exit() {
+        this.rootEntry.destroy();
+        LevelEvent.unlisten(this.levelEventListener.bind(this));
+      }
+    }, {
+      key: "gameOver",
+      value: function gameOver() {
+        // no impl
+      }
+    }, {
+      key: "gameClear",
+      value: function gameClear() {
+        // no impl
+      }
+    }, {
+      key: "pause",
+      value: function pause() {
+        // no impl
+      }
+    }, {
+      key: "resume",
+      value: function resume() {
+        // no impl
+      }
+    }, {
+      key: "playerDeath",
+      value: function playerDeath() {
+        // no impl
+      }
+    }]);
+    return LevelManager;
+  }();
+
+  var ActionLevelManager = /*#__PURE__*/function (_LevelManager) {
+    _inherits(ActionLevelManager, _LevelManager);
+    var _super = _createSuper(ActionLevelManager);
+    function ActionLevelManager(actionLevelManagerSettings) {
+      var _this;
+      _classCallCheck(this, ActionLevelManager);
+      _this = _super.call(this, actionLevelManagerSettings);
+      _defineProperty(_assertThisInitialized(_this), "playerLife", -1);
+      _defineProperty(_assertThisInitialized(_this), "playerRespawnPoint", void 0);
+      _defineProperty(_assertThisInitialized(_this), "playerRespawnDelay", 0);
+      _this.playerRespawnPoint = actionLevelManagerSettings.respawnPoint;
+      _this.playerLife = actionLevelManagerSettings.life;
+      _this.playerRespawnDelay = actionLevelManagerSettings.respawnDelay;
+      return _this;
+    }
+    _createClass(ActionLevelManager, [{
+      key: "playerDeath",
+      value: function playerDeath() {
+        _get(_getPrototypeOf(ActionLevelManager.prototype), "playerDeath", this).call(this);
+        if (this.playerLife === -1) {
+          this.respawnPlayer();
+        }
+        this.playerLife -= 1;
+        if (this.playerLife === 0) {
+          LevelEvent.call(exports.LevelEventType.GameOver);
+        } else {
+          this.respawnPlayer();
+        }
+      }
+    }, {
+      key: "respawnPlayer",
+      value: function () {
+        var _respawnPlayer = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                if (!(this.playerRespawnDelay > 0)) {
+                  _context.next = 3;
+                  break;
+                }
+                _context.next = 3;
+                return wait(this.playerRespawnDelay * 1000);
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee, this);
+        }));
+        function respawnPlayer() {
+          return _respawnPlayer.apply(this, arguments);
+        }
+        return respawnPlayer;
+      }()
+    }, {
+      key: "setRespawnPoint",
+      value: function setRespawnPoint(respawnPoint) {
+        this.playerRespawnPoint = respawnPoint;
+      }
+    }]);
+    return ActionLevelManager;
+  }(LevelManager);
+
+  var GlobalStore = /*#__PURE__*/function () {
+    function GlobalStore(initialData) {
+      _classCallCheck(this, GlobalStore);
+      _defineProperty(this, "_store", void 0);
+      this._store = initialData;
+      this.loadData(initialData);
+    }
+    /**
+     * データをLocalStorageから取得
+     * @param initialData
+     * @private
+     */
+    _createClass(GlobalStore, [{
+      key: "loadData",
+      value: function loadData(initialData) {
+        var rawData = localStorage.getItem('bubble-engine-storage');
+        if (rawData) {
+          var data = JSON.parse(rawData);
+          this._store = _objectSpread2(_objectSpread2({}, initialData), data);
+        }
+      }
+      /**
+       * グローバルストアのデータを更新
+       * @param key
+       * @param dispatcher
+       */
+    }, {
+      key: "dispatch",
+      value: function dispatch(key, dispatcher) {
+        dispatcher(this._store[key]);
+        localStorage.setItem('bubble-engine-storage', JSON.stringify(this._store));
+      }
+      /**
+       * データの取得
+       * @param key
+       */
+    }, {
+      key: "getValue",
+      value: function getValue(key) {
+        return this._store[key];
+      }
+    }]);
+    return GlobalStore;
+  }();
+
+  var AchievementManager = /*#__PURE__*/function () {
+    function AchievementManager(statusBlueprint, achievementBlueprint) {
+      _classCallCheck(this, AchievementManager);
+      _defineProperty(this, "_statusBlueprint", void 0);
+      _defineProperty(this, "_achievementBlueprint", void 0);
+      _defineProperty(this, "_status", void 0);
+      _defineProperty(this, "_achievement", void 0);
+      this._statusBlueprint = statusBlueprint;
+      this._achievementBlueprint = achievementBlueprint;
+      this._status = {};
+      this._achievement = {};
+      this.createInitialStatus();
+      this.createInitialAchievement();
+    }
+    _createClass(AchievementManager, [{
+      key: "createInitialStatus",
+      value: function createInitialStatus() {
+        for (var key in this._statusBlueprint) {
+          var blueprint = this._statusBlueprint[key];
+          if (blueprint.type === 'once') {
+            this._status[key] = false;
+          } else {
+            this._status[key] = blueprint.initial;
+          }
+        }
+      }
+    }, {
+      key: "createInitialAchievement",
+      value: function createInitialAchievement() {
+        for (var key in this._achievementBlueprint) {
+          this._achievement[key] = false;
+        }
+      }
+    }]);
+    return AchievementManager;
+  }();
+
+  /**
+   * 基本的なコンポーネント更新前に実行される事前処理用のコンポーネント
+   */
+  var PreprocessBase = /*#__PURE__*/_createClass(function PreprocessBase(entry) {
+    _classCallCheck(this, PreprocessBase);
+    _defineProperty(this, "entry", void 0);
+    this.entry = entry;
+  });
+
+  /**
+   * 描画系をつかさどるコンポーネント
+   */
+  var GraphicPreprocess = /*#__PURE__*/function () {
+    function GraphicPreprocess(entry) {
+      _classCallCheck(this, GraphicPreprocess);
+      _defineProperty(this, "entry", void 0);
+      /**
+       * 描画順
+       */
+      _defineProperty(this, "index", 0);
+      this.entry = entry;
+    }
+    _createClass(GraphicPreprocess, [{
+      key: "process",
+      value: function process() {
+        if (!this.entry.enabled) return;
+        var comp = this.entry.getComponent(GraphicComponent);
+        if (comp && comp.enabled) {
+          this.draw(comp);
+        }
+        var childrenGraphic = this.entry.transform.children.map(function (childTransform) {
+          return childTransform.entry.graphic;
+        });
+        childrenGraphic.sort(function (a, b) {
+          return a.index - b.index;
+        });
+        childrenGraphic.forEach(function (child) {
+          child.process();
+        });
+      }
+    }, {
+      key: "draw",
+      value: function draw(comp) {
+        var worldMatrix = this.entry.transform.worldMatrix;
+        var ctx = comp.layer.context;
+        ctx.save();
+        ctx.transform(worldMatrix.m00, worldMatrix.m01, worldMatrix.m10, worldMatrix.m11, worldMatrix.m02, worldMatrix.m12);
+        ctx.rotate(comp.rotation);
+        comp.parts.forEach(function (part, index) {
+          var boundingBox = part.render(comp.layer);
+          if (index === 0) comp.boundingRect.copy(boundingBox);else comp.boundingRect.merge(boundingBox);
+        });
+        ctx.restore();
+      }
+    }]);
+    return GraphicPreprocess;
+  }();
+
+  var GraphicManager = /*#__PURE__*/function () {
+    function GraphicManager(layers, wrapper) {
+      var _this = this;
+      _classCallCheck(this, GraphicManager);
+      _defineProperty(this, "_layerNames", void 0);
+      _defineProperty(this, "_layerTable", void 0);
+      _defineProperty(this, "_screenshotCanvas", void 0);
+      _defineProperty(this, "_canvasWrapper", void 0);
+      _defineProperty(this, "_width", 0);
+      _defineProperty(this, "_height", 0);
+      this._layerNames = layers;
+      this._canvasWrapper = wrapper;
+      this._layerTable = {};
+      if (this._canvasWrapper.style.position === 'relative') {
+        this._canvasWrapper.style.position = 'relative';
+      }
+      layers.forEach(function (layerName) {
+        var _this$_canvasWrapper;
+        var canvas = document.createElement('canvas');
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        _this._layerTable[layerName] = {
+          canvas: canvas,
+          context: canvas.getContext('2d')
+        };
+        (_this$_canvasWrapper = _this._canvasWrapper) === null || _this$_canvasWrapper === void 0 || _this$_canvasWrapper.appendChild(canvas);
+      });
+      this._screenshotCanvas = document.createElement('canvas');
+      this.resetSize();
+      window.addEventListener('resize', this.resetSize.bind(this));
+    }
+    _createClass(GraphicManager, [{
+      key: "width",
+      get: function get() {
+        return this._width;
+      }
+    }, {
+      key: "height",
+      get: function get() {
+        return this._height;
+      }
+    }, {
+      key: "resetSize",
+      value: function resetSize() {
+        var _this2 = this;
+        if (this._canvasWrapper === null) {
+          return;
+        }
+        var rect = this._canvasWrapper.getBoundingClientRect();
+        this._width = rect.width;
+        this._height = rect.height;
+        this._layerNames.forEach(function (layerName) {
+          var layer = _this2._layerTable[layerName];
+          layer.canvas.width = _this2._width;
+          layer.canvas.height = _this2._height;
+        });
+      }
+      /**
+       * レイヤーの取得
+       * @param id
+       */
+    }, {
+      key: "getLayer",
+      value: function getLayer(id) {
+        return this._layerTable[id];
+      }
+      /**
+       *
+       */
+    }, {
+      key: "beforeProcess",
+      value: function beforeProcess() {
+        var _this3 = this;
+        if (this._canvasWrapper === null) {
+          console.error('canvasWrapper is not set.');
+        }
+        this._layerNames.forEach(function (layerName) {
+          var layer = _this3._layerTable[layerName];
+          layer.context.clearRect(0, 0, _this3._width, _this3._height);
+        });
+      }
+    }, {
+      key: "afterProcess",
+      value: function afterProcess() {
+        // no impl
+      }
+    }, {
+      key: "getScreenshot",
+      value: function getScreenshot() {
+        var _this4 = this;
+        this._screenshotCanvas.width = this._width;
+        this._screenshotCanvas.height = this._height;
+        var context = this._screenshotCanvas.getContext('2d');
+        if (context === null) {
+          throw new Error('CanvasRenderingContext2D is not supported.');
+        }
+        this._layerNames.forEach(function (layerName) {
+          var layer = _this4._layerTable[layerName];
+          context.drawImage(layer.canvas, 0, 0);
+        });
+        return this._screenshotCanvas;
+      }
+    }]);
+    return GraphicManager;
+  }();
+
   /**
    * GameEntryの場所を管理するコンポーネント
    */
@@ -2221,12 +3206,11 @@
     return TransformPreprocess;
   }(PreprocessBase);
 
-  var CollisionPreprocess = /*#__PURE__*/function (_PreprocessBase) {
-    _inherits(CollisionPreprocess, _PreprocessBase);
-    var _super = _createSuper(CollisionPreprocess);
-    function CollisionPreprocess() {
+  var CollisionPreprocess = /*#__PURE__*/function () {
+    function CollisionPreprocess(entry) {
       _classCallCheck(this, CollisionPreprocess);
-      return _super.apply(this, arguments);
+      _defineProperty(this, "entry", void 0);
+      this.entry = entry;
     }
     _createClass(CollisionPreprocess, [{
       key: "process",
@@ -2246,7 +3230,266 @@
       }
     }]);
     return CollisionPreprocess;
-  }(PreprocessBase);
+  }();
+
+  var CollisionLayerInfo = /*#__PURE__*/function () {
+    function CollisionLayerInfo() {
+      _classCallCheck(this, CollisionLayerInfo);
+      _defineProperty(this, "colliders", []);
+    }
+    _createClass(CollisionLayerInfo, [{
+      key: "registerCollider",
+      value: function registerCollider(collider) {
+        this.colliders.push(collider);
+      }
+    }]);
+    return CollisionLayerInfo;
+  }();
+
+  var boxBoxHitTest = function boxBoxHitTest(box1, box2, hitPoint) {
+    var worldBox1 = box1.getWorldBox();
+    var worldBox2 = box2.getWorldBox();
+    if (worldBox1.left > worldBox2.right) return false;
+    if (worldBox1.right < worldBox2.left) return false;
+    if (worldBox1.top > worldBox2.bottom) return false;
+    if (worldBox1.bottom < worldBox2.top) return false;
+    var minimumTop = Math.max(worldBox1.top, worldBox2.top);
+    var minimumBottom = Math.min(worldBox1.bottom, worldBox2.bottom);
+    var minimumLeft = Math.max(worldBox1.left, worldBox2.left);
+    var minimumRight = Math.min(worldBox1.right, worldBox2.right);
+    hitPoint.set((minimumLeft + minimumRight) / 2, (minimumTop + minimumBottom) / 2);
+    return true;
+  };
+
+  var availableShapes = ['box'];
+  var testerTable = new UndirectedTable(availableShapes, null);
+  testerTable.set('box', 'box', boxBoxHitTest);
+
+  var CollisionManager = /*#__PURE__*/function () {
+    function CollisionManager(layers, collisionPairs) {
+      var _this = this;
+      _classCallCheck(this, CollisionManager);
+      _defineProperty(this, "_layerNames", void 0);
+      _defineProperty(this, "_layerTable", {});
+      _defineProperty(this, "collisionTable", void 0);
+      _defineProperty(this, "_tempHitPoint", new Vector2());
+      this._layerNames = layers;
+      layers.forEach(function (layerName) {
+        _this._layerTable[layerName] = new CollisionLayerInfo();
+      });
+      if (collisionPairs) {
+        this.collisionTable = collisionPairs;
+      } else {
+        this.collisionTable = [];
+        layers.forEach(function (layerName, index) {
+          for (var i = 0; i < index + 1; i += 1) {
+            _this.collisionTable.push([layerName, layers[i]]);
+          }
+        });
+      }
+    }
+    /**
+     * レイヤーIDからレイヤーを取得
+     * @param id
+     */
+    _createClass(CollisionManager, [{
+      key: "getLayer",
+      value: function getLayer(id) {
+        return this._layerTable[id];
+      }
+    }, {
+      key: "beforeProcess",
+      value: function beforeProcess() {
+        var _this2 = this;
+        Object.keys(this._layerTable).forEach(function (layerName) {
+          _this2._layerTable[layerName].colliders = [];
+        });
+      }
+    }, {
+      key: "afterProcess",
+      value: function afterProcess() {
+        var _this3 = this;
+        // 衝突判定
+        this.collisionTable.forEach(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+            key1 = _ref2[0],
+            key2 = _ref2[1];
+          var layer1 = _this3._layerTable[key1];
+          var layer2 = _this3._layerTable[key2];
+          if (key1 === key2) {
+            layer1.colliders.forEach(function (collider1, index) {
+              // 自分自身と、すでに判定済みの物体は当たり判定をしない
+              for (var i = 0; i < index; i += 1) {
+                var collider2 = layer1.colliders[i];
+                _this3.testAndRegister(collider1, collider2);
+              }
+            });
+            return;
+          }
+          layer1.colliders.forEach(function (collider1) {
+            layer2.colliders.forEach(function (collider2) {
+              _this3.testAndRegister(collider1, collider2);
+            });
+          });
+        });
+        // 衝突情報を整理してイベントを発行
+        this._layerNames.forEach(function (layerName) {
+          _this3._layerTable[layerName].colliders.forEach(function (collider) {
+            collider.processCollision();
+          });
+        });
+      }
+    }, {
+      key: "testAndRegister",
+      value: function testAndRegister(collider1, collider2) {
+        var tester = testerTable.get(collider1.colliderId, collider2.colliderId);
+        if (!tester) {
+          throw new Error("CollisionPreprocessManager: Collision(".concat(collider1.colliderId, ", ").concat(collider2.colliderId, ") is only allowed."));
+        }
+        if (tester(collider1, collider2, this._tempHitPoint)) {
+          collider1.registerCollision({
+            collider: collider2,
+            hitPoint: new Vector2().copy(this._tempHitPoint)
+          });
+          collider2.registerCollision({
+            collider: collider1,
+            hitPoint: new Vector2().copy(this._tempHitPoint)
+          });
+        }
+      }
+    }]);
+    return CollisionManager;
+  }();
+
+  var Time = /*#__PURE__*/function () {
+    function Time() {
+      _classCallCheck(this, Time);
+      _defineProperty(this, "timeScale", 1);
+      _defineProperty(this, "_gameTime", 0);
+      _defineProperty(this, "_deltaTime", 0);
+      _defineProperty(this, "_unscaledDeltaTime", 0);
+      _defineProperty(this, "_levelStartTime", 0);
+      _defineProperty(this, "_previousTimeStamp", 0);
+    }
+    _createClass(Time, [{
+      key: "gameTime",
+      get:
+      /**
+       * ゲーム起動からのゲーム内時間
+       */
+      function get() {
+        return this._gameTime;
+      }
+    }, {
+      key: "deltaTime",
+      get:
+      /**
+       * 前フレームからのゲーム内経過時間
+       */
+      function get() {
+        return this._deltaTime;
+      }
+    }, {
+      key: "unscaledDeltaTime",
+      get:
+      /**
+       * timeScaleに影響しない前フレームからの実経過時間
+       */
+      function get() {
+        return this._unscaledDeltaTime;
+      }
+    }, {
+      key: "levelTime",
+      get:
+      /**
+       * 現在のレベルの開始からのゲーム内経過時間
+       */
+      function get() {
+        return this._gameTime - this._levelStartTime;
+      }
+    }, {
+      key: "calcDeltaTime",
+      value:
+      /**
+       * フレーム時間を計算する
+       * GameCoreのupdate関数内で呼び出す
+       * @param timeStamp
+       */
+      function calcDeltaTime(timeStamp) {
+        var unscaledDeltaTime = timeStamp - this._previousTimeStamp;
+        this._previousTimeStamp = timeStamp;
+        this._unscaledDeltaTime = unscaledDeltaTime;
+        this._deltaTime = unscaledDeltaTime * this.timeScale;
+        this._gameTime += this._deltaTime;
+      }
+    }, {
+      key: "resetLevelTime",
+      value: function resetLevelTime() {
+        this._levelStartTime = this._gameTime;
+      }
+    }, {
+      key: "reset",
+      value: function reset(previousTimeStamp) {
+        this._gameTime = 0;
+        this._deltaTime = 0;
+        this._unscaledDeltaTime = 0;
+        this._levelStartTime = 0;
+        this._previousTimeStamp = previousTimeStamp;
+      }
+    }]);
+    return Time;
+  }();
+
+  var GameCore = /*#__PURE__*/function () {
+    function GameCore(settings, levelTable) {
+      _classCallCheck(this, GameCore);
+      _defineProperty(this, "_originalSettings", void 0);
+      _defineProperty(this, "_api", void 0);
+      _defineProperty(this, "_requestAnimationFrameId", -1);
+      this._originalSettings = settings;
+      this._api = {
+        inputManager: new InputManager(window, settings.keybind),
+        staticFileLoader: new StaticFileLoader(settings.staticLoadAssets),
+        dynamicFileLoader: new DynamicFileLoader(),
+        graphicManager: new GraphicManager(settings.graphicLayers, settings.wrapper),
+        collisionLayers: new CollisionManager(settings.collisionLayers, settings.collisionPairs),
+        achievementManager: new AchievementManager(settings.achievementStatusBlueprint, settings.achievementBlueprint),
+        globalStore: new GlobalStore(settings.initialGlobalStore),
+        levelManager: settings.levelManager,
+        levelSelector: new LevelSelector(),
+        time: new Time()
+      };
+      this._api.levelSelector.initializeLevels(this._api, levelTable, settings.initialLevel);
+    }
+    _createClass(GameCore, [{
+      key: "gameLoop",
+      value: function gameLoop(deltaTime) {
+        this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+        var root = this._api.levelSelector.currentLevel();
+        this._api.time.calcDeltaTime(deltaTime / 1000);
+        this._api.inputManager.updateKeyBinds();
+        root.transform.process();
+        this._api.collisionLayers.beforeProcess();
+        root.collision.process();
+        this._api.collisionLayers.afterProcess();
+        this._api.graphicManager.beforeProcess();
+        root.graphic.process();
+        this._api.graphicManager.afterProcess();
+        root.update();
+        this._api.levelSelector.postProcess();
+      }
+      /**
+       * ゲームの開始コマンド
+       */
+    }, {
+      key: "run",
+      value: function run() {
+        this._api.time.reset(performance.now());
+        this._requestAnimationFrameId = requestAnimationFrame(this.gameLoop.bind(this));
+      }
+    }]);
+    return GameCore;
+  }();
 
   var GameEntry = /*#__PURE__*/function () {
     function GameEntry() {
@@ -2456,38 +3699,6 @@
     }]);
     return RespawnPoint;
   }(GameEntry);
-
-  var createGameEvent = function createGameEvent() {
-    var event = {
-      listeners: [],
-      listen: function listen(listener) {
-        this.listeners.push(listener);
-      },
-      unlisten: function unlisten(listener) {
-        this.listeners = this.listeners.filter(function (l) {
-          return l !== listener;
-        });
-      },
-      call: function call(data) {
-        this.listeners.forEach(function (l) {
-          return l(data);
-        });
-      }
-    };
-    return event;
-  };
-
-  // eslint-disable-next-line no-shadow
-  exports.LevelEventType = void 0;
-  (function (LevelEventType) {
-    LevelEventType[LevelEventType["LevelStart"] = 0] = "LevelStart";
-    LevelEventType[LevelEventType["Pause"] = 1] = "Pause";
-    LevelEventType[LevelEventType["Resume"] = 2] = "Resume";
-    LevelEventType[LevelEventType["PlayerDeath"] = 3] = "PlayerDeath";
-    LevelEventType[LevelEventType["GameOver"] = 4] = "GameOver";
-    LevelEventType[LevelEventType["GameClear"] = 5] = "GameClear";
-  })(exports.LevelEventType || (exports.LevelEventType = {}));
-  var LevelEvent = createGameEvent();
 
   var GraphicBase = /*#__PURE__*/_createClass(function GraphicBase() {
     _classCallCheck(this, GraphicBase);
@@ -2762,795 +3973,6 @@
     return ClosePath;
   }(PathBase);
 
-  var inputableKeyList = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', 'Enter', 'Shift', 'Control', 'Alt', 'Tab', 'Escape', 'Backspace', 'CapsLock', 'Delete', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'MouseLeft', 'MouseRight', 'MouseMiddle', 'MouseX', 'MouseY', 'MouseWheel', 'GamepadA', 'GamepadB', 'GamepadX', 'GamepadY', 'GamepadL1', 'GamepadL2', 'GamepadL3', 'GamepadR1', 'GamepadR2', 'GamepadR3', 'GamepadStart', 'GamepadSelect', 'GamepadUp', 'GamepadDown', 'GamepadLeft', 'GamepadRight', 'GamepadAxisLeftX', 'GamepadAxisLeftY', 'GamepadAxisRightX', 'GamepadAxisRightY', 'GamepadAxisL2', 'GamepadAxisR2', 'GamepadAxisL3', 'GamepadAxisR3'];
-
-  var Vector2Provider = /*#__PURE__*/function () {
-    function Vector2Provider() {
-      _classCallCheck(this, Vector2Provider);
-      _defineProperty(this, "xValue", 0);
-      _defineProperty(this, "yValue", 0);
-      _defineProperty(this, "prevXValue", 0);
-      _defineProperty(this, "prevYValue", 0);
-    }
-    _createClass(Vector2Provider, [{
-      key: "length",
-      get: function get() {
-        return Math.sqrt(this.xValue * this.xValue + this.yValue * this.yValue);
-      }
-    }, {
-      key: "length2",
-      get: function get() {
-        return this.xValue * this.xValue + this.yValue * this.yValue;
-      }
-    }, {
-      key: "startPressed",
-      get: function get() {
-        return Math.pow(this.prevXValue, 2) + Math.pow(this.prevYValue, 2) === 0 && this.length2 > 0;
-      }
-    }, {
-      key: "endPressed",
-      get: function get() {
-        return Math.pow(this.prevXValue, 2) + Math.pow(this.prevYValue, 2) > 0 && this.length2 === 0;
-      }
-    }, {
-      key: "pressed",
-      get: function get() {
-        return this.length2 > 0;
-      }
-    }, {
-      key: "value",
-      get: function get() {
-        return new Vector2(this.xValue, this.yValue);
-      }
-    }, {
-      key: "update",
-      value: function update(x, y) {
-        this.prevXValue = this.xValue;
-        this.prevYValue = this.yValue;
-        this.xValue = x;
-        this.yValue = y;
-      }
-    }]);
-    return Vector2Provider;
-  }();
-
-  var ScalarProvider = /*#__PURE__*/function () {
-    function ScalarProvider() {
-      _classCallCheck(this, ScalarProvider);
-      _defineProperty(this, "rawValue", 0);
-      _defineProperty(this, "prevValue", 0);
-    }
-    _createClass(ScalarProvider, [{
-      key: "startPressed",
-      get: function get() {
-        return this.prevValue === 0 && this.rawValue !== 0;
-      }
-    }, {
-      key: "endPressed",
-      get: function get() {
-        return this.prevValue !== 0 && this.rawValue === 0;
-      }
-    }, {
-      key: "pressed",
-      get: function get() {
-        return this.rawValue !== 0;
-      }
-    }, {
-      key: "value",
-      get: function get() {
-        return this.rawValue;
-      }
-    }, {
-      key: "update",
-      value: function update(value) {
-        this.prevValue = this.rawValue;
-        this.rawValue = value;
-      }
-    }]);
-    return ScalarProvider;
-  }();
-
-  var KeyBinder = /*#__PURE__*/function () {
-    function KeyBinder(keybind) {
-      _classCallCheck(this, KeyBinder);
-      _defineProperty(this, "keybind", void 0);
-      _defineProperty(this, "keyContainer", void 0);
-      this.keybind = keybind;
-      // create key containers
-      var keyContainer = {};
-      Object.keys(keybind).forEach(function (key) {
-        if (!keybind[key]) throw new Error("KeyBinder: Invalid keybind(".concat(key, ")"));
-        var value = keybind[key][0];
-        switch (value.type) {
-          case 'scalarkey1':
-          case 'scalarkey2':
-            keyContainer[key] = new ScalarProvider();
-            break;
-          case 'vector2key2':
-          case 'vector2key4':
-            keyContainer[key] = new Vector2Provider();
-            break;
-          default:
-            throw new Error("KeyBinder: Invalid type of keybind(".concat(value, ")"));
-        }
-      });
-      this.keyContainer = keyContainer;
-    }
-    _createClass(KeyBinder, [{
-      key: "getValue",
-      value: function getValue(id) {
-        return this.keyContainer[id].value;
-      }
-    }, {
-      key: "getStartPressed",
-      value: function getStartPressed(id) {
-        return this.keyContainer[id].startPressed;
-      }
-    }, {
-      key: "getEndPressed",
-      value: function getEndPressed(id) {
-        return this.keyContainer[id].endPressed;
-      }
-    }, {
-      key: "getPressed",
-      value: function getPressed(id) {
-        return this.keyContainer[id].pressed;
-      }
-    }, {
-      key: "update",
-      value: function update(keyValues) {
-        var _this = this;
-        Object.keys(this.keybind).forEach(function (key) {
-          var keyBinds = _this.keybind[key];
-          keyBinds.forEach(function (keyBind) {
-            switch (keyBind.type) {
-              case 'scalarkey1':
-                {
-                  _this.keyContainer[key].update(keyValues[keyBind.value]);
-                  break;
-                }
-              case 'scalarkey2':
-                {
-                  var positiveValue = keyValues[keyBind.positiveValue];
-                  var negativeValue = keyValues[keyBind.negativeValue];
-                  _this.keyContainer[key].update(positiveValue - negativeValue);
-                  break;
-                }
-              case 'vector2key2':
-                {
-                  var xValue = keyValues[keyBind.xValue];
-                  var yValue = keyValues[keyBind.yValue];
-                  _this.keyContainer[key].update(xValue, yValue);
-                  break;
-                }
-              case 'vector2key4':
-                {
-                  var xPositiveValue = keyValues[keyBind.xPositiveValue];
-                  var xNegativeValue = keyValues[keyBind.xNegativeValue];
-                  var yPositiveValue = keyValues[keyBind.yPositiveValue];
-                  var yNegativeValue = keyValues[keyBind.yNegativeValue];
-                  _this.keyContainer[key].update(xPositiveValue - xNegativeValue, yPositiveValue - yNegativeValue);
-                  break;
-                }
-              default:
-                {
-                  throw new Error("KeyBinder: Invalid type of keybind(".concat(keyBinds, ")"));
-                }
-            }
-          });
-        });
-      }
-    }]);
-    return KeyBinder;
-  }();
-
-  var InputManager = /*#__PURE__*/function () {
-    function InputManager(window, keybinds) {
-      var _this = this;
-      _classCallCheck(this, InputManager);
-      _defineProperty(this, "keybinds", void 0);
-      _defineProperty(this, "keybinders", void 0);
-      _defineProperty(this, "rawKeyValues", void 0);
-      this.keybinds = keybinds;
-      this.keybinders = Object.keys(keybinds).reduce(function (acc, key) {
-        acc[key] = new KeyBinder(keybinds[key]);
-        return acc;
-      }, {});
-      this.rawKeyValues = inputableKeyList.reduce(function (acc, key) {
-        acc[key] = 0;
-        return acc;
-      }, {});
-      window.addEventListener('keydown', function (e) {
-        _this.rawKeyValues[e.key] = 1;
-      });
-      window.addEventListener('keyup', function (e) {
-        _this.rawKeyValues[e.key] = 0;
-      });
-    }
-    _createClass(InputManager, [{
-      key: "getKeybinder",
-      value: function getKeybinder(key) {
-        return this.keybinders[key];
-      }
-    }, {
-      key: "updateKeyBinds",
-      value: function updateKeyBinds() {
-        var _this2 = this;
-        Object.keys(this.keybinds).forEach(function (key) {
-          _this2.keybinders[key].update(_this2.rawKeyValues);
-        });
-      }
-    }]);
-    return InputManager;
-  }();
-
-  // このLevelStateが二重定義されているというエラーが出るが、どこで定義されているのかわからないので暫定的に無視
-  // eslint-disable-next-line no-shadow
-  exports.LevelState = void 0;
-  (function (LevelState) {
-    LevelState[LevelState["Playing"] = 0] = "Playing";
-    LevelState[LevelState["Paused"] = 1] = "Paused";
-    LevelState[LevelState["GameOver"] = 2] = "GameOver";
-    LevelState[LevelState["GameClear"] = 3] = "GameClear";
-  })(exports.LevelState || (exports.LevelState = {}));
-  /**
-   * レベルに関する処理を管轄するクラス
-   */
-  var LevelManager = /*#__PURE__*/function () {
-    function LevelManager(levelManagerSettings) {
-      _classCallCheck(this, LevelManager);
-      /**
-       * レベルにあるEntryのルート
-       */
-      _defineProperty(this, "rootEntry", void 0);
-      /**
-       * レベルの状態を表す
-       * @protected
-       */
-      _defineProperty(this, "state", void 0);
-      this.rootEntry = levelManagerSettings.rootEntry;
-      this.state = exports.LevelState.Playing;
-    }
-    _createClass(LevelManager, [{
-      key: "levelEventListener",
-      value: function levelEventListener(levelEventType) {
-        switch (levelEventType) {
-          case exports.LevelEventType.LevelStart:
-            // do nothing
-            break;
-          case exports.LevelEventType.Pause:
-            this.state = exports.LevelState.Paused;
-            this.pause();
-            break;
-          case exports.LevelEventType.Resume:
-            this.state = exports.LevelState.Playing;
-            this.resume();
-            break;
-          case exports.LevelEventType.PlayerDeath:
-            this.playerDeath();
-            break;
-          case exports.LevelEventType.GameClear:
-            this.state = exports.LevelState.GameClear;
-            this.gameClear();
-            break;
-          case exports.LevelEventType.GameOver:
-            this.state = exports.LevelState.GameOver;
-            this.gameOver();
-            break;
-          default:
-            throw new Error("LevelManager: Invalid LevelEventType (".concat(levelEventType, ")"));
-        }
-      }
-    }, {
-      key: "start",
-      value: function start() {
-        this.state = exports.LevelState.Playing;
-        LevelEvent.listen(this.levelEventListener.bind(this));
-      }
-    }, {
-      key: "exit",
-      value: function exit() {
-        this.rootEntry.destroy();
-        LevelEvent.unlisten(this.levelEventListener.bind(this));
-      }
-    }, {
-      key: "gameOver",
-      value: function gameOver() {
-        // no impl
-      }
-    }, {
-      key: "gameClear",
-      value: function gameClear() {
-        // no impl
-      }
-    }, {
-      key: "pause",
-      value: function pause() {
-        // no impl
-      }
-    }, {
-      key: "resume",
-      value: function resume() {
-        // no impl
-      }
-    }, {
-      key: "playerDeath",
-      value: function playerDeath() {
-        // no impl
-      }
-    }]);
-    return LevelManager;
-  }();
-
-  var ActionLevelManager = /*#__PURE__*/function (_LevelManager) {
-    _inherits(ActionLevelManager, _LevelManager);
-    var _super = _createSuper(ActionLevelManager);
-    function ActionLevelManager(actionLevelManagerSettings) {
-      var _this;
-      _classCallCheck(this, ActionLevelManager);
-      _this = _super.call(this, actionLevelManagerSettings);
-      _defineProperty(_assertThisInitialized(_this), "playerLife", -1);
-      _defineProperty(_assertThisInitialized(_this), "playerRespawnPoint", void 0);
-      _defineProperty(_assertThisInitialized(_this), "playerRespawnDelay", 0);
-      _this.playerRespawnPoint = actionLevelManagerSettings.respawnPoint;
-      _this.playerLife = actionLevelManagerSettings.life;
-      _this.playerRespawnDelay = actionLevelManagerSettings.respawnDelay;
-      return _this;
-    }
-    _createClass(ActionLevelManager, [{
-      key: "playerDeath",
-      value: function playerDeath() {
-        _get(_getPrototypeOf(ActionLevelManager.prototype), "playerDeath", this).call(this);
-        if (this.playerLife === -1) {
-          this.respawnPlayer();
-        }
-        this.playerLife -= 1;
-        if (this.playerLife === 0) {
-          LevelEvent.call(exports.LevelEventType.GameOver);
-        } else {
-          this.respawnPlayer();
-        }
-      }
-    }, {
-      key: "respawnPlayer",
-      value: function () {
-        var _respawnPlayer = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-          return _regeneratorRuntime().wrap(function _callee$(_context) {
-            while (1) switch (_context.prev = _context.next) {
-              case 0:
-                if (!(this.playerRespawnDelay > 0)) {
-                  _context.next = 3;
-                  break;
-                }
-                _context.next = 3;
-                return wait(this.playerRespawnDelay * 1000);
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }, _callee, this);
-        }));
-        function respawnPlayer() {
-          return _respawnPlayer.apply(this, arguments);
-        }
-        return respawnPlayer;
-      }()
-    }, {
-      key: "setRespawnPoint",
-      value: function setRespawnPoint(respawnPoint) {
-        this.playerRespawnPoint = respawnPoint;
-      }
-    }]);
-    return ActionLevelManager;
-  }(LevelManager);
-
-  var imageFileLoader = function imageFileLoader(path, progress) {
-    var target = new Image();
-    target.src = path;
-    progress === null || progress === void 0 || progress.bind(target)(0);
-    return new Promise(function (resolve, reject) {
-      target.addEventListener('load', function () {
-        progress === null || progress === void 0 || progress.bind(target)(1);
-        resolve(target);
-      });
-      target.addEventListener('error', function () {
-        reject();
-      });
-    });
-  };
-  var audioFileLoader = function audioFileLoader(path, progress) {
-    var target = new Audio();
-    target.src = path;
-    progress === null || progress === void 0 || progress.bind(target)(0);
-    return new Promise(function (resolve, reject) {
-      target.addEventListener('load', function () {
-        progress === null || progress === void 0 || progress.bind(target)(1);
-        resolve(target);
-      });
-      target.addEventListener('error', function () {
-        reject();
-      });
-    });
-  };
-  var fileLoaderTable = {
-    image: imageFileLoader,
-    audio: audioFileLoader
-  };
-
-  /**
-   * ゲームに必要なファイルを読み取るクラス
-   * 型安全にするために、ファイルのリストをコンストラクタで渡す
-   */
-  var StaticFileLoader = /*#__PURE__*/function () {
-    function StaticFileLoader(fileList) {
-      _classCallCheck(this, StaticFileLoader);
-      _defineProperty(this, "_fileList", void 0);
-      this._fileList = fileList;
-    }
-    /**
-     * ファイルをすべて読み込む
-     * @param progress
-     */
-    _createClass(StaticFileLoader, [{
-      key: "loadAll",
-      value: function () {
-        var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(progress) {
-          var _this = this;
-          var loadedCount, loadFilePromises;
-          return _regeneratorRuntime().wrap(function _callee$(_context) {
-            while (1) switch (_context.prev = _context.next) {
-              case 0:
-                loadedCount = 0;
-                loadFilePromises = Object.entries(this._fileList).map(function (_ref) {
-                  var _ref2 = _slicedToArray(_ref, 2),
-                    key = _ref2[0],
-                    asset = _ref2[1];
-                  var loader = fileLoaderTable[asset.fileType];
-                  return loader(asset.path, null).then(function (data) {
-                    loadedCount += 1;
-                    progress(loadedCount / Object.keys(_this._fileList).length);
-                    asset.data = data;
-                    return [key, data];
-                  });
-                });
-                _context.next = 4;
-                return Promise.all(loadFilePromises);
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }, _callee, this);
-        }));
-        function loadAll(_x) {
-          return _loadAll.apply(this, arguments);
-        }
-        return loadAll;
-      }()
-    }, {
-      key: "get",
-      value: function get(id) {
-        return this._fileList[id];
-      }
-    }]);
-    return StaticFileLoader;
-  }();
-
-  var mapRecord = function mapRecord(record, fn) {
-    return Object.fromEntries(Object.entries(record).map(function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 2),
-        key = _ref2[0],
-        value = _ref2[1];
-      return [key, fn(key, value)];
-    }));
-  };
-  var sumRecord = function sumRecord(record) {
-    return Object.values(record).reduce(function (acc, current) {
-      return acc + current;
-    }, 0);
-  };
-
-  /**
-   * ゲーム開始後動的にファイルを読むためのクラス
-   */
-  var DynamicFileLoader = /*#__PURE__*/function () {
-    function DynamicFileLoader() {
-      _classCallCheck(this, DynamicFileLoader);
-      _defineProperty(this, "_registeredAssetTable", {});
-    }
-    _createClass(DynamicFileLoader, [{
-      key: "load",
-      value:
-      /**
-       * アセットの読み込み
-       * @param key
-       * @param asset
-       * @param progress
-       */
-      function () {
-        var _load = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(key, asset, progress) {
-          var loader;
-          return _regeneratorRuntime().wrap(function _callee$(_context) {
-            while (1) switch (_context.prev = _context.next) {
-              case 0:
-                if (!(this._registeredAssetTable[key] !== undefined)) {
-                  _context.next = 2;
-                  break;
-                }
-                throw new Error("DynamicFileLoader: Asset(".concat(String(key), ") is already registered"));
-              case 2:
-                loader = fileLoaderTable[asset.fileType];
-                this._registeredAssetTable[key] = asset;
-                _context.next = 6;
-                return loader(asset.path, progress);
-              case 6:
-                this._registeredAssetTable[key].data = _context.sent;
-              case 7:
-              case "end":
-                return _context.stop();
-            }
-          }, _callee, this);
-        }));
-        function load(_x, _x2, _x3) {
-          return _load.apply(this, arguments);
-        }
-        return load;
-      }()
-      /**
-       * 複数アセットの読み込み
-       * @param fileTable
-       * @param progress
-       */
-    }, {
-      key: "loadAll",
-      value: function () {
-        var _loadAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(fileTable) {
-          var _this = this;
-          var progress,
-            loadFileProgresses,
-            fileCount,
-            _args2 = arguments;
-          return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-            while (1) switch (_context2.prev = _context2.next) {
-              case 0:
-                progress = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : function () {};
-                loadFileProgresses = mapRecord(fileTable, function () {
-                  return 0;
-                });
-                fileCount = Object.keys(fileTable).length;
-                Object.entries(fileTable).map(function (_ref) {
-                  var _ref2 = _slicedToArray(_ref, 2),
-                    key = _ref2[0],
-                    asset = _ref2[1];
-                  return _this.load(key, asset, function (rate) {
-                    loadFileProgresses[key] = rate;
-                    progress(sumRecord(loadFileProgresses) / fileCount);
-                  });
-                });
-              case 4:
-              case "end":
-                return _context2.stop();
-            }
-          }, _callee2);
-        }));
-        function loadAll(_x4) {
-          return _loadAll.apply(this, arguments);
-        }
-        return loadAll;
-      }()
-      /**
-       * アセットの取得
-       * @param id
-       */
-    }, {
-      key: "get",
-      value: function get(id) {
-        if (!this._registeredAssetTable[id]) throw new Error("DynamicFileLoader: Asset(".concat(String(id), ") is not registered"));
-        return this._registeredAssetTable[id];
-      }
-      /**
-       * アセットのメモリ開放
-       * @param id
-       */
-    }, {
-      key: "dispose",
-      value: function dispose(id) {
-        if (!this._registeredAssetTable[id]) throw new Error("DynamicFileLoader: Asset(".concat(String(id), ") is not registered"));
-        delete this._registeredAssetTable[id];
-      }
-    }]);
-    return DynamicFileLoader;
-  }();
-
-  var AssetBase = /*#__PURE__*/function () {
-    function AssetBase(path, fileType) {
-      _classCallCheck(this, AssetBase);
-      _defineProperty(this, "_path", void 0);
-      _defineProperty(this, "_fileType", void 0);
-      _defineProperty(this, "_data", void 0);
-      _defineProperty(this, "_isLoaded", void 0);
-      this._path = path;
-      this._fileType = fileType;
-      this._isLoaded = false;
-    }
-    _createClass(AssetBase, [{
-      key: "path",
-      get:
-      /**
-       * ファイルのあるパス
-       */
-      function get() {
-        return this._path;
-      }
-    }, {
-      key: "fileType",
-      get: function get() {
-        return this._fileType;
-      }
-    }, {
-      key: "data",
-      get:
-      /**
-       * ファイルのデータ本体
-       */
-      function get() {
-        return this._data;
-      },
-      set: function set(data) {
-        this._data = data;
-        this._isLoaded = true;
-      }
-    }, {
-      key: "isLoaded",
-      get:
-      /**
-       * ファイルがロード済みかどうか
-       */
-      function get() {
-        return this._isLoaded;
-      }
-    }]);
-    return AssetBase;
-  }();
-
-  var AudioAsset = /*#__PURE__*/function (_AssetBase) {
-    _inherits(AudioAsset, _AssetBase);
-    var _super = _createSuper(AudioAsset);
-    function AudioAsset(path, audioType) {
-      var _this;
-      var loopStartTime = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-      var loopEndTime = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-      _classCallCheck(this, AudioAsset);
-      _this = _super.call(this, path, 'audio');
-      /**
-       * 音声アセットのタイプ
-       */
-      _defineProperty(_assertThisInitialized(_this), "audioType", void 0);
-      /**
-       * ループ開始時間
-       * bgm以外では効果なし
-       */
-      _defineProperty(_assertThisInitialized(_this), "loopStartTime", 0);
-      /**
-       * ループ終了時間
-       * bgm以外では効果なし
-       */
-      _defineProperty(_assertThisInitialized(_this), "loopEndTime", 0);
-      _this.audioType = audioType;
-      _this.loopStartTime = loopStartTime;
-      _this.loopEndTime = loopEndTime;
-      return _this;
-    }
-    _createClass(AudioAsset, [{
-      key: "length",
-      get:
-      /**
-       * 音声の長さ
-       */
-      function get() {
-        var _this$data;
-        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.duration) || 0;
-      }
-    }]);
-    return AudioAsset;
-  }(AssetBase);
-
-  /**
-   * 画像を表すクラス
-   */
-  var SpriteAsset = /*#__PURE__*/function (_AssetBase) {
-    _inherits(SpriteAsset, _AssetBase);
-    var _super = _createSuper(SpriteAsset);
-    function SpriteAsset(path) {
-      _classCallCheck(this, SpriteAsset);
-      return _super.call(this, path, 'image');
-    }
-    _createClass(SpriteAsset, [{
-      key: "width",
-      get: function get() {
-        var _this$data;
-        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.width) || 0;
-      }
-    }, {
-      key: "height",
-      get: function get() {
-        var _this$data2;
-        return ((_this$data2 = this.data) === null || _this$data2 === void 0 ? void 0 : _this$data2.height) || 0;
-      }
-    }]);
-    return SpriteAsset;
-  }(AssetBase);
-
-  /**
-   * スプライトシートの画像を表すクラス
-   */
-  var SpriteSheetAsset = /*#__PURE__*/function (_AssetBase) {
-    _inherits(SpriteSheetAsset, _AssetBase);
-    var _super = _createSuper(SpriteSheetAsset);
-    function SpriteSheetAsset(path, columns, rows) {
-      var _this;
-      _classCallCheck(this, SpriteSheetAsset);
-      _this = _super.call(this, path, 'image');
-      _defineProperty(_assertThisInitialized(_this), "columns", void 0);
-      _defineProperty(_assertThisInitialized(_this), "rows", void 0);
-      _this.columns = columns;
-      _this.rows = rows;
-      return _this;
-    }
-    _createClass(SpriteSheetAsset, [{
-      key: "width",
-      get: function get() {
-        var _this$data;
-        return ((_this$data = this.data) === null || _this$data === void 0 ? void 0 : _this$data.width) || 0;
-      }
-    }, {
-      key: "height",
-      get: function get() {
-        var _this$data2;
-        return ((_this$data2 = this.data) === null || _this$data2 === void 0 ? void 0 : _this$data2.height) || 0;
-      }
-      /**
-       * スプライトシートの各画像の幅
-       */
-    }, {
-      key: "segmentWidth",
-      get: function get() {
-        return this.width / this.columns;
-      }
-      /**
-       * スプライトシートの各画像の高さ
-       */
-    }, {
-      key: "segmentHeight",
-      get: function get() {
-        return this.height / this.rows;
-      }
-    }]);
-    return SpriteSheetAsset;
-  }(AssetBase);
-
-  /**
-   * 画像の一部を切り出した画像を表すクラス
-   */
-  var SubSpriteAsset = /*#__PURE__*/function (_AssetBase) {
-    _inherits(SubSpriteAsset, _AssetBase);
-    var _super = _createSuper(SubSpriteAsset);
-    function SubSpriteAsset(path, left, top, right, bottom) {
-      var _this;
-      _classCallCheck(this, SubSpriteAsset);
-      _this = _super.call(this, path, 'image');
-      _defineProperty(_assertThisInitialized(_this), "left", void 0);
-      _defineProperty(_assertThisInitialized(_this), "top", void 0);
-      _defineProperty(_assertThisInitialized(_this), "right", void 0);
-      _defineProperty(_assertThisInitialized(_this), "bottom", void 0);
-      _this.left = left;
-      _this.top = top;
-      _this.right = right;
-      _this.bottom = bottom;
-      return _this;
-    }
-    return _createClass(SubSpriteAsset);
-  }(AssetBase);
-
   exports.ActionLevelManager = ActionLevelManager;
   exports.AssetBase = AssetBase;
   exports.AudioAsset = AudioAsset;
@@ -3561,17 +3983,17 @@
   exports.ComponentBase = ComponentBase;
   exports.DynamicFileLoader = DynamicFileLoader;
   exports.EventEmitter = EventEmitter;
+  exports.GameCore = GameCore;
   exports.GameEntry = GameEntry;
-  exports.GameManager = GameManager;
-  exports.GamePipeline = GamePipeline;
+  exports.GlobalStore = GlobalStore;
   exports.GraphicBase = GraphicBase;
   exports.GraphicComponent = GraphicComponent;
   exports.InputManager = InputManager;
   exports.KeyBinder = KeyBinder;
   exports.LevelEvent = LevelEvent;
   exports.LevelManager = LevelManager;
+  exports.LevelSelector = LevelSelector;
   exports.LinePath = LinePath;
-  exports.ManagerBase = ManagerBase;
   exports.Matrix2 = Matrix2;
   exports.Matrix3 = Matrix3;
   exports.PathBase = PathBase;
@@ -3586,7 +4008,6 @@
   exports.StaticFileLoader = StaticFileLoader;
   exports.SubSpriteAsset = SubSpriteAsset;
   exports.TextGraphic = TextGraphic;
-  exports.Time = Time;
   exports.UndirectedTable = UndirectedTable;
   exports.Vector2 = Vector2;
   exports.Vector2Provider = Vector2Provider;

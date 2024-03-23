@@ -1,17 +1,30 @@
 import { GameEntry } from '../../entry';
-type LevelRecord = Record<string, GameEntry>;
-export declare class LevelSelector<T extends LevelRecord = LevelRecord> {
-    private readonly _levelRecord;
+import { GameApi } from '../GameCore';
+export declare class LevelSelector<T extends string> {
+    private _levelRecord;
     private _currentLevelKey;
-    constructor(levels: T, initialLevelKey: keyof T);
+    private _nextLevelKey;
+    constructor();
+    /**
+     * APIでレベルを初期化
+     * APIにLevelSelector自体が含まれるため、コンストラクタ外で指定
+     * @param gameApi
+     * @param levelTable
+     * @param initialLevel
+     */
+    initializeLevels(gameApi: GameApi, levelTable: Record<T, (api: GameApi) => GameEntry>, initialLevel: T): void;
     /**
      * レベルを移動
+     * ※注意 レベルの移動処理はGameEntryのupdate処理が全部終わってから行われるので、実行順に注意
      * @param levelName
      */
-    moveLevel(levelName: keyof LevelRecord): void;
+    moveLevel(levelName: T): void;
     /**
      * 現在のレベルのLevelManagerを取得
      */
-    currentLevel(): T[keyof T];
+    currentLevel(): Record<T, GameEntry>[T];
+    /**
+     * GameCoreによってupdate処理の後に呼ばれる
+     */
+    postProcess(): void;
 }
-export {};
