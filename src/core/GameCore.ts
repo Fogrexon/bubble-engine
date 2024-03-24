@@ -20,7 +20,7 @@ export type GameCoreSettings<
   T10 extends string[] = string[],
   T11 extends T10[number] = T10[number],
 > = {
-  keybind: T1;
+  keybinds: T1;
   staticLoadAssets: T2;
   graphicLayers: T3;
   collisionLayers: T4;
@@ -36,7 +36,7 @@ export type GameCoreSettings<
 
 
 export type GameApi<T extends GameCoreSettings = GameCoreSettings> = {
-  readonly inputManager: InputManager<T['keybind']>
+  readonly inputManager: InputManager<T['keybinds']>
   readonly staticFileLoader: StaticFileLoader<T['staticLoadAssets']>
   readonly dynamicFileLoader: DynamicFileLoader
   readonly graphicManager: GraphicManager<T['graphicLayers']>
@@ -63,7 +63,7 @@ export class GameCore<T extends GameCoreSettings = GameCoreSettings> {
   constructor(settings: T, levelTable: Record<T['levelIds'][number], (api: GameApi<T>) => GameEntry>) {
     this._originalSettings = settings;
     this._api = {
-      inputManager: new InputManager(window, settings.keybind),
+      inputManager: new InputManager(window, settings.keybinds),
       staticFileLoader: new StaticFileLoader(settings.staticLoadAssets),
       dynamicFileLoader: new DynamicFileLoader(),
       graphicManager: new GraphicManager(settings.graphicLayers, settings.wrapper),
