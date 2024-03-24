@@ -3448,7 +3448,7 @@
       _defineProperty(this, "_requestAnimationFrameId", -1);
       this._originalSettings = settings;
       this._api = {
-        inputManager: new InputManager(window, settings.keybind),
+        inputManager: new InputManager(window, settings.keybinds),
         staticFileLoader: new StaticFileLoader(settings.staticLoadAssets),
         dynamicFileLoader: new DynamicFileLoader(),
         graphicManager: new GraphicManager(settings.graphicLayers, settings.wrapper),

@@ -7,7 +7,7 @@ import { GameEntry } from '../entry';
 import { LevelManager, LevelSelector } from './level';
 import { Time } from './time';
 export type GameCoreSettings<T1 extends Record<string, InputKeybind> = Record<string, InputKeybind>, T2 extends Record<string, AssetBase<FileType>> = Record<string, AssetBase<FileType>>, T3 extends string[] = string[], T4 extends string[] = string[], T5 extends [T4[number], T4[number]][] = [T4[number], T4[number]][], T6 extends AchievementStatusBlueprintTable = AchievementStatusBlueprintTable, T7 extends AchievementBlueprintTable<T6> = AchievementBlueprintTable<T6>, T8 extends Record<string, unknown> = Record<string, unknown>, T9 extends LevelManager = LevelManager, T10 extends string[] = string[], T11 extends T10[number] = T10[number]> = {
-    keybind: T1;
+    keybinds: T1;
     staticLoadAssets: T2;
     graphicLayers: T3;
     collisionLayers: T4;
@@ -21,7 +21,7 @@ export type GameCoreSettings<T1 extends Record<string, InputKeybind> = Record<st
     wrapper: HTMLElement;
 };
 export type GameApi<T extends GameCoreSettings = GameCoreSettings> = {
-    readonly inputManager: InputManager<T['keybind']>;
+    readonly inputManager: InputManager<T['keybinds']>;
     readonly staticFileLoader: StaticFileLoader<T['staticLoadAssets']>;
     readonly dynamicFileLoader: DynamicFileLoader;
     readonly graphicManager: GraphicManager<T['graphicLayers']>;
